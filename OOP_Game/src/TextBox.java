@@ -1,6 +1,6 @@
 /* Kevin Stubblefield
  * Last Updated: 2/7/2015
- * Known Issues: Display size is not proportionately correct.
+ * Known Issues: None
  * This class will display a textbox on the screen that will hold text.
 */
 

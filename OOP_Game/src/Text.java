@@ -2,7 +2,9 @@
  * Last Updated: 2/7/2015
  * Known Issues: None
  * 
- * Future Functionality: 
+ * Future Functionality: Make the text automatically insert a new line
+ *      when the text reaches the end of the textbox for ease of
+ *      programming (low priority).
  */
 
 import java.awt.Color;

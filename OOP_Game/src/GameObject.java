@@ -10,6 +10,7 @@ public abstract class GameObject {
     
     protected float x, y;
     protected float width, height;
+    protected boolean solid;
     
     public GameObject(float x, float y, float width, float height) {
         this.x = x;
