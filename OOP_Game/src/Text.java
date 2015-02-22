@@ -1,5 +1,5 @@
 /* Kevin Stubblefield
- * Last Updated: 2/7/2015
+ * Last Updated: 2/22/2015
  * Known Issues: None
  * 
  * Future Functionality: Make the text automatically insert a new line
@@ -16,14 +16,14 @@ public class Text extends GameObject {
     private String text;
     private boolean italicized;
     
-    public Text(float x, float y, float width, float height, String text) {
-        super(x, y, width, height);
+    public Text(String ref, float x, float y, String text) {
+        super(ref, x, y);
         this.text = text;
         this.italicized = false;
     }
     
-    public Text(float x, float y, float width, float height, String text, boolean italicized) {
-        super(x, y, width, height);
+    public Text(String ref, float x, float y, String text, boolean italicized) {
+        super(ref, x, y);
         this.text = text;
         this.italicized = italicized;
     }

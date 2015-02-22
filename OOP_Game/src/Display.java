@@ -1,4 +1,5 @@
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -39,10 +40,15 @@ public class Display extends JPanel {
         //All object rendering should go between these two lines and
         //should come from the gameData instance
         /*****************************************************************/
-        gameData.getPlayer().render(graphics);
-        gameData.getTree().render(graphics);
-        if(!gameData.getTextBoxQueue().isEmpty()) {
-            gameData.getTextBoxQueue().peek().render(graphics);
+        if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
+            graphics.setFont(new Font("Arial", Font.PLAIN, 24));
+            graphics.drawString("Start Game", 150, 150);
+        } else {
+            gameData.getPlayer().render(graphics);
+            gameData.getTree().render(graphics);
+            if(!gameData.getTextBoxQueue().isEmpty()) {
+                gameData.getTextBoxQueue().peek().render(graphics);
+            }
         }
         /*****************************************************************/
         

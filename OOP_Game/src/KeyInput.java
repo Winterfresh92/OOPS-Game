@@ -18,29 +18,36 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode() == KeyEvent.VK_D){
-            if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
-                right = true;
+        if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                gameData.getGameStates().pop();
+                gameData.getGameStates().push(GameState.LEVEL_01_STATE);
             }
-        } 
-        if(e.getKeyCode() == KeyEvent.VK_A){
-            if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
-                left = true;
+        } else {
+            if(e.getKeyCode() == KeyEvent.VK_D){
+                if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
+                    right = true;
+                }
+            } 
+            if(e.getKeyCode() == KeyEvent.VK_A){
+                if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
+                    left = true;
+                }
             }
-        }
-        if(e.getKeyCode() == KeyEvent.VK_W){
-            if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
-                up = true;
+            if(e.getKeyCode() == KeyEvent.VK_W){
+                if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
+                    up = true;
+                }
             }
-        }
-        if(e.getKeyCode() == KeyEvent.VK_S){
-            if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
-                down = true;
+            if(e.getKeyCode() == KeyEvent.VK_S){
+                if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
+                    down = true;
+                }
             }
-        }
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(!gameData.getTextBoxQueue().isEmpty()) {
-                gameData.getTextBoxQueue().poll();
+            if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if(!gameData.getTextBoxQueue().isEmpty()) {
+                    gameData.getTextBoxQueue().poll();
+                }
             }
         }
     }

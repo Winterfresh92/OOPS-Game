@@ -1,5 +1,5 @@
 /* Kevin Stubblefield
- * Last Updated: February 12, 2015
+ * Last Updated: February 22, 2015
  * Known Bugs: None
  */
 
@@ -11,8 +11,8 @@ public class Player extends GameObject {
 
     private float velX, velY;
     
-    public Player(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public Player(String ref, float x, float y) {
+        super(ref, x, y);
         velX = velY = 5;
     }
     
@@ -35,7 +35,7 @@ public class Player extends GameObject {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect((int)x, (int)y, (int)width, (int)height);
+        g.fillRect((int)x, (int)y, (int)24, (int)24);
     }
 
     public float getVelX() {

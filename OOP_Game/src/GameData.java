@@ -1,9 +1,10 @@
 /* Kevin Stubblefield
- * Last Updated: February 12, 2015
+ * Last Updated: February 22, 2015
  * Known Bugs: None
  */
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 // Handles all updates in the game and holds all data
 public class GameData {
@@ -11,6 +12,7 @@ public class GameData {
     private Game game;
     private TextBox textBox;
     private LinkedList<TextBox> textBoxQueue;
+    private Stack<GameState> gameStates;
     private Player player;
     private Tree tree;
     
@@ -18,30 +20,36 @@ public class GameData {
     
     public GameData(Game game) {
         this.game = game;
-        player = new Player(100, 100, 24, 24);
-        tree = new Tree(500, 500, 48, 48);
+        player = new Player(null, 100, 100);
+        tree = new Tree(null, 500, 500);
         textBoxQueue = new LinkedList<>();
-        textBox = new TextBox(Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, 0, 0, "this is a textbox\nnew line");
+        gameStates = new Stack<>();
+        gameStates.push(GameState.MENU_STATE);
+        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox\nnew line");
         textBoxQueue.offer(textBox);
-        textBox = new TextBox(Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, 0, 0, "this is a textbox2\nnew");
+        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox2\nnew");
         textBox.setPriority(false);
         textBoxQueue.offer(textBox);
-        textBox = new TextBox(Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, 0, 0, "this is a textbox3\nnew bite line", true);
+        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox3\nnew bite line", true);
         textBoxQueue.offer(textBox);
-        textBox = new TextBox(Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, 0, 0, "this is a textbox4\nnew abitger line");
+        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox4\nnew abitger line");
         textBoxQueue.offer(textBox);
     }
     
     // All updates will go here
     public void update() {
-        textBox.update();
-        player.update();
-        tree.update();
-        if(player.getCollision(tree) && !collided) {
-            textBox = new TextBox(Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, 0, 0, "YOU HAVE COLLI\nDED!!", true);
-            textBox.setPriority(false);
-            textBoxQueue.offer(textBox);
-            collided = true;
+        if(gameStates.peek() == GameState.MENU_STATE) {
+            
+        } else {
+            textBox.update();
+            player.update();
+            tree.update();
+            if(player.getCollision(tree) && !collided) {
+                textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "YOU HAVE COLLI\nDED!!", true);
+                textBox.setPriority(false);
+                textBoxQueue.offer(textBox);
+                collided = true;
+            }
         }
     }
     
@@ -71,6 +79,14 @@ public class GameData {
 
     public void setTextBoxQueue(LinkedList<TextBox> textBoxQueue) {
         this.textBoxQueue = textBoxQueue;
+    }
+
+    public Stack<GameState> getGameStates() {
+        return gameStates;
+    }
+
+    public void setGameStates(Stack<GameState> gameStates) {
+        this.gameStates = gameStates;
     }
     
 }

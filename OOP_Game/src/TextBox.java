@@ -1,5 +1,5 @@
 /* Kevin Stubblefield
- * Last Updated: 2/7/2015
+ * Last Updated: 2/22/2015
  * Known Issues: None
  * This class will display a textbox on the screen that will hold text.
 */
@@ -13,17 +13,17 @@ public class TextBox extends GameObject {
     private boolean priority;
     int delay = 0;
     
-    public TextBox(float x, float y, float width, float height, String text) {
-        super(x, y, width, height);
-        this.text = new Text(x + 10, y + 25, 0, 0, text);
+    public TextBox(String ref, float x, float y, String text) {
+        super(ref, x, y);
+        this.text = new Text(null, x + 10, y + 25, text);
         this.width = Game.WIDTH * 0.78f;
         this.height = Game.HEIGHT / 6;
         priority = true;
     }
     
-    public TextBox(float x, float y, float width, float height, String text, boolean italicized) {
-        super(x, y, width, height);
-        this.text = new Text(x + 10, y + 25, 0, 0, text, italicized);
+    public TextBox(String ref, float x, float y, String text, boolean italicized) {
+        super(ref, x, y);
+        this.text = new Text(null, x + 10, y + 25, text, italicized);
         this.width = Game.WIDTH * 0.78f;
         this.height = Game.HEIGHT / 6;
         priority = true;

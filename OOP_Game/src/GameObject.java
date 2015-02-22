@@ -1,5 +1,5 @@
 /* Kevin Stubblefield
- * Last Updated: February 11, 2015
+ * Last Updated: February 22, 2015
  * Known Issues: None
  */
 
@@ -11,12 +11,18 @@ public abstract class GameObject {
     protected float x, y;
     protected float width, height;
     protected boolean solid;
+    protected Sprite sprite;
     
-    public GameObject(float x, float y, float width, float height) {
+    public GameObject(String ref, float x, float y) {
+        if(ref != null) {
+            this.sprite = SpriteCache.getSpriteCache().getSprite(ref);
+        }
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        if(sprite != null) {
+            this.width = sprite.getWidth();
+            this.height = sprite.getHeight();
+        }
     }
     
     public abstract void update();
@@ -29,6 +35,14 @@ public abstract class GameObject {
     
     public boolean getCollision(GameObject object) {
         return this.getBounds().intersects(object.getBounds());
+    }
+
+    public boolean isSolid() {
+        return solid;
+    }
+
+    public void setSolid(boolean solid) {
+        this.solid = solid;
     }
     
 }
