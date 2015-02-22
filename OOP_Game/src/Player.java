@@ -33,7 +33,7 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(sprite.getImage(), (int)x, (int)y, null);
+        sprite.render(g, x, y);
     }
 
     public float getVelX() {

@@ -11,6 +11,8 @@ public class Tree extends GameObject {
 
     public Tree(String ref, float x, float y) {
         super(ref, x, y);
+        this.width = 48;
+        this.height = 48;
     }
 
     @Override

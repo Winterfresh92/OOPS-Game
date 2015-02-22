@@ -3,31 +3,27 @@
  * Known Bugs: None
  */
 
+import java.awt.Graphics;
 import java.awt.Image;
 
 public class Sprite {
     
     private Image image;
-    private int width, height;
     
     public Sprite(Image image) {
         this.image = image;
     }
-
-    public int getWidth() {
-        return width;
+    
+    public void render(Graphics g, float x, float y) {
+        g.drawImage(image, (int)x, (int)y, null);
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public int getWidth() {
+        return image.getWidth(null);
     }
 
     public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
+        return image.getHeight(null);
     }
 
     public Image getImage() {
