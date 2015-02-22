@@ -3,7 +3,6 @@
  * Known Bugs: None
  */
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 
@@ -34,8 +33,7 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect((int)x, (int)y, (int)24, (int)24);
+        g.drawImage(sprite.getImage(), (int)x, (int)y, null);
     }
 
     public float getVelX() {

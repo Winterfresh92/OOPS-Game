@@ -20,7 +20,7 @@ public class GameData {
     
     public GameData(Game game) {
         this.game = game;
-        player = new Player(null, 100, 100);
+        player = new Player("res\\sprites/player_front_0.png", 100, 100);
         tree = new Tree(null, 500, 500);
         textBoxQueue = new LinkedList<>();
         gameStates = new Stack<>();

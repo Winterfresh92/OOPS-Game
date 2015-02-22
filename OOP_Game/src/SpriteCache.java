@@ -1,3 +1,7 @@
+/* Kevin Stubblefield
+ * Last Updated: February 22, 2015
+ * Known Bugs: None
+ */
 
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -9,10 +13,6 @@ import java.net.URL;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
-/* Kevin Stubblefield
- * Last Updated: February 22, 2015
- * Known Bugs: None
- */
 public class SpriteCache {
     
     private static SpriteCache cache = new SpriteCache();
