@@ -21,7 +21,7 @@ public class GameData {
     public GameData(Game game) {
         this.game = game;
         player = new Player("res\\sprites/player_front_0.png", 100, 100);
-        tree = new Tree(null, 500, 500);
+        tree = new Tree(null, 300, 300);
         textBoxQueue = new LinkedList<>();
         gameStates = new Stack<>();
         gameStates.push(GameState.MENU_STATE);
@@ -41,6 +41,7 @@ public class GameData {
         if(gameStates.peek() == GameState.MENU_STATE) {
             
         } else {
+            game.tick();
             textBox.update();
             player.update();
             tree.update();
