@@ -3,7 +3,6 @@
  * Known Bugs: None
  */
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -16,19 +15,13 @@ public class GameData {
     private Stack<GameState> gameStates;
     private Player player;
     private Tree tree;
-    private MenuScreen menu;
-    private ArrayList<GameObject> objects;
     
     private boolean collided = false;
     
     public GameData(Game game) {
         this.game = game;
-        menu = game.getMenuScreen();
-        objects = new ArrayList<>();
-        player = new Player("res\\sprites/player_front_0.png", 100, 100, this);
-        objects.add(player);
+        player = new Player("res\\sprites/player_front_0.png", 100, 100);
         tree = new Tree(null, 500, 500);
-        objects.add(tree);
         textBoxQueue = new LinkedList<>();
         gameStates = new Stack<>();
         gameStates.push(GameState.MENU_STATE);
@@ -46,13 +39,11 @@ public class GameData {
     // All updates will go here
     public void update() {
         if(gameStates.peek() == GameState.MENU_STATE) {
-            game.getMenuScreen().update();
+            
         } else {
             textBox.update();
-            for(GameObject object : objects) {
-                object.update();
-            }
-            game.getCamera().update(player);
+            player.update();
+            tree.update();
             if(player.getCollision(tree) && !collided) {
                 textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "YOU HAVE COLLI\nDED!!", true);
                 textBox.setPriority(false);
@@ -96,22 +87,6 @@ public class GameData {
 
     public void setGameStates(Stack<GameState> gameStates) {
         this.gameStates = gameStates;
-    }
-
-    public MenuScreen getMenu() {
-        return menu;
-    }
-
-    public void setMenu(MenuScreen menu) {
-        this.menu = menu;
-    }
-
-    public ArrayList<GameObject> getObjects() {
-        return objects;
-    }
-
-    public void setObjects(ArrayList<GameObject> objects) {
-        this.objects = objects;
     }
     
 }
