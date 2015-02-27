@@ -48,6 +48,7 @@ public class GameData {
         if(gameStates.peek() == GameState.MENU_STATE) {
             
         } else {
+            game.tick();
             textBox.update();
             game.getCamera().update(player);
             for(GameObject object : objects) {
