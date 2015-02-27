@@ -9,25 +9,62 @@ import java.awt.Graphics;
 public class Player extends GameObject {
 
     private float velX, velY;
+    private boolean left, right, up, down;
+    private int playerSpeed = 5;
+    private GameData gameData;
     
-    public Player(String ref, float x, float y) {
+    public Player(String ref, float x, float y, GameData gameData) {
         super(ref, x, y);
-        velX = velY = 5;
+        this.gameData = gameData;
+        velX = velY = playerSpeed;
     }
     
     @Override
     public void update() {
-        if(KeyInput.isRight()){
+        if(right){
             x += velX;
         }
-        if(KeyInput.isLeft()){
+        if(left){
             x -= velX;
         }
-        if(KeyInput.isUp()){
+        if(up){
             y -= velY;
         }
-        if(KeyInput.isDown()){
+        if(down){
             y += velY;
+        }
+        
+        for(GameObject object : gameData.getObjects()) {
+            if(object instanceof Tree) {
+                if(right) {
+                    if(x + width >= object.getX()
+                            && y + height >= object.getY()
+                            && y < object.getY() + object.getHeight()) {
+                        x = object.getX() - width;
+                    }
+                }
+                if(left) {
+                    if(x < object.getX() + object.getWidth()
+                            && y + height >= object.getY()
+                            && y < object.getY() + object.getHeight()) {
+                        x = object.getX() + width;
+                    }
+                }
+                if(up) {
+                    if(x + width >= object.getX()
+                            && y + height >= object.getY()
+                            && y < object.getY() + object.getHeight()) {
+                        //x = object.getX() - width;
+                    }
+                }
+                if(down) {
+                    if(x + width >= object.getX()
+                            && y + height >= object.getY()
+                            && y < object.getY() + object.getHeight()) {
+                        //x = object.getX() - width;
+                    }
+                }
+            }
         }
     }
 
@@ -50,6 +87,38 @@ public class Player extends GameObject {
 
     public void setVelY(float velY) {
         this.velY = velY;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
     }
     
 }

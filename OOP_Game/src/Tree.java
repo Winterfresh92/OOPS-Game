@@ -13,6 +13,7 @@ public class Tree extends GameObject {
         super(ref, x, y);
         this.width = 48;
         this.height = 48;
+        this.solid = true;
     }
 
     @Override

@@ -1,6 +1,9 @@
+/* Kevin Stubblefield
+ * Last Updated: February 24, 2015
+ * Known Bugs: None
+*/
 
 import java.awt.*;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 // This class renders all graphics on the screen.
@@ -12,7 +15,8 @@ public class Display extends JPanel {
     
     private Graphics graphics;
     private Image dbImage = null;
-//    private Image dbImage = new ImageIcon("res\\sprites/bg.png").getImage();
+    private Graphics2D g2d;
+    private Sprite bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/2400x1800px Checkered board.png");
     private Game game;
     private GameLoop gameLoop;
     private GameData gameData;
@@ -24,8 +28,6 @@ public class Display extends JPanel {
     }
     
     public void renderGame() {
-        Graphics2D g2d = (Graphics2D) graphics;
-        
         if(dbImage == null) {
             dbImage = createImage(PWIDTH, PHEIGHT);
             if(dbImage == null) {
@@ -33,26 +35,24 @@ public class Display extends JPanel {
                 return;
             } else {
                 graphics = dbImage.getGraphics();
+                g2d = (Graphics2D) graphics;
             }
         }
-        
-       
         
         graphics.clearRect(0, 0, PWIDTH, PHEIGHT); // Clears the screen
         //All object rendering should go between these two lines and
         //should come from the gameData instance
         /*****************************************************************/
         if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
-            graphics.setFont(new Font("Arial", Font.PLAIN, 24));
-            graphics.drawString("Start Game", 150, 150);
+            game.getMenuScreen().render(graphics);
         } else {
             g2d.translate(this.game.getCamera().getX(),this.game.getCamera().getY());
+            bg.render(graphics, 0, 0);
             gameData.getPlayer().render(graphics);
             gameData.getTree().render(graphics);
             g2d.translate(-this.game.getCamera().getX(),-this.game.getCamera().getY());
             if(!gameData.getTextBoxQueue().isEmpty()) {
-                gameData.getTextBoxQueue().peek().render(graphics);   
-              
+                gameData.getTextBoxQueue().peek().render(graphics); 
             }
            
            

@@ -4,7 +4,7 @@
 ** where deemed relevant and notated for ease of use. Code will be cleaned
 ** up slightly as well.
 ** Kevin Stubblefield
-** Last Updated: February 12, 2015
+** Last Updated: February 24, 2015
 ** Known Bugs: None
 */
 
@@ -17,6 +17,8 @@ public class Game extends JFrame {
     private GameData gameData;
     private Display display;
     private GameLoop gameLoop;
+    private Camera camera;
+    private MenuScreen menuScreen;
     
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -25,8 +27,10 @@ public class Game extends JFrame {
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         Container c = getContentPane();
+        menuScreen = new MenuScreen(this);
         gameLoop = new GameLoop();
         gameData = new GameData(this);
+        camera = new Camera(0, 0);
         display = new Display(this, gameLoop, gameData);
         gameLoop.setRenderer(display);
         gameLoop.setGameData(gameData);
@@ -42,6 +46,22 @@ public class Game extends JFrame {
         game.setTitle("OOPS");
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setVisible(true);
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+
+    public MenuScreen getMenuScreen() {
+        return menuScreen;
+    }
+
+    public void setMenuScreen(MenuScreen menuScreen) {
+        this.menuScreen = menuScreen;
     }
 
 }
