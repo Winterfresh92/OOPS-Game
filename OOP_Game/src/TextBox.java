@@ -15,7 +15,7 @@ public class TextBox extends GameObject {
     
     public TextBox(String ref, float x, float y, String text) {
         super(ref, x, y);
-        this.text = new Text(null, x + 10, y + 25, text);
+        this.text = new Text(null, x + 50, y + 50, text);
         this.width = Game.WIDTH * 0.78f;
         this.height = Game.HEIGHT / 6;
         priority = true;
@@ -23,7 +23,7 @@ public class TextBox extends GameObject {
     
     public TextBox(String ref, float x, float y, String text, boolean italicized) {
         super(ref, x, y);
-        this.text = new Text(null, x + 10, y + 25, text, italicized);
+        this.text = new Text(null, x + 50, y + 50, text, italicized);
         this.width = Game.WIDTH * 0.78f;
         this.height = Game.HEIGHT / 6;
         priority = true;
@@ -36,8 +36,14 @@ public class TextBox extends GameObject {
     
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect((int)x, (int)y, (int)width, (int)height);
+        if(super.sprite != null){
+            sprite.render(g, x, y-20);
+        }
+        else{
+            g.setColor(Color.BLACK);
+            g.fillRect((int)x, (int)y, (int)width, (int)height);
+        }
+        
         text.render(g);
     }
 

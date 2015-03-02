@@ -25,8 +25,8 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item
                 if(gameData.getMenu().getSelected() == MenuScreen.START_GAME_SELECTED) {
                     gameData.getGameStates().pop();
-                    //gameData.getGameStates().push(GameState.LEVEL_01_STATE);
-                    gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
+                    gameData.getGameStates().push(GameState.MISSION_01_STATE);
+                    //gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
                 } else if(gameData.getMenu().getSelected() == MenuScreen.CONTINUE_SELECTED) {
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.OPTIONS_SELECTED) {

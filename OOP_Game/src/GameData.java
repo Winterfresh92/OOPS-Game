@@ -41,9 +41,9 @@ public class GameData {
     public void update() {
         if(gameStates.peek() == GameState.MENU_STATE) {
             
-        } else if(gameStates.peek() == GameState.MISSION_TEST_STATE){
+        } else if(gameStates.peek() == GameState.MISSION_01_STATE){
             if(!loaded){
-                active = new MissionTest(player);
+                active = new Mission1(player);
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();

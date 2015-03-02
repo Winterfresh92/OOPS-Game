@@ -36,11 +36,11 @@ public class Text extends GameObject {
     @Override
     public void render(Graphics g) {
         if(italicized) {
-            g.setFont(new Font("Sans Serif", Font.ITALIC, 18));
+            g.setFont(new Font("Sans Serif", Font.ITALIC, 24));
         } else {
-            g.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+            g.setFont(new Font("Sans Serif", Font.BOLD, 24));
         }
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         drawString(g, text, (int)x, (int)y);
     }
     
