@@ -11,11 +11,9 @@ public class Player extends GameObject {
     private float velX, velY;
     private boolean left, right, up, down;
     private int playerSpeed = 5;
-    private GameData gameData;
     
-    public Player(String ref, float x, float y, GameData gameData) {
+    public Player(String ref, float x, float y) {
         super(ref, x, y);
-        this.gameData = gameData;
         velX = velY = playerSpeed;
     }
     
@@ -32,39 +30,6 @@ public class Player extends GameObject {
         }
         if(down){
             y += velY;
-        }
-        
-        for(GameObject object : gameData.getObjects()) {
-            if(object instanceof Tree) {
-                if(right) {
-                    if(x + width >= object.getX()
-                            && y + height >= object.getY()
-                            && y < object.getY() + object.getHeight()) {
-                        x = object.getX() - width;
-                    }
-                }
-                if(left) {
-                    if(x < object.getX() + object.getWidth()
-                            && y + height >= object.getY()
-                            && y < object.getY() + object.getHeight()) {
-                        x = object.getX() + width;
-                    }
-                }
-                if(up) {
-                    if(x + width >= object.getX()
-                            && y + height >= object.getY()
-                            && y < object.getY() + object.getHeight()) {
-                        //x = object.getX() - width;
-                    }
-                }
-                if(down) {
-                    if(x + width >= object.getX()
-                            && y + height >= object.getY()
-                            && y < object.getY() + object.getHeight()) {
-                        //x = object.getX() - width;
-                    }
-                }
-            }
         }
     }
 

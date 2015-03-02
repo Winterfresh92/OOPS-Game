@@ -10,14 +10,16 @@ import java.util.Stack;
 // Handles all updates in the game and holds all data
 public class GameData {
     
-    private Game game;
+    Game game;
     private TextBox textBox;
+    private TextBox nullBox;
     private LinkedList<TextBox> textBoxQueue;
     private Stack<GameState> gameStates;
     private Player player;
-    private Tree tree;
     private MenuScreen menu;
     private ArrayList<GameObject> objects;
+    private Mission active;
+    private boolean loaded;
     
     private boolean collided = false;
     
@@ -25,53 +27,50 @@ public class GameData {
         this.game = game;
         menu = game.getMenuScreen();
         objects = new ArrayList<>();
-        player = new Player("res\\sprites/player_front_0.png", 100, 100, this);
-        objects.add(player);
-        tree = new Tree(null, 500, 500);
-        objects.add(tree);
-        textBoxQueue = new LinkedList<>();
         gameStates = new Stack<>();
         gameStates.push(GameState.MENU_STATE);
-        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox\nnew line");
-        textBoxQueue.offer(textBox);
-        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox2\nnew");
-        textBox.setPriority(false);
-        textBoxQueue.offer(textBox);
-        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox3\nnew bite line", true);
-        textBoxQueue.offer(textBox);
-        textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "this is a textbox4\nnew abitger line");
-        textBoxQueue.offer(textBox);
+        loaded = false;
+        player = new Player("res\\sprites/player_front_0.png", 0, 0);
+        textBoxQueue = new LinkedList<>();
+        objects = new ArrayList<>();
+        nullBox = new TextBox(null, -500, -500, "");
+        textBox = nullBox;
     }
     
     // All updates will go here
     public void update() {
         if(gameStates.peek() == GameState.MENU_STATE) {
             
-        } else {
+        } else if(gameStates.peek() == GameState.MISSION_TEST_STATE){
+            if(!loaded){
+                active = new MissionTest(player);
+                objects = active.getObjects();
+                textBoxQueue = active.getTextBoxQueue();
+                player = active.getPlayer();
+                loaded = true;
+            }
             textBox.update();
             game.getCamera().update(player);
             for(GameObject object : objects) {
                 object.update();
             }
-            if(player.getCollision(tree) && !collided) {
-                textBox = new TextBox(null, Game.WIDTH / 10, Game.HEIGHT - Game.HEIGHT / 3, "YOU HAVE COLLI\nDED!!", true);
-                textBox.setPriority(false);
-                textBoxQueue.offer(textBox);
-                collided = true;
-            }
         }
     }
     
-    public Tree getTree() {
-        return tree;
-    }
-
     public Player getPlayer() {
         return player;
     }
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+    
+    public ArrayList<GameObject> getObjects() {
+        return objects;
+    }
+    
+    public LinkedList<TextBox> getTextBoxQueue() {
+        return textBoxQueue;
     }
 
     public TextBox getTextBox() {
@@ -80,14 +79,6 @@ public class GameData {
 
     public void setTextBox(TextBox textBox) {
         this.textBox = textBox;
-    }
-
-    public LinkedList<TextBox> getTextBoxQueue() {
-        return textBoxQueue;
-    }
-
-    public void setTextBoxQueue(LinkedList<TextBox> textBoxQueue) {
-        this.textBoxQueue = textBoxQueue;
     }
 
     public Stack<GameState> getGameStates() {
@@ -104,14 +95,6 @@ public class GameData {
 
     public void setMenu(MenuScreen menu) {
         this.menu = menu;
-    }
-
-    public ArrayList<GameObject> getObjects() {
-        return objects;
-    }
-
-    public void setObjects(ArrayList<GameObject> objects) {
-        this.objects = objects;
     }
     
 }
