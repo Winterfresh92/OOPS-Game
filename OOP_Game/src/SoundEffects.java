@@ -1,6 +1,7 @@
-//Carlos Peña III 
-//Last Updated: February 26, 2015
-//Known Bugs: None
+/* Carlos Peña III
+ * Last Updated: March 2, 2015
+ * Known Bugs: None
+ */
 
 import java.io.*;
 import javax.sound.sampled.*;

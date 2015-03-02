@@ -61,6 +61,9 @@ public class Display extends JPanel {
             if (!gameData.getTextBoxQueue().isEmpty()) {
                 gameData.getTextBoxQueue().peek().render(graphics);
             }
+            if(gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
+                game.getPauseScreen().render(graphics);
+            }
 
         }
 

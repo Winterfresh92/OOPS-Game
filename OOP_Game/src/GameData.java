@@ -17,6 +17,8 @@ public class GameData {
     private Stack<GameState> gameStates;
     private Player player;
     private MenuScreen menu;
+    private PauseScreen pause;
+    public static Music background;
     private ArrayList<GameObject> objects;
     private Mission active;
     private boolean loaded;
@@ -26,6 +28,8 @@ public class GameData {
     public GameData(Game game) {
         this.game = game;
         menu = game.getMenuScreen();
+        pause = game.getPauseScreen();
+        background = new Music(false);
         objects = new ArrayList<>();
         gameStates = new Stack<>();
         gameStates.push(GameState.MENU_STATE);
@@ -40,7 +44,13 @@ public class GameData {
     // All updates will go here
     public void update() {
         if(gameStates.peek() == GameState.MENU_STATE) {
-            
+            background.Menu = true;
+            background.MenuPlay();
+        } else if(gameStates.peek() == GameState.PAUSE_STATE) {
+            game.getGameLoop().pause();
+            pause = game.getPauseScreen();
+            background.Pause();
+            SoundEffects.volume = SoundEffects.Volume.Mute;
         } else if(gameStates.peek() == GameState.MISSION_01_STATE){
             if(!loaded){
                 active = new Mission1(player);
@@ -50,6 +60,7 @@ public class GameData {
                 loaded = true;
             }
             textBox.update();
+            background.update();
             game.getCamera().update(player);
             for(GameObject object : objects) {
                 object.update();
@@ -97,5 +108,16 @@ public class GameData {
         this.menu = menu;
     }
     
+    public void setPause(PauseScreen pause) {
+        this.pause = pause;
+    }
+    
+    public PauseScreen getPause() {
+        return pause;
+    }
+    
+    public Game getGame() {
+        return this.game;
+    }
 }
 

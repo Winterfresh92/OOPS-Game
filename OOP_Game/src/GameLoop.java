@@ -55,7 +55,11 @@ public class GameLoop implements Runnable {
                 updates = 0;
                 frames = 0;
             }
+            while(!running) {
+                display.renderGame();
+            }
         }
+        
         stop();
     }
     
@@ -66,6 +70,14 @@ public class GameLoop implements Runnable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void pause() {
+        running = false;
+    }
+    
+    public void resume() {
+        running = true;
     }
     
 }

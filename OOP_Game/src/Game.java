@@ -19,6 +19,7 @@ public class Game extends JFrame {
     private GameLoop gameLoop;
     private Camera camera;
     private MenuScreen menuScreen;
+    private PauseScreen pauseScreen;
     
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -28,6 +29,7 @@ public class Game extends JFrame {
         setLocationRelativeTo(null);
         Container c = getContentPane();
         menuScreen = new MenuScreen(this);
+        pauseScreen = new PauseScreen(this);
         gameLoop = new GameLoop();
         gameData = new GameData(this);
         camera = new Camera(0, 0);
@@ -63,5 +65,17 @@ public class Game extends JFrame {
     public void setMenuScreen(MenuScreen menuScreen) {
         this.menuScreen = menuScreen;
     }
-
+    
+    public void setPauseScreen(PauseScreen pauseScreen) {
+        this.pauseScreen = pauseScreen;
+    }
+    
+    public PauseScreen getPauseScreen() {
+        return this.pauseScreen;
+    }
+    
+    public GameLoop getGameLoop() {
+        return this.gameLoop;
+    }
+    
 }

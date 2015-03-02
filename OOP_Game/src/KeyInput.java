@@ -13,6 +13,7 @@ public class KeyInput implements KeyListener {
     private static boolean down = false;
     
     private GameData gameData;
+    private Music music = GameData.background;
     
     public KeyInput(GameData gameData){
         this.gameData = gameData;
@@ -27,6 +28,9 @@ public class KeyInput implements KeyListener {
                     gameData.getGameStates().pop();
                     gameData.getGameStates().push(GameState.MISSION_01_STATE);
                     //gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
+                    music.Menu = false;
+                    music.Pause();
+                    music.play();
                 } else if(gameData.getMenu().getSelected() == MenuScreen.CONTINUE_SELECTED) {
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.OPTIONS_SELECTED) {
@@ -55,6 +59,42 @@ public class KeyInput implements KeyListener {
                     gameData.getMenu().setSelected(MenuScreen.START_GAME_SELECTED);
                 }
             }
+        } else if(gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER) { //Select item
+                if(gameData.getPause().getSelect() == PauseScreen.ResumeSelected) {
+                    gameData.getGame().getGameLoop().resume();
+                    gameData.getGameStates().pop();
+                    music.play();
+                }
+                else if (gameData.getPause().getSelect() == PauseScreen.OptionsSelected) {
+                    
+                }                
+                else if(gameData.getPause().getSelect() == PauseScreen.ExitSelected) {
+                    System.exit(0);
+                }
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_UP) { //up navigation
+                if(gameData.getPause().getSelect() == PauseScreen.ResumeSelected) {
+                    gameData.getPause().setSelect(PauseScreen.ExitSelected);
+                }
+                else if(gameData.getPause().getSelect() == PauseScreen.OptionsSelected) {
+                    gameData.getPause().setSelect(PauseScreen.ResumeSelected);
+                }
+                else if(gameData.getPause().getSelect() == PauseScreen.ExitSelected) {
+                    gameData.getPause().setSelect(PauseScreen.OptionsSelected);
+                }
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_DOWN) { //down navigation
+                if(gameData.getPause().getSelect() == PauseScreen.ResumeSelected) {
+                    gameData.getPause().setSelect(PauseScreen.OptionsSelected);
+                }
+                else if(gameData.getPause().getSelect() == PauseScreen.OptionsSelected) {
+                    gameData.getPause().setSelect(PauseScreen.ExitSelected);
+                }
+                else if(gameData.getPause().getSelect() == PauseScreen.ExitSelected) {
+                    gameData.getPause().setSelect(PauseScreen.ResumeSelected);
+                }
+            } 
         } else {
             if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
@@ -80,6 +120,21 @@ public class KeyInput implements KeyListener {
                 if(!gameData.getTextBoxQueue().isEmpty()) {
                     gameData.getTextBoxQueue().poll();
                 }
+            }
+            if(e.getKeyCode() == KeyEvent.VK_M) {
+                if(Music.volume != Music.Volume.Mute) {
+                    music.Mute();
+                }
+                else {
+                    Music.volume = Music.Volume.Medium;
+                    music.play();
+                }
+            }
+            if(e.getKeyCode() == KeyEvent.VK_N) {
+                music.next();
+            }
+            if(e.getKeyCode() == KeyEvent.VK_P) {
+                gameData.getGameStates().push(GameState.PAUSE_STATE);
             }
         }
     }
