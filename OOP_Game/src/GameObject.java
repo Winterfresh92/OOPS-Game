@@ -34,6 +34,22 @@ public abstract class GameObject {
         return new Rectangle((int)x, (int)y, (int)width, (int)height);
     }
     
+    public Rectangle getBoundsBottom() {
+        return new Rectangle((int)(x + width / 4), (int)(y + height / 2), (int)(width / 2), (int)(height / 2));
+    }
+    
+    public Rectangle getBoundsTop() {
+        return new Rectangle((int)(x + width / 4), (int)y, (int)(width / 2), (int)(height / 2));
+    }
+    
+    public Rectangle getBoundsRight() {
+        return new Rectangle((int)(x + width), (int)y + 5, 5, (int)(height - 10));
+    }
+    
+    public Rectangle getBoundsLeft() {
+        return new Rectangle((int)x, (int)y + 5, 5, (int)(height - 10));
+    }
+    
     public boolean getCollision(GameObject object) {
         return this.getBounds().intersects(object.getBounds());
     }

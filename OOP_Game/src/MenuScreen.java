@@ -1,16 +1,10 @@
 /* Kevin Stubblefield
- * Last Updated: February 25, 2015
+ * Last Updated: March 2, 2015
  * Known Bugs: None
- * 
+ * Added a background to the screen
  */
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MenuScreen {
@@ -30,7 +24,9 @@ public class MenuScreen {
         this.game = game;
         lastDisplay = System.currentTimeMillis();
         selected = START_GAME_SELECTED;
+        
         menuImages = new ArrayList<>();
+        menuImages.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/menu_bg_0.jpg"));
         menuImages.add(SpriteCache.getSpriteCache().getSprite("res\\sprites/start_game_selected.png"));
         menuImages.add(SpriteCache.getSpriteCache().getSprite("res\\sprites/continue_selected.png"));
         menuImages.add(SpriteCache.getSpriteCache().getSprite("res\\sprites/options_selected.png"));
@@ -54,14 +50,15 @@ public class MenuScreen {
     }
     
     public void render(Graphics g) {
+        menuImages.get(0).render(g, 0, 0);
         if(selected == START_GAME_SELECTED) {
-            menuImages.get(0).render(g, 0, 0);
-        } else if(selected == CONTINUE_SELECTED) {
             menuImages.get(1).render(g, 0, 0);
-        } else if(selected == OPTIONS_SELECTED) {
+        } else if(selected == CONTINUE_SELECTED) {
             menuImages.get(2).render(g, 0, 0);
-        } else if(selected == EXIT_SELECTED) {
+        } else if(selected == OPTIONS_SELECTED) {
             menuImages.get(3).render(g, 0, 0);
+        } else if(selected == EXIT_SELECTED) {
+            menuImages.get(4).render(g, 0, 0);
         }
     }
 

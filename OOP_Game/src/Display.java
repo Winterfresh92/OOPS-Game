@@ -41,7 +41,8 @@ public class Display extends JPanel {
             }
         }
 
-        graphics.clearRect(0, 0, PWIDTH, PHEIGHT); // Clears the screen
+        graphics.setColor(Color.black);
+        graphics.fillRect(0, 0, PWIDTH, PHEIGHT); // Clears the screen
         //All object rendering should go between these two lines and
         //should come from the gameData instance
         /**
@@ -51,7 +52,7 @@ public class Display extends JPanel {
             game.getMenuScreen().render(graphics);
         } else {
             g2d.translate(this.game.getCamera().getX(), this.game.getCamera().getY());//After this, objects don't move with the character.
-            gameData.getBackground().render(graphics, 5, 30);
+            gameData.getBackground().render(graphics, 5, 50);
             gameData.getPlayer().render(graphics);
             objectsToRender = gameData.getObjects();
             for (GameObject object : objectsToRender) {

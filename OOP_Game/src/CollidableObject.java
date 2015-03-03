@@ -1,7 +1,6 @@
 /* Kevin Stubblefield
  * Last Updated: February 22, 2015
  * Known Bugs: None
- * This is only a class to demo collision and will be removed in the future
  */
 
 import java.awt.Color;
@@ -31,7 +30,7 @@ public class CollidableObject extends GameObject {
     @Override
     public void render(Graphics g) {
         if (super.sprite != null) {
-            sprite.render(g, x, y - 20);
+            sprite.render(g, x, y);
         } else {
             g.setColor(Color.BLUE);
             g.fillRect((int) x, (int) y, (int) width, (int) height);
