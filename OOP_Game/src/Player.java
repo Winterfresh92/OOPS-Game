@@ -4,6 +4,8 @@
  */
 
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 
 public class Player extends GameObject {
@@ -11,10 +13,12 @@ public class Player extends GameObject {
     private float velX, velY;
     private boolean left, right, up, down;
     private int playerSpeed = 5;
+    private int health;
     
     public Player(String ref, float x, float y) {
         super(ref, x, y);
         velX = velY = playerSpeed;
+        health = 10;
     }
     
     @Override
@@ -33,6 +37,12 @@ public class Player extends GameObject {
         }
     }
 
+    public void hit()
+    {
+        this.health -= 2;
+    }
+    
+    
     @Override
     public void render(Graphics g) {
         sprite.render(g, x, y);
