@@ -98,7 +98,7 @@ public class Mission1 extends Mission{
     @Override
     public ArrayList<GameObject> getObjects() {
         objects = new ArrayList<>();
-        objects.add(player);
+        //objects.add(player);
         //objects for the level go here
         objects.add(new CollidableObject("res\\sprites/rock2.png", 448, 256, true, true));//puzzle stones
         objects.add(new CollidableObject("res\\sprites/rock2.png", 384, 320, true, true));
@@ -125,7 +125,7 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 192, false, false));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2048, 512, true, false));//decorative doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1664, 1664, true, false));
-        objects.add(new CollidableObject("res\\sprites/sith_soldier_left_0.png", 1444, 1572, true, false));
+        objects.add(new Enemy("res\\sprites/sith_soldier_left_0.png", 1444, 1572, true, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 0, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 576, 128, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 640, 192, 6, true));
@@ -173,6 +173,7 @@ public class Mission1 extends Mission{
         objects.addAll(makeWalls("res\\sprites/wall.png", 1024, 1280, 8, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1664, 1280, 6, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1664, 1728, 2, false));
+        objects.add(player);
         return objects;
     }
 
