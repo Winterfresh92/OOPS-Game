@@ -51,7 +51,7 @@ public class Display extends JPanel {
             game.getMenuScreen().render(graphics);
         } else {
             g2d.translate(this.game.getCamera().getX(), this.game.getCamera().getY());//After this, objects don't move with the character.
-            bg.render(graphics, 0, 0);
+            gameData.getBackground().render(graphics, 5, 30);
             gameData.getPlayer().render(graphics);
             objectsToRender = gameData.getObjects();
             for (GameObject object : objectsToRender) {
@@ -61,7 +61,7 @@ public class Display extends JPanel {
             if (!gameData.getTextBoxQueue().isEmpty()) {
                 gameData.getTextBoxQueue().peek().render(graphics);
             }
-            if(gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
+            if (gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
                 game.getPauseScreen().render(graphics);
             }
 

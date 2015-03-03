@@ -22,8 +22,7 @@ public class GameData {
     private ArrayList<GameObject> objects;
     private Mission active;
     private boolean loaded;
-    
-    private boolean collided = false;
+    private Sprite bg;
     
     public GameData(Game game) {
         this.game = game;
@@ -39,6 +38,7 @@ public class GameData {
         objects = new ArrayList<>();
         nullBox = new TextBox(null, -500, -500, "");
         textBox = nullBox;
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/2400x1800px Checkered board.png");
     }
     
     // All updates will go here
@@ -57,6 +57,7 @@ public class GameData {
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
+                bg = active.getBackground();
                 loaded = true;
             }
             textBox.update();
@@ -118,6 +119,10 @@ public class GameData {
     
     public Game getGame() {
         return this.game;
+    }
+    
+    public Sprite getBackground(){
+        return bg;
     }
 }
 

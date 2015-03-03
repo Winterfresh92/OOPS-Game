@@ -10,34 +10,14 @@ import java.util.LinkedList;
 // Handles data for Missions, child classes are actual missions. Constructs mission.
 public class MissionTest extends Mission{
     
-    private Tree tree;
+    private CollidableObject tree;
 
     public MissionTest(Player player) {
         super(player);
         this.player = player;
         this.player.x = 100;
         this.player.y = 100;
-    }
-
-    @Override
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    @Override
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    @Override
-    public TextBox getTextBox() {
-        return textBox;
-    }
-
-    @Override
-    public void setTextBox(TextBox textBox) {
-        this.textBox = textBox;
-        textBoxQueue.offer(textBox);
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/2400x1800px Checkered board.png");
     }
 
     @Override
@@ -59,22 +39,13 @@ public class MissionTest extends Mission{
     }
 
     @Override
-    public void setTextBoxQueue(LinkedList<TextBox> textBoxQueue) {
-        this.textBoxQueue = textBoxQueue;
-    }
-
-    @Override
     public ArrayList<GameObject> getObjects() {
         objects = new ArrayList<>();
         objects.add(player);
-        tree = new Tree(null, 500, 500);
+        tree = new CollidableObject(null, 500, 500);
         objects.add(tree);
         return objects;
     }
 
-    @Override
-    public void setObjects(ArrayList<GameObject> objects) {
-        this.objects = objects;
-    }
 
 }

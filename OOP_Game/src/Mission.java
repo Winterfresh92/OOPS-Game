@@ -13,6 +13,7 @@ public class Mission{
     protected LinkedList<TextBox> textBoxQueue;
     protected Player player;
     protected ArrayList<GameObject> objects;
+    protected Sprite bg;
     
     public Mission(Player player) {
         this.player = player;
@@ -50,4 +51,19 @@ public class Mission{
         this.objects = objects;
     }
     
+    public Sprite getBackground(){
+        return bg;
+    }
+    
+    public ArrayList<GameObject> makeWalls(String name, int x, int y, int pieces, boolean horizontal){//generates walls on a lesser to greater basis every 64px.
+        ArrayList<GameObject> walls = new ArrayList<>();
+        for(int count = 0; count < pieces; count++){
+            if(horizontal){
+                walls.add(new CollidableObject(name, (x + (count*64)), y, true, false));
+            }else{
+                walls.add(new CollidableObject(name, x, (y + (count*64)), true, false));
+            }
+        }
+        return walls;
+    }
 }

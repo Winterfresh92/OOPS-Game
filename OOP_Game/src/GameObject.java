@@ -12,6 +12,7 @@ public abstract class GameObject {
     protected float width, height;
     protected boolean solid;
     protected Sprite sprite;
+    protected boolean mobile;
     
     public GameObject(String ref, float x, float y) {
         if(ref != null) {
@@ -43,6 +44,14 @@ public abstract class GameObject {
 
     public void setSolid(boolean solid) {
         this.solid = solid;
+    }
+    
+    public boolean isMobile() {
+        return mobile;
+    }
+
+    public void setMobile(boolean mobile) {
+        this.mobile = mobile;
     }
 
     public float getX() {
