@@ -34,6 +34,7 @@ public class GameData {
         gameStates.push(GameState.MENU_STATE);
         loaded = false;
         player = new Player("res\\sprites/player_front_0.png", 0, 0);
+        player.setGameData(this);
         textBoxQueue = new LinkedList<>();
         objects = new ArrayList<>();
         nullBox = new TextBox(null, -500, -500, "");
@@ -124,5 +125,14 @@ public class GameData {
     public Sprite getBackground(){
         return bg;
     }
+
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+    
 }
 

@@ -99,21 +99,25 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setRight(true);
+                    gameData.getPlayer().setVelX(gameData.getPlayer().getPlayerSpeed());
                 }
             } 
             if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setLeft(true);
+                    gameData.getPlayer().setVelX(-gameData.getPlayer().getPlayerSpeed());
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setUp(true);
+                    gameData.getPlayer().setVelY(-gameData.getPlayer().getPlayerSpeed());
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setDown(true);
+                    gameData.getPlayer().setVelY(gameData.getPlayer().getPlayerSpeed());
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -145,16 +149,20 @@ public class KeyInput implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT)
         {
             gameData.getPlayer().setRight(false);
+            gameData.getPlayer().setVelX(0);
         }
         if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
         {
             gameData.getPlayer().setLeft(false);
+            gameData.getPlayer().setVelX(0);
         }
         if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
           gameData.getPlayer().setUp(false);
+          gameData.getPlayer().setVelY(0);
        }
        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
           gameData.getPlayer().setDown(false);
+          gameData.getPlayer().setVelY(0);
        }
     }
     

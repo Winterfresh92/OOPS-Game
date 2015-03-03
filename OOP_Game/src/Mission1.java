@@ -17,7 +17,7 @@ public class Mission1 extends Mission{
         this.player = player;
         this.player.x = 1344;
         this.player.y = 1472;
-        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/Mission1-bg.png");
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg.png");
     }
 
     @Override
