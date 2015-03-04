@@ -147,6 +147,9 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_P) {
                 gameData.getGameStates().push(GameState.PAUSE_STATE);
             }
+            if(e.getKeyCode() == KeyEvent.VK_K) {
+                gameData.getPlayer().toggleClipping();
+            }
         }
     }
 

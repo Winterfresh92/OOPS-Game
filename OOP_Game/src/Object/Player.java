@@ -3,6 +3,7 @@ package Object;
 /* Kevin Stubblefield
  * Last Updated: February 22, 2015
  * Known Bugs: None
+ * Added clipping boolean, press K to toggle!
  */
 
 import Sprite.Sprite;
@@ -19,6 +20,7 @@ public class Player extends GameObject {
     private boolean left, right, up, down;
     private int playerSpeed = 5;
     private int health;
+    private boolean clipping;
     private Sprite h;
     
     private GameData gameData;
@@ -27,7 +29,7 @@ public class Player extends GameObject {
     
     public Player(String ref, float x, float y) {
         super(ref, x, y);
-
+        clipping = true;
         velX = velY = playerSpeed;
         health = 10;
         velX = velY = 0;
@@ -53,7 +55,7 @@ public class Player extends GameObject {
             velY = playerSpeed;
         }
         
-        if(gameData.isLoaded()) {
+        if(gameData.isLoaded() && clipping) {
             checkCollisions();
         }
     }
@@ -88,6 +90,10 @@ public class Player extends GameObject {
         }
     }
     
+    public void toggleClipping() {
+        clipping = !clipping;
+    }
+    
     public void checkCollisions() {
         int counter = 0;
         for(GameObject object : gameData.getObjects()) {
@@ -100,32 +106,35 @@ public class Player extends GameObject {
             }
             
             if(object instanceof CollidableObject) {
-                if(getBoundsTop().intersects(object.getBounds())) {
-                    y = object.getY() + object.getHeight();
-                    if(counter == 0)
-                    {
-                        this.hit(object);
+                CollidableObject temp = (CollidableObject) object;
+                if(temp.isSolid()) {
+                    if(getBoundsTop().intersects(object.getBounds())) {
+                        y = object.getY() + object.getHeight();
+                        if(counter == 0)
+                        {
+                            this.hit(object);
+                        }
                     }
-                }
-                if(getBoundsBottom().intersects(object.getBounds())) {
-                    y = object.getY() - height;
-                    if(counter == 0)
-                    {
-                        this.hit(object);
+                    if(getBoundsBottom().intersects(object.getBounds())) {
+                        y = object.getY() - height;
+                        if(counter == 0)
+                        {
+                            this.hit(object);
+                        }
                     }
-                }
-                if(getBoundsRight().intersects(object.getBounds())) {
-                    x = object.getX() - width;
-                    if(counter == 0)
-                    {
-                        this.hit(object);
-                    } 
-                }
-                if(getBoundsLeft().intersects(object.getBounds())) {
-                    x = object.getX() + object.getWidth();
-                    if(counter == 0)
-                    {
-                        this.hit(object);
+                    if(getBoundsRight().intersects(object.getBounds())) {
+                        x = object.getX() - width;
+                        if(counter == 0)
+                        {
+                            this.hit(object);
+                        } 
+                    }
+                    if(getBoundsLeft().intersects(object.getBounds())) {
+                        x = object.getX() + object.getWidth();
+                        if(counter == 0)
+                        {
+                            this.hit(object);
+                        }
                     }
                 }
             }
@@ -204,6 +213,22 @@ public class Player extends GameObject {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public boolean isClipping() {
+        return clipping;
+    }
+
+    public void setClipping(boolean clipping) {
+        this.clipping = clipping;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
     
 }
