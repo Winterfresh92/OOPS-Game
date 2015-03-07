@@ -13,10 +13,16 @@ import java.awt.Graphics;
  *
  * @author Serathano
  */
-public class TriggerBox extends GameObject{
+public class TriggerBox extends TextBox{
 
-    public TriggerBox(String ref, float x, float y) {
-        super(ref, x, y);
+    public TriggerBox(String ref, float x, float y, String text) {
+        super(ref, x, y, "");
+    }
+    
+    public TriggerBox(String ref, float x, float y, String text, int width, int height) {
+        super(ref, x, y, "");
+        setWidth(width);
+        setHeight(height);
     }
 
     @Override
