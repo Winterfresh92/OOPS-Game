@@ -1,14 +1,15 @@
 package Mission;
 
 /* Chris Graff
- * Last Updated: March 1, 2015
+ * Last Updated: March 10, 2015
  * Known Bugs: None
  */
 
 import Sprite.SpriteCache;
 import Object.TextBox;
 import Object.Player;
-import Object.Enemy;
+//import Object.Enemy; Not needed in Mission 1
+import Object.InteractableObject;
 import Object.GameObject;
 import Object.CollidableObject;
 import Engine.*;
@@ -25,13 +26,13 @@ public class Mission1 extends Mission{
         super(player);
         this.player = player;
         this.player.setX(1344);
-        this.player.setY(1472);
+        this.player.setY(1536);
         bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg.png");
+        textBoxSetup();
     }
-
-    @Override
-    public LinkedList<TextBox> getTextBoxQueue() {
-        textBoxQueue = new LinkedList<>();/*
+    
+    public void textBoxSetup() {
+        textBoxQueue = new LinkedList<>();
 
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Master Dorak: Congratulations padawan,"
                                                                                 + "\nyour day of testing has come. ");
@@ -77,31 +78,46 @@ public class Mission1 extends Mission{
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "I shall greet you as a Knight on"
                                                                                 + "\nthe other side.");
         textBoxQueue.offer(textBox);
+        queueQueue = new LinkedList<>();
+        queueQueue.offer(textBoxQueue);
+        textBoxQueue = new LinkedList<>();
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Note: You are now allowed to"
                                                                                 + "\nuse the Force power PULL.", true);
         textBox.setPriority(false);
         textBoxQueue.offer(textBox);
+        queueQueue.offer(textBoxQueue);
+        textBoxQueue = new LinkedList<>();
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Note: You are now allowed to"
                                                                                 + "\nuse the Force power PUSH.", true);
         textBox.setPriority(false);
         textBoxQueue.offer(textBox);
+        queueQueue.offer(textBoxQueue);
+        textBoxQueue = new LinkedList<>();
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "You: Great, now to proceed to"
                                                                                 + "\nthe end of the test and become a"
                                                                                 + "\nJedi Knight at last.");
         textBox.setPriority(false);
         textBoxQueue.offer(textBox);
+        queueQueue.offer(textBoxQueue);
+        textBoxQueue = new LinkedList<>();
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Master Dorak: Great, you made it!"
                                                                                 + "\nI told you it wasn’t too difficult, and"
                                                                                 + "\nI had faith the force would guide you.");
         textBoxQueue.offer(textBox);
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "You: You were correct Master. Thank"
                                                                                 + "\nyou for nominating me to take the test. ");
-        textBoxQueue.offer(textBox);*/
+        textBoxQueue.offer(textBox);
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Master Dorak: Of course. Now please"
                                                                                 + "\nexcuse me, I must prepare for"
                                                                                 + "\nthe ceremony.");
         textBoxQueue.offer(textBox);
-        return textBoxQueue;
+        queueQueue.offer(textBoxQueue);
+        textBoxQueue = new LinkedList<>();
+    }
+    
+    @Override
+    public LinkedList<TextBox> getTextBoxQueue(){
+        return queueQueue.pop();
     }
 
     @Override
@@ -134,7 +150,8 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 192, false, false));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2048, 512, true, false));//decorative doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1664, 1664, true, false));
-        objects.add(new Enemy("res\\sprites/sith_soldier_left_0.png", 1444, 1572, true, false));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1344, 1470, true, false, "Hurry along now."));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1728, 320, true, false, "Hurry along now."));
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 0, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 576, 128, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 640, 192, 6, true));
@@ -184,6 +201,11 @@ public class Mission1 extends Mission{
         objects.addAll(makeWalls("res\\sprites/wall.png", 1664, 1728, 2, false));
         objects.add(player);
         return objects;
+    }
+    
+    @Override
+    public boolean levelOver(){
+        return queueQueue.isEmpty();
     }
 
 }

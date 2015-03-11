@@ -55,4 +55,7 @@ public class TextBox extends GameObject {
         this.priority = priority;
     }
 
+    public String getText(){
+        return text.getText();
+    }
 }

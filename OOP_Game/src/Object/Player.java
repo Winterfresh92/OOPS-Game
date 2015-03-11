@@ -6,11 +6,13 @@ package Object;
  * Added clipping boolean, press K to toggle!
  */
 
+import Engine.Game;
 import Sprite.Sprite;
 import Sprite.SpriteCache;
 import Engine.GameData;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -76,6 +78,17 @@ public class Player extends GameObject {
                 counter ++;
             }
         }
+        
+        if(g instanceof InteractableObject){
+                    InteractableObject interact = (InteractableObject) g;
+                    if(interact.interact()){
+                        gameData.getNextQueue();
+                    }
+                    else{
+                        
+                        gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
+                    }
+                }
     }
     
     
@@ -137,6 +150,7 @@ public class Player extends GameObject {
                         }
                     }
                 }
+                
             }
            
         }

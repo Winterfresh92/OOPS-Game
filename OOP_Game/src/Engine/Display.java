@@ -59,7 +59,7 @@ public class Display extends JPanel {
             game.getMenuScreen().render(graphics);
         } else {
             g2d.translate(this.game.getCamera().getX(), this.game.getCamera().getY());//After this, objects don't move with the character.
-            gameData.getBackground().render(graphics, 5, 50);
+            gameData.getBackground().render(graphics, 5, 50);//CANNOT LEAVE THIS. MUST BE 0,0 FOR GENERAL PURPOSE LEVEL DESIGN
             gameData.getPlayer().render(graphics);
             objectsToRender = gameData.getObjects();
             for (GameObject object : objectsToRender) {

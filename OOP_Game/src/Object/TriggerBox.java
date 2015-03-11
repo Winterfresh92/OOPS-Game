@@ -1,28 +1,17 @@
 package Object;
 
+/* Chris Graff
+ * Last Updated: March 10, 2015
+ * Known Bugs: None
+ */
 
 import java.awt.Graphics;
+public class TriggerBox extends GameObject{
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Serathano
- */
-public class TriggerBox extends TextBox{
-
-    public TriggerBox(String ref, float x, float y, String text) {
-        super(ref, x, y, "");
-    }
-    
-    public TriggerBox(String ref, float x, float y, String text, int width, int height) {
-        super(ref, x, y, "");
-        setWidth(width);
-        setHeight(height);
+    public TriggerBox(String ref, float x, float y) { //default constructor is useless. Must use Full Constructor
+        super(ref, -500, -500);
+        super.setHeight(0);
+        super.setWidth(0);
     }
 
     @Override
