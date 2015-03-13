@@ -27,11 +27,11 @@ public class Mission1 extends Mission{
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);
-        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg.png");
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-revision2.png");
         textBoxSetup();
     }
     
-    public void textBoxSetup() {
+    private void textBoxSetup() {
         textBoxQueue = new LinkedList<>();
 
         textBox = new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, "Master Dorak: Congratulations padawan,"
@@ -152,6 +152,9 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1664, 1664, true, false));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1344, 1470, true, false, "Hurry along now."));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1728, 320, true, false, "Hurry along now."));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1024, 640, true, false, ""));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 640, 1088, true, false, ""));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1600, 1152, true, false, ""));
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 0, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 576, 128, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 640, 192, 6, true));

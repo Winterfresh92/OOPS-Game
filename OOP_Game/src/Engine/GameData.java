@@ -15,6 +15,7 @@ import Object.GameObject;
 import Object.TextBox;
 import Mission.Mission;
 import Mission.Mission1;
+import Mission.Mission2;
 import Music.SoundEffects;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -86,9 +87,9 @@ public class GameData {
                 gameStates.push(GameState.MISSION_02_STATE);
             }
         }
-        else if(gameStates.peek() == GameState.MISSION_01_STATE){
+        else if(gameStates.peek() == GameState.MISSION_02_STATE){
             if(!loaded){
-                active = new Mission1(player);
+                active = new Mission2(player);
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
