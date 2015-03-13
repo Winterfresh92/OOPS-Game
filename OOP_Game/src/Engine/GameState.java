@@ -6,6 +6,7 @@ package Engine;
  */
 public enum GameState {
     MENU_STATE,
+    LOADING_STATE,
     PAUSE_STATE,
     INTRO_STATE,
     MISSION_TEST_STATE,

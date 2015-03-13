@@ -49,6 +49,10 @@ public class Mission{
     public void setTextBoxQueue(LinkedList<TextBox> textBoxQueue) {
         this.textBoxQueue = textBoxQueue;
     }
+    
+    public void generateObjects() {
+        
+    }
 
     public ArrayList<GameObject> getObjects() {
         return objects;

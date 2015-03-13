@@ -106,7 +106,13 @@ public class Mission1 extends Mission{
 
     @Override
     public ArrayList<GameObject> getObjects() {
-        objects = new ArrayList<>();
+       
+        return objects;
+    }
+    
+    @Override
+    public void generateObjects() {
+         objects = new ArrayList<>();
         //objects.add(player);
         //objects for the level go here        
         objects.add(new CollidableObject("res\\sprites/rock2.png", 448, 306, true, true));//puzzle stones
@@ -182,7 +188,6 @@ public class Mission1 extends Mission{
         objects.addAll(makeWalls("res\\sprites/wall.png", 1668, 1266, 6, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1668, 1714, 2, false));
         objects.add(player);
-        return objects;
     }
 
 }

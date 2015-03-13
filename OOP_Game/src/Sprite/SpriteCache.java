@@ -1,8 +1,9 @@
 package Sprite;
 
 /* Kevin Stubblefield
- * Last Updated: February 22, 2015
+ * Last Updated: March 11, 2015
  * Known Bugs: None
+ * Actually stored sprites in memory, as they were not previously stored in memory.
  */
 
 import java.awt.GraphicsConfiguration;
@@ -45,6 +46,7 @@ public class SpriteCache {
         Image image = gc.createCompatibleImage(sourceImage.getWidth(), sourceImage.getHeight(), Transparency.BITMASK);
         image.getGraphics().drawImage(sourceImage, 0, 0, null);
         Sprite sprite = new Sprite(image);
+        sprites.put(ref, sprite);
         return sprite;
     }
     

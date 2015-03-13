@@ -1,7 +1,7 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: February 22, 2015
+ * Last Updated: March 11, 2015
  * Known Bugs: None
  */
 
@@ -24,6 +24,8 @@ import java.util.Stack;
 public class GameData {
     
     Game game;
+    private int mission;
+    private int time;
     private TextBox textBox;
     private TextBox nullBox;
     private LinkedList<TextBox> textBoxQueue;
@@ -39,6 +41,14 @@ public class GameData {
     
     public GameData(Game game) {
         this.game = game;
+        //bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/2400x1800px Checkered board.png");
+        init();
+        load();
+    }
+    
+    private void init() {
+        mission = 0;
+        time = 120;
         menu = game.getMenuScreen();
         pause = game.getPauseScreen();
         background = new Music(false);
@@ -52,7 +62,29 @@ public class GameData {
         objects = new ArrayList<>();
         nullBox = new TextBox(null, -500, -500, "");
         textBox = nullBox;
-        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites/2400x1800px Checkered board.png");
+    }
+    
+    // Give mission number as parameter, initial load is 0
+    private void load() {
+        gameStates.push(GameState.LOADING_STATE);
+        switch(mission) {
+            case 0:
+                ResourceLoader.loadImages();
+                ResourceLoader.loadMusic();
+                ResourceLoader.loadSoundEffects();
+                mission++;
+                return;
+            case 1:
+                active = new Mission1(player);
+                active.generateObjects();
+                objects = active.getObjects();
+                textBoxQueue = active.getTextBoxQueue();
+                player = active.getPlayer();
+                loaded = true;
+                mission++;
+                gameStates.push(GameState.MENU_STATE);
+                return;
+        }
     }
     
     // All updates will go here
@@ -60,20 +92,20 @@ public class GameData {
         if(gameStates.peek() == GameState.MENU_STATE) {
             background.Menu = true;
             background.MenuPlay();
-        } else if(gameStates.peek() == GameState.PAUSE_STATE) {
+        } if(gameStates.peek() == GameState.LOADING_STATE) {
+            game.getLoadingScreen().update();
+            time--;
+            if(time <= 0) {
+                load();
+                time = 120;
+            }
+        } if(gameStates.peek() == GameState.PAUSE_STATE) {
             game.getGameLoop().pause();
             pause = game.getPauseScreen();
             background.Pause();
             SoundEffects.volume = SoundEffects.Volume.Mute;
-        } else if(gameStates.peek() == GameState.MISSION_01_STATE){
-            if(!loaded){
-                active = new Mission1(player);
-                objects = active.getObjects();
-                textBoxQueue = active.getTextBoxQueue();
-                player = active.getPlayer();
-                bg = active.getBackground();
-                loaded = true;
-            }
+        } if(gameStates.peek() == GameState.MISSION_01_STATE){
+            bg = active.getBackground();
             textBox.update();
             background.update();
             game.getCamera().update(player);

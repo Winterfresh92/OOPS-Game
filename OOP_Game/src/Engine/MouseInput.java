@@ -1,10 +1,12 @@
 /* Kevin Stubblefield
- * Last Updated: March 3, 2015
+ * Last Updated: March 12, 2015
  * Known Bugs: None
+ * Added the music starting.
  */
 package Engine;
 
 import Menu.MenuScreen;
+import Music.Music;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -12,6 +14,7 @@ import java.awt.event.MouseMotionListener;
 class MouseInput implements MouseListener, MouseMotionListener {
 
     private GameData gameData;
+    private Music music = GameData.background;
     
     public MouseInput(GameData gameData) {
         this.gameData = gameData;
@@ -23,6 +26,9 @@ class MouseInput implements MouseListener, MouseMotionListener {
                 && e.getY() >= 233 && e.getY() <= 290) {
             gameData.getMenu().setSelected(MenuScreen.START_GAME_SELECTED);
             gameData.getGameStates().push(GameState.MISSION_01_STATE);
+            music.Menu = false;
+            music.Pause();
+            music.play();
         }
         if(e.getX() >= 263 && e.getX() <= 541
                 && e.getY() >= 317 && e.getY() <= 380) {
