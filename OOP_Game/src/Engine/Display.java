@@ -69,10 +69,12 @@ public class Display extends JPanel {
             for (GameObject object : objectsToRender) {
                 object.render(graphics);//After this, objects do move with the character.
             }
+            
             g2d.translate(-this.game.getCamera().getX(), -this.game.getCamera().getY());
             if (!gameData.getTextBoxQueue().isEmpty()) {
                 gameData.getTextBoxQueue().peek().render(graphics);
             }
+            gameData.getHud().render(graphics);
             if (gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
                 game.getPauseScreen().render(graphics);
             }

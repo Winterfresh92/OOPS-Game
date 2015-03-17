@@ -5,7 +5,7 @@ package Engine;
  * Known Bugs: None
  */
 
-import Sprite.SpriteCache;
+import HUD.HUD;
 import Sprite.Sprite;
 import Menu.PauseScreen;
 import Menu.MenuScreen;
@@ -28,6 +28,7 @@ public class GameData {
     private int time;
     private TextBox textBox;
     private TextBox nullBox;
+    private HUD hud;
     private LinkedList<TextBox> textBoxQueue;
     private Stack<GameState> gameStates;
     private Player player;
@@ -62,6 +63,7 @@ public class GameData {
         objects = new ArrayList<>();
         nullBox = new TextBox(null, -500, -500, "");
         textBox = nullBox;
+        hud = new HUD(player);
     }
     
     // Give mission number as parameter, initial load is 0
@@ -109,6 +111,7 @@ public class GameData {
             textBox.update();
             background.update();
             game.getCamera().update(player);
+            hud.update();
             for(GameObject object : objects) {
                 object.update();
             }
@@ -177,6 +180,14 @@ public class GameData {
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public HUD getHud() {
+        return hud;
+    }
+
+    public void setHud(HUD hud) {
+        this.hud = hud;
     }
     
 }

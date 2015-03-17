@@ -150,6 +150,11 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_K) {
                 gameData.getPlayer().toggleClipping();
             }
+            if(e.getKeyCode() == KeyEvent.VK_Z) {
+                gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() - 1);
+            } else if(e.getKeyCode() == KeyEvent.VK_X) {
+                gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() + 1);
+            }
         }
     }
 
