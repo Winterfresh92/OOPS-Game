@@ -6,6 +6,7 @@ package Engine;
  */
 
 import HUD.HUD;
+import Menu.InventoryScreen;
 import Sprite.Sprite;
 import Menu.PauseScreen;
 import Menu.MenuScreen;
@@ -34,6 +35,7 @@ public class GameData {
     private Player player;
     private MenuScreen menu;
     private PauseScreen pause;
+    private InventoryScreen inventory;
     public static Music background;
     private ArrayList<GameObject> objects;
     private Mission active;
@@ -64,6 +66,7 @@ public class GameData {
         nullBox = new TextBox(null, -500, -500, "");
         textBox = nullBox;
         hud = new HUD(player);
+        inventory = new InventoryScreen(player);
     }
     
     // Give mission number as parameter, initial load is 0
@@ -84,6 +87,7 @@ public class GameData {
                 player = active.getPlayer();
                 loaded = true;
                 mission++;
+                gameStates.pop();
                 gameStates.push(GameState.MENU_STATE);
                 return;
         }
@@ -106,6 +110,8 @@ public class GameData {
             pause = game.getPauseScreen();
             background.Pause();
             SoundEffects.volume = SoundEffects.Volume.Mute;
+        } if(gameStates.peek() == GameState.INVENTORY_STATE) {
+            inventory.update();
         } if(gameStates.peek() == GameState.MISSION_01_STATE){
             bg = active.getBackground();
             textBox.update();
@@ -188,6 +194,14 @@ public class GameData {
 
     public void setHud(HUD hud) {
         this.hud = hud;
+    }
+
+    public InventoryScreen getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(InventoryScreen inventory) {
+        this.inventory = inventory;
     }
     
 }

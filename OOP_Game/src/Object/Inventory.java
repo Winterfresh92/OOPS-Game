@@ -1,8 +1,9 @@
 package Object;
 
 /* Kevin Stubblefield
- * Last Updated: March 2, 2015
+ * Last Updated: March 17, 2015
  * Known Bugs: None
+ * Updated add and remove functions to check for existing items and increment/decrement
  */
 
 import java.util.HashMap;
@@ -16,11 +17,26 @@ public class Inventory {
     }
     
     public void add(Item item) {
-        items.put(item.getName(), item);
+        if(items.containsKey(item.getName())) {
+            items.get(item.getName()).increment();
+        } else {
+            items.put(item.getName(), item);
+            items.get(item.getName()).increment();
+        }
     }
     
     public void remove(Item item) {
-        items.remove(item.getName());
+        if(items.containsKey(item.getName())) {
+            items.get(item.getName()).decrement();
+        } else {
+            items.remove(item.getName());
+            items.get(item.getName()).decrement();
+        }
+    }
+    
+    public void useItem(Player player, Item item) {
+        remove(item);
+        item.use(player);
     }
 
     public HashMap<String, Item> getItems() {

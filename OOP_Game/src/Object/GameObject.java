@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 
 public abstract class GameObject {
     
+    protected float velX, velY;
     protected float x, y;
     protected float width, height;
     protected boolean solid;
@@ -112,6 +113,22 @@ public abstract class GameObject {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    public float getVelX() {
+        return velX;
+    }
+
+    public void setVelX(float velX) {
+        this.velX = velX;
+    }
+
+    public float getVelY() {
+        return velY;
+    }
+
+    public void setVelY(float velY) {
+        this.velY = velY;
     }
     
 }

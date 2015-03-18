@@ -21,7 +21,6 @@ import java.util.Map;
 
 public class Player extends GameObject {
 
-    private float velX, velY;
     private int dir = 0; // direction up: 0, down: 1, right: 2, left: 3
     private boolean left, right, up, down;
     private int playerSpeed = 5;
@@ -63,6 +62,11 @@ public class Player extends GameObject {
         walkingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_right_1.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
     }
     
     @Override
@@ -98,6 +102,8 @@ public class Player extends GameObject {
         if(gameData.isLoaded() && clipping) {
             checkCollisions();
         }
+        
+        System.out.println("PLAYER HEALTH: " + health);
     }
 
     static int counter = 0;
@@ -143,9 +149,6 @@ public class Player extends GameObject {
         g.setColor(Color.green);
        // g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
         h.render(g, (int)this.x-300,(int)this.y-220);
-        for(Map.Entry<String, Item> item : inventory.getItems().entrySet()) {
-            item.getValue().getSprite().render(g, x + width / 2, y + item.getValue().getHeight() + 5);
-        }
     }
     
     public void toggleClipping() {
@@ -225,23 +228,7 @@ public class Player extends GameObject {
                 break;
         }
     }
-
-    public float getVelX() {
-        return velX;
-    }
-
-    public void setVelX(float velX) {
-        this.velX = velX;
-    }
-
-    public float getVelY() {
-        return velY;
-    }
-
-    public void setVelY(float velY) {
-        this.velY = velY;
-    }
-
+    
     public boolean isLeft() {
         return left;
     }

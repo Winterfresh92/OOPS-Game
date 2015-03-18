@@ -1,8 +1,9 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: February 24, 2015
+ * Last Updated: March 17, 2015
  * Known Bugs: None
+ * Add Inventory Screen
  */
 
 import Sprite.Sprite;
@@ -71,12 +72,15 @@ public class Display extends JPanel {
             }
             
             g2d.translate(-this.game.getCamera().getX(), -this.game.getCamera().getY());
+            gameData.getHud().render(graphics);
             if (!gameData.getTextBoxQueue().isEmpty()) {
                 gameData.getTextBoxQueue().peek().render(graphics);
             }
-            gameData.getHud().render(graphics);
             if (gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
                 game.getPauseScreen().render(graphics);
+            }
+            if(gameData.getGameStates().peek() == GameState.INVENTORY_STATE) {
+                gameData.getInventory().render(graphics);
             }
 
         }
