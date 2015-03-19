@@ -41,6 +41,7 @@ public class KeyInput implements KeyListener {
                 } else if(gameData.getMenu().getSelected() == MenuScreen.CONTINUE_SELECTED) {
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.OPTIONS_SELECTED) {
+                    music.Mute();
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.EXIT_SELECTED) {
                     System.exit(0);
@@ -74,7 +75,7 @@ public class KeyInput implements KeyListener {
                     music.play();
                 }
                 else if (gameData.getPause().getSelect() == PauseScreen.OptionsSelected) {
-                    
+                    music.Mute();
                 }                
                 else if(gameData.getPause().getSelect() == PauseScreen.ExitSelected) {
                     System.exit(0);
@@ -150,6 +151,12 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_K) {
                 gameData.getPlayer().toggleClipping();
             }
+            if(e.getKeyCode() == KeyEvent.VK_J) {
+                gameData.getPlayer().ForcePush();
+            }
+            if(e.getKeyCode() == KeyEvent.VK_L) {
+                gameData.getPlayer().ForcePull();
+            }
         }
     }
 
@@ -160,19 +167,23 @@ public class KeyInput implements KeyListener {
         {
             gameData.getPlayer().setRight(false);
             gameData.getPlayer().setVelX(0);
+            gameData.getPlayer().setFacing("right");
         }
         if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
         {
             gameData.getPlayer().setLeft(false);
             gameData.getPlayer().setVelX(0);
+            gameData.getPlayer().setFacing("left");
         }
         if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
           gameData.getPlayer().setUp(false);
           gameData.getPlayer().setVelY(0);
+          gameData.getPlayer().setFacing("up");
        }
        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
           gameData.getPlayer().setDown(false);
           gameData.getPlayer().setVelY(0);
+          gameData.getPlayer().setFacing("down");
        }
     }
     

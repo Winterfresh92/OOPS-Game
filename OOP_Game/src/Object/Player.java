@@ -17,7 +17,9 @@ import java.util.Map;
 public class Player extends GameObject {
 
     private float velX, velY;
+    private float power = 64;
     private boolean left, right, up, down;
+    private String facing;
     private int playerSpeed = 5;
     private int health;
     private boolean clipping;
@@ -142,6 +144,80 @@ public class Player extends GameObject {
         }
          
     }
+    
+    public void ForcePush() {
+        System.out.println("Force Push activated");
+        for(GameObject object : gameData.getObjects()) {
+            if(object instanceof CollidableObject) {
+                CollidableObject temp = (CollidableObject) object;
+                if(temp.isSolid() && temp.isMobile()) {
+                    
+                    if (y+64 == temp.getY() && facing.equals("down")) {
+                            if (temp.getX() <= x + 63 && temp.getX() >= x - 63) {
+                                System.out.println("first if statement called");
+                                System.out.println("Player position: " + x + ", " + y);
+                                System.out.println("Object Position: " + temp.x + ", " + temp.y);
+                                temp.y += power;
+                                temp.getCollision(object);
+                            }
+                    }
+                    else if(y-64 == temp.getY() && facing.equals("up")) {
+                        if (temp.getX() <= x + 63 && temp.getX() >= x - 63) {
+                            System.out.println("second if statement called");
+                            temp.y -= power;
+                        }
+                    }
+                    else if(x+64 == temp.getX() && facing.equals("right")) {
+                        if (temp.getY() <= y + 63 && temp.getY() >= y - 63) {
+                            System.out.println("third if statement called");
+                            temp.x += power;
+                        }
+                  }
+                  else if(x-64 == temp.getX() && facing.equals("left")) {
+                      if(temp.getY() <= y + 63 && temp.getY() >= y - 63) {
+                        System.out.println("fourth if statement called");
+                        temp.x -= power;
+                      }
+                  }
+                }
+            }
+        }
+    }
+    
+    public void ForcePull() {
+        System.out.println("Force Pull activated");
+        for(GameObject object : gameData.getObjects()) {
+            if(object instanceof CollidableObject) {
+                CollidableObject temp = (CollidableObject) object;
+                if(temp.isSolid() && temp.isMobile()) {
+                    if(y+128 >= temp.getY() && facing.equals("down")) {
+                        if(temp.getX() <= x+63 && temp.getX() >= x-63) {
+                            System.out.println("first if statement called");
+                            temp.y -= power;
+                        }
+                    }
+                    else if(y-128 >= temp.getY() && facing.equals("up")) {
+                        if(temp.getX() <= x+63 && temp.getX() >= x-63) {
+                            System.out.println("second if statement called");
+                            temp.y += power;
+                        }
+                    }
+                    else if(x+128 >= temp.getX() && facing.equals("right")) {
+                        if(temp.getY() <= y+63 && temp.getY() >= y-63) {
+                            System.out.println("third if statement called");
+                            temp.x -= power;
+                        }
+                    }
+                    else if(x-128 >= temp.getX() && facing.equals("left")) {
+                        if(temp.getY() <= y+63 && temp.getY() >= y-63) {
+                            System.out.println("fourth if statement called");
+                            temp.x += power;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public float getVelX() {
         return velX;
@@ -231,4 +307,19 @@ public class Player extends GameObject {
         this.health = health;
     }
     
+    public void setFacing(String facing) {
+        this.facing = facing;
+    }
+    
+    public String getFacing() {
+        return facing;
+    }
+    
+    public void setPower(float power) {
+        this.power = power;
+    }
+    
+    public float getPower() {
+        return power;
+    }
 }
