@@ -17,10 +17,15 @@ public abstract class GameObject {
     protected boolean solid;
     protected Sprite sprite;
     protected boolean mobile;
+    protected String id;
     
     public GameObject(String ref, float x, float y) {
         if(ref != null) {
             this.sprite = SpriteCache.getSpriteCache().getSprite(ref);
+            if(ref == "res\\sprites/door-close-h.png")
+             id = "door";
+            else
+                id = null;
         }
         this.x = x;
         this.y = y;
@@ -90,6 +95,11 @@ public abstract class GameObject {
         this.y = y;
     }
 
+    public String getId() {
+        return id;
+    }
+    
+    
     public float getWidth() {
         return width;
     }
@@ -112,6 +122,10 @@ public abstract class GameObject {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    public boolean getSolid() {
+        return solid;
     }
     
 }

@@ -1,7 +1,7 @@
 package Object;
 
-/* Kevin Stubblefield
- * Last Updated: February 22, 2015
+/* Zain Chishti
+ * Last Updated: March 19, 2015
  * Known Bugs: None
  * Added clipping boolean, press K to toggle!
  */
@@ -11,19 +11,29 @@ import Sprite.SpriteCache;
 import Engine.GameData;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Map;
 
 
 public class Player extends GameObject {
 
     private float velX, velY;
-    private float power = 64;
     private boolean left, right, up, down;
-    private String facing;
     private int playerSpeed = 5;
     private int health;
     private boolean clipping;
     private Sprite h;
+    
+    private float lastX;
+    private float lastY;
+    
+    private boolean isColliding;
+    
+    private boolean lastCollison;
+    
+    private boolean playerHit;
+    
+    private String direction;
     
     private GameData gameData;
     
@@ -31,38 +41,58 @@ public class Player extends GameObject {
     
     public Player(String ref, float x, float y) {
         super(ref, x, y);
+        lastX = x;
+        lastY = y;
+        isColliding = false;
+        lastCollison = false;
+        playerHit = false;
         clipping = true;
         velX = velY = playerSpeed;
         health = 10;
         velX = velY = 0;
+        direction = "";
         inventory = new Inventory();
         this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png"); 
     }
     
     @Override
     public void update() {
+        
+        lastX = x;
+        lastY = y;
+        
         x += velX;
         y += velY;
         
         if(right){
             velX = playerSpeed;
+            direction = "right"; 
         }
         if(left){
             velX = -playerSpeed;
+            direction = "left";
         }
         if(up){
             velY = -playerSpeed;
+            direction = "up";
         }
         if(down){
             velY = playerSpeed;
+            direction = "down";
         }
         
         if(gameData.isLoaded() && clipping) {
             checkCollisions();
+       //     System.out.println(isColliding + "  " + lastCollison);
+            if(lastCollison == false && isColliding == true)
+            {
+                playerHit = true;
+            }
+           lastCollison = isColliding;
         }
     }
 
-    static int counter = 0;
+    static int counter = 1;
     
     public void hit(GameObject g)
     {
@@ -70,13 +100,22 @@ public class Player extends GameObject {
         
         if(g instanceof Enemy)
         {
-            if(counter == 0)
+            if(x != lastX)
             {
-                this.health -= 5;
-                h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_5.png");
-                System.out.println("Player hit "+ health);
-                counter ++;
+                this.health -= 2;
+                if(counter <= 9)
+                {
+                    h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ counter +".png");
+                    counter ++;
+                }
             }
+            
+            
+         /*   if (playerHit == true)
+            {
+                this.health -= 2;
+                System.out.println("health : " + this.health);
+            } */
         }
     }
     
@@ -96,6 +135,36 @@ public class Player extends GameObject {
         clipping = !clipping;
     }
     
+    public Rectangle lookAround()
+    {
+        Rectangle rect;
+        if(direction == "up")
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            return rect;
+        }
+        else if (direction == "right")
+        {
+            rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+            return rect;
+        }
+        else if (direction == "down")
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+            return rect;
+        }
+        else if (direction == "left")
+        {
+            rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+            return rect;
+        }
+        else // else returns the default rect for "up" direction 
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            return rect;
+        }
+    }
+    
     public void checkCollisions() {
         int counter = 0;
         for(GameObject object : gameData.getObjects()) {
@@ -111,112 +180,39 @@ public class Player extends GameObject {
                 CollidableObject temp = (CollidableObject) object;
                 if(temp.isSolid()) {
                     if(getBoundsTop().intersects(object.getBounds())) {
-                        y = object.getY() + object.getHeight();
-                        if(counter == 0)
-                        {
-                            this.hit(object);
-                        }
+                        isColliding  = true;
+                        y = object.getY() + object.getHeight(); 
+                        this.hit(object);
+                        
                     }
-                    if(getBoundsBottom().intersects(object.getBounds())) {
+                    else if(getBoundsBottom().intersects(object.getBounds())) {
+                        isColliding  = true;
                         y = object.getY() - height;
-                        if(counter == 0)
-                        {
-                            this.hit(object);
-                        }
+                        this.hit(object);
+                        
                     }
-                    if(getBoundsRight().intersects(object.getBounds())) {
+                    else if(getBoundsRight().intersects(object.getBounds())) {
+                        isColliding  = true;
+                        System.out.println(isColliding);
                         x = object.getX() - width;
-                        if(counter == 0)
-                        {
-                            this.hit(object);
-                        } 
+                        this.hit(object);
+                         
                     }
-                    if(getBoundsLeft().intersects(object.getBounds())) {
+                    else if(getBoundsLeft().intersects(object.getBounds())) {
+                        isColliding  = true;
                         x = object.getX() + object.getWidth();
-                        if(counter == 0)
-                        {
-                            this.hit(object);
-                        }
+                        this.hit(object);
+                    }
+                    else 
+                    {
+                        isColliding = false;
+                       
                     }
                 }
             }
            
         }
          
-    }
-    
-    public void ForcePush() {
-        System.out.println("Force Push activated");
-        for(GameObject object : gameData.getObjects()) {
-            if(object instanceof CollidableObject) {
-                CollidableObject temp = (CollidableObject) object;
-                if(temp.isSolid() && temp.isMobile()) {
-                    
-                    if (y+64 == temp.getY() && facing.equals("down")) {
-                            if (temp.getX() <= x + 63 && temp.getX() >= x - 63) {
-                                System.out.println("first if statement called");
-                                System.out.println("Player position: " + x + ", " + y);
-                                System.out.println("Object Position: " + temp.x + ", " + temp.y);
-                                temp.y += power;
-                                temp.getCollision(object);
-                            }
-                    }
-                    else if(y-64 == temp.getY() && facing.equals("up")) {
-                        if (temp.getX() <= x + 63 && temp.getX() >= x - 63) {
-                            System.out.println("second if statement called");
-                            temp.y -= power;
-                        }
-                    }
-                    else if(x+64 == temp.getX() && facing.equals("right")) {
-                        if (temp.getY() <= y + 63 && temp.getY() >= y - 63) {
-                            System.out.println("third if statement called");
-                            temp.x += power;
-                        }
-                  }
-                  else if(x-64 == temp.getX() && facing.equals("left")) {
-                      if(temp.getY() <= y + 63 && temp.getY() >= y - 63) {
-                        System.out.println("fourth if statement called");
-                        temp.x -= power;
-                      }
-                  }
-                }
-            }
-        }
-    }
-    
-    public void ForcePull() {
-        System.out.println("Force Pull activated");
-        for(GameObject object : gameData.getObjects()) {
-            if(object instanceof CollidableObject) {
-                CollidableObject temp = (CollidableObject) object;
-                if(temp.isSolid() && temp.isMobile()) {
-                    if(y+128 >= temp.getY() && facing.equals("down")) {
-                        if(temp.getX() <= x+63 && temp.getX() >= x-63) {
-                            System.out.println("first if statement called");
-                            temp.y -= power;
-                        }
-                    }
-                    else if(y-128 >= temp.getY() && facing.equals("up")) {
-                        if(temp.getX() <= x+63 && temp.getX() >= x-63) {
-                            System.out.println("second if statement called");
-                            temp.y += power;
-                        }
-                    }
-                    else if(x+128 >= temp.getX() && facing.equals("right")) {
-                        if(temp.getY() <= y+63 && temp.getY() >= y-63) {
-                            System.out.println("third if statement called");
-                            temp.x -= power;
-                        }
-                    }
-                    else if(x-128 >= temp.getX() && facing.equals("left")) {
-                        if(temp.getY() <= y+63 && temp.getY() >= y-63) {
-                            System.out.println("fourth if statement called");
-                            temp.x += power;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public float getVelX() {
@@ -306,20 +302,23 @@ public class Player extends GameObject {
     public void setHealth(int health) {
         this.health = health;
     }
-    
-    public void setFacing(String facing) {
-        this.facing = facing;
+
+    public float getLastX() {
+        return lastX;
+    }
+
+    public float getLastY() {
+        return lastY;
+    }
+
+    public void setLastX(float lastX) {
+        this.lastX = lastX;
+    }
+
+    public void setLastY(float lastY) {
+        this.lastY = lastY;
     }
     
-    public String getFacing() {
-        return facing;
-    }
     
-    public void setPower(float power) {
-        this.power = power;
-    }
     
-    public float getPower() {
-        return power;
-    }
 }
