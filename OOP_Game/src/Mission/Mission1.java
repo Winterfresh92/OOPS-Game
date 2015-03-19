@@ -135,8 +135,6 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2053, 498, true, false));//decorative doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1668, 1650, true, false));
         objects.add(new Enemy("res\\sprites/sith_soldier_left_0.png", 1444, 1572, true, false));
-        //test rock
-        objects.add(new CollidableObject("res\\sprites/rock2.png", 1520, 1600, true, true));
         
         objects.addAll(makeWalls("res\\sprites/wall.png", 516, 50, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 580, 178, 7, true));

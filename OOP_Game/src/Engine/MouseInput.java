@@ -5,7 +5,6 @@
 package Engine;
 
 import Menu.MenuScreen;
-import Music.Music;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,7 +12,6 @@ import java.awt.event.MouseMotionListener;
 class MouseInput implements MouseListener, MouseMotionListener {
 
     private GameData gameData;
-    private Music music = GameData.background;
     
     public MouseInput(GameData gameData) {
         this.gameData = gameData;
@@ -25,9 +23,6 @@ class MouseInput implements MouseListener, MouseMotionListener {
                 && e.getY() >= 233 && e.getY() <= 290) {
             gameData.getMenu().setSelected(MenuScreen.START_GAME_SELECTED);
             gameData.getGameStates().push(GameState.MISSION_01_STATE);
-            music.Menu = false;
-            music.Pause();
-            music.play();
         }
         if(e.getX() >= 263 && e.getX() <= 541
                 && e.getY() >= 317 && e.getY() <= 380) {
@@ -36,7 +31,6 @@ class MouseInput implements MouseListener, MouseMotionListener {
         if(e.getX() >= 280 && e.getX() <= 521
                 && e.getY() >= 410 && e.getY() <= 462) {
             gameData.getMenu().setSelected(MenuScreen.OPTIONS_SELECTED);
-            music.Mute();
         }
         if(e.getX() >= 332 && e.getX() <= 470
                 && e.getY() >= 495 && e.getY() <= 550) {
