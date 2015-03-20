@@ -103,6 +103,26 @@ public class KeyInput implements KeyListener {
                     gameData.getPause().setSelect(PauseScreen.ResumeSelected);
                 }
             } 
+        } else if(gameData.getGameStates().peek() == GameState.INVENTORY_STATE) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                gameData.getPlayer().getInventory().useItem(gameData.getInventory().getItems()[gameData.getInventory().getSelected()]);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+                gameData.getInventory().setSelected(gameData.getInventory().getSelected() - 1);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                gameData.getInventory().setSelected(gameData.getInventory().getSelected() + 1);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_UP) {
+                gameData.getInventory().setSelected(gameData.getInventory().getSelected() - 8);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+                gameData.getInventory().setSelected(gameData.getInventory().getSelected() + 8);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                gameData.getGame().getGameLoop().resume();
+                gameData.getGameStates().pop();
+            }
         } else {
             if(e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_RIGHT){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
@@ -148,6 +168,9 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_P) {
                 gameData.getGameStates().push(GameState.PAUSE_STATE);
             }
+            if(e.getKeyCode() == KeyEvent.VK_I) {
+                gameData.getGameStates().push(GameState.INVENTORY_STATE);
+            }
             if(e.getKeyCode() == KeyEvent.VK_K) {
                 gameData.getPlayer().toggleClipping();
             }
@@ -156,6 +179,11 @@ public class KeyInput implements KeyListener {
             }
             if(e.getKeyCode() == KeyEvent.VK_L) {
                 gameData.getPlayer().ForcePull();
+            }
+            if(e.getKeyCode() == KeyEvent.VK_Z) {
+                gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() - 1);
+            } else if(e.getKeyCode() == KeyEvent.VK_X) {
+                gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() + 1);
             }
         }
     }

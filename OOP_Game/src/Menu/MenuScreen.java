@@ -39,10 +39,6 @@ public class MenuScreen {
     }
     
     public void update() {
-        if(System.currentTimeMillis() - lastDisplay >= 5000) {
-            System.out.println("SELECTED = " + selected);
-            lastDisplay = System.currentTimeMillis();
-        }
         if(selected == START_GAME_SELECTED) {
             
         } else if(selected == CONTINUE_SELECTED) {

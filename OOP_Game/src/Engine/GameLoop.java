@@ -1,9 +1,5 @@
 package Engine;
 
-
-import Engine.Display;
-import Engine.GameData;
-
 /* Kevin Stubblefield
  * Last Updated: February 12, 2015
  * Known Bugs: None

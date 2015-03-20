@@ -1,29 +1,38 @@
 package Object;
 
 /* Kevin Stubblefield
- * Last Updated: February 22, 2015
- * Known Bugs: None
+ * Last Updated: March 19, 2015
+ * Known Bugs: When changing directions, the last frame from the previous animation
+ *             renders briefly. If two directional buttons are pressed at the
+ *             same time, both animations play (will likely require adjusting
+ *             animation class to account for direction rather than player class.
  * Added clipping boolean, press K to toggle!
+ * Implemented Animation
  */
 
 import Sprite.Sprite;
 import Sprite.SpriteCache;
 import Engine.GameData;
+import Sprite.Animation;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Map;
 
 
 public class Player extends GameObject {
 
     private float velX, velY;
     private float power = 64;
+    private int dir = 0; // direction up: 0, down: 1, right: 2, left: 3
     private boolean left, right, up, down;
     private String facing;
     private int playerSpeed = 5;
     private int health;
     private boolean clipping;
     private Sprite h;
+    private Animation walkingUp;
+    private Animation walkingDown;
+    private Animation walkingRight;
+    private Animation walkingLeft;
     
     private GameData gameData;
     
@@ -31,12 +40,35 @@ public class Player extends GameObject {
     
     public Player(String ref, float x, float y) {
         super(ref, x, y);
+        this.width = 64;
+        this.height = 64;
         clipping = true;
         velX = velY = playerSpeed;
         health = 10;
         velX = velY = 0;
-        inventory = new Inventory();
-        this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png"); 
+        inventory = new Inventory(this);
+        this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");
+        walkingUp = new Animation(150);
+        walkingDown = new Animation(150);
+        walkingRight = new Animation(300);
+        walkingLeft = new Animation(300);
+        walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_0.png"));
+        walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_1.png"));
+        walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_2.png"));
+        walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_3.png"));
+        walkingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_front_0.png"));
+        walkingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_front_1.png"));
+        walkingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_front_2.png"));
+        walkingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_front_3.png"));
+        walkingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_right_0.png"));
+        walkingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_right_1.png"));
+        walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
+        walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
     }
     
     @Override
@@ -44,22 +76,36 @@ public class Player extends GameObject {
         x += velX;
         y += velY;
         
-        if(right){
-            velX = playerSpeed;
+        if(!up && !down && !right && !left) {
+            checkDirection();
         }
-        if(left){
-            velX = -playerSpeed;
-        }
+        
         if(up){
+            dir = 0;
             velY = -playerSpeed;
+            walkingUp.update();
         }
         if(down){
+            dir = 1;
             velY = playerSpeed;
+            walkingDown.update();
+        }
+        if(right){
+            dir = 2;
+            velX = playerSpeed;
+            walkingRight.update();
+        }
+        if(left){
+            dir = 3;
+            velX = -playerSpeed;
+            walkingLeft.update();
         }
         
         if(gameData.isLoaded() && clipping) {
             checkCollisions();
         }
+        
+        System.out.println("PLAYER HEALTH: " + health);
     }
 
     static int counter = 0;
@@ -83,13 +129,28 @@ public class Player extends GameObject {
     
     @Override
     public void render(Graphics g) {
-        sprite.render(g, x, y);
+        if(!up && !down && !right && !left) {
+            if(sprite != null) {
+                sprite.render(g, x, y);
+            }
+        }
+        
+        if(up) {
+            walkingUp.render(g, x, y);
+        }
+        if(down) {
+            walkingDown.render(g, x, y);
+        }
+        if(right) {
+            walkingRight.render(g, x, y);
+        }
+        if(left) {
+            walkingLeft.render(g, x, y);
+        }
+        
         g.setColor(Color.green);
        // g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
         h.render(g, (int)this.x-300,(int)this.y-220);
-        for(Map.Entry<String, Item> item : inventory.getItems().entrySet()) {
-            item.getValue().getSprite().render(g, x + width / 2, y + item.getValue().getHeight() + 5);
-        }
     }
     
     public void toggleClipping() {
@@ -219,22 +280,31 @@ public class Player extends GameObject {
         }
     }
 
-    public float getVelX() {
-        return velX;
+    private void checkDirection() {
+        switch(dir) {
+            case 0: // up
+                sprite = SpriteCache.getSpriteCache().getSprite(
+                        "res\\sprites\\player\\back/player_back_0.png"
+                );
+                break;
+            case 1: // down
+                sprite = SpriteCache.getSpriteCache().getSprite(
+                        "res\\sprites\\player\\front/player_front_0.png"
+                );
+                break;
+            case 2: // right
+                sprite = SpriteCache.getSpriteCache().getSprite(
+                        "res\\sprites\\player\\right/player_right_0.png"
+                );
+                break;
+            case 3:
+                sprite = SpriteCache.getSpriteCache().getSprite(
+                        "res\\sprites\\player\\left/player_left_0.png"
+                );
+                break;
+        }
     }
-
-    public void setVelX(float velX) {
-        this.velX = velX;
-    }
-
-    public float getVelY() {
-        return velY;
-    }
-
-    public void setVelY(float velY) {
-        this.velY = velY;
-    }
-
+    
     public boolean isLeft() {
         return left;
     }

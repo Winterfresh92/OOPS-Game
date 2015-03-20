@@ -46,7 +46,7 @@ public enum SoundEffects {
             clip.start();
         }
     }
-    static void init() {    //this will load all sound effects, good to call when loading level
+    public static void init() {    //this will load all sound effects, good to call when loading level
         values();
     }
 }

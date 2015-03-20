@@ -1,6 +1,7 @@
 /* Kevin Stubblefield
- * Last Updated: March 3, 2015
+ * Last Updated: March 12, 2015
  * Known Bugs: None
+ * Added the music starting.
  */
 package Engine;
 

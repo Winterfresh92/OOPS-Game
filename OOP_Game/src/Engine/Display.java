@@ -1,8 +1,9 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: February 24, 2015
+ * Last Updated: March 17, 2015
  * Known Bugs: None
+ * Add Inventory Screen
  */
 
 import Sprite.Sprite;
@@ -57,20 +58,29 @@ public class Display extends JPanel {
          */
         if (gameData.getGameStates().peek() == GameState.MENU_STATE) {
             game.getMenuScreen().render(graphics);
+        } else if(gameData.getGameStates().peek() == GameState.LOADING_STATE) {
+            game.getLoadingScreen().render(graphics);
         } else {
             g2d.translate(this.game.getCamera().getX(), this.game.getCamera().getY());//After this, objects don't move with the character.
-            gameData.getBackground().render(graphics, 5, 50);
+            if(gameData.getBackground() != null) {
+                gameData.getBackground().render(graphics, 5, 50);
+            }
             gameData.getPlayer().render(graphics);
             objectsToRender = gameData.getObjects();
             for (GameObject object : objectsToRender) {
                 object.render(graphics);//After this, objects do move with the character.
             }
+            
             g2d.translate(-this.game.getCamera().getX(), -this.game.getCamera().getY());
+            gameData.getHud().render(graphics);
             if (!gameData.getTextBoxQueue().isEmpty()) {
                 gameData.getTextBoxQueue().peek().render(graphics);
             }
             if (gameData.getGameStates().peek() == GameState.PAUSE_STATE) {
                 game.getPauseScreen().render(graphics);
+            }
+            if(gameData.getGameStates().peek() == GameState.INVENTORY_STATE) {
+                gameData.getInventory().render(graphics);
             }
 
         }
