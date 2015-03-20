@@ -104,7 +104,7 @@ public class KeyInput implements KeyListener {
             } 
         } else if(gameData.getGameStates().peek() == GameState.INVENTORY_STATE) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                //gameData.getPlayer().getInventory().useItem(gameData.getPlayer(), gameData.getInventory().getItems()[gameData.getInventory().getSelected()]);
+                gameData.getPlayer().getInventory().useItem(gameData.getInventory().getItems()[gameData.getInventory().getSelected()]);
             }
             if(e.getKeyCode() == KeyEvent.VK_LEFT) {
                 gameData.getInventory().setSelected(gameData.getInventory().getSelected() - 1);

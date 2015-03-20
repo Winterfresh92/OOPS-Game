@@ -1,7 +1,7 @@
 package Object;
 
 /* Kevin Stubblefield
- * Last Updated: March 10, 2015
+ * Last Updated: March 19, 2015
  * Known Bugs: When changing directions, the last frame from the previous animation
  *             renders briefly. If two directional buttons are pressed at the
  *             same time, both animations play (will likely require adjusting
@@ -16,7 +16,6 @@ import Engine.GameData;
 import Sprite.Animation;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Map;
 
 
 public class Player extends GameObject {
@@ -44,7 +43,7 @@ public class Player extends GameObject {
         velX = velY = playerSpeed;
         health = 10;
         velX = velY = 0;
-        inventory = new Inventory();
+        inventory = new Inventory(this);
         this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");
         walkingUp = new Animation(150);
         walkingDown = new Animation(150);

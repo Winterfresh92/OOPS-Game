@@ -1,7 +1,8 @@
 /* Kevin Stubblefield
- * Last Updated: March 17, 2015
+ * Last Updated: March 19, 2015
  * Known Bugs: None
  * Created class and implemented working inventory screen
+ * Updated update method, added check for inventory items quantity
  */
 
 package Menu;
@@ -42,6 +43,11 @@ public class InventoryScreen {
         }
         if(selected > 23) {
             selected = 0;
+        }
+        for(int i = 0; i < items.length; i++) {
+            if(items[i] != null && items[i].getQuantity() <= 0) {
+                items[i] = null;
+            }
         }
     }
     

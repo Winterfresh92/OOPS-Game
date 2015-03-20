@@ -13,6 +13,7 @@ public class HalfHeart extends Item {
         this.name = "Half-Heart";
     }
     
+    @Override
     public void use(Player player) {
         player.setHealth(player.getHealth() + 1);
     }

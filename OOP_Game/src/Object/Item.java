@@ -39,7 +39,7 @@ public class Item extends GameObject {
         }
     }
     
-    public void use(GameObject object) {
+    public void use(Player player) {
         
     }
     
