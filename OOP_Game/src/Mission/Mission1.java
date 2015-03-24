@@ -27,7 +27,7 @@ public class Mission1 extends Mission{
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);
-        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-revision2.png");
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-v3.png");
         textBoxSetup();
     }
     

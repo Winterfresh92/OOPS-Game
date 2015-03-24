@@ -286,7 +286,7 @@ public class Mission2 extends Mission {
     @Override
     public ArrayList<GameObject> getObjects() {
         objects = new ArrayList<>();
-        //objects.add(player);
+        objects.add(player);
         //objects for the level go here
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2112, 256, false, false));//openable doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2368, 576, false, false));
