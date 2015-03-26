@@ -1,7 +1,7 @@
 package Mission;
 
 /* Chris Graff
- * Last Updated: March 1, 2015
+ * Last Updated: March 10, 2015
  * Known Bugs: None
  */
 
@@ -18,6 +18,7 @@ public class Mission{
 
     protected TextBox textBox;
     protected LinkedList<TextBox> textBoxQueue;
+    protected LinkedList<LinkedList> queueQueue;
     protected Player player;
     protected ArrayList<GameObject> objects;
     protected Sprite bg;
@@ -64,6 +65,10 @@ public class Mission{
     
     public Sprite getBackground(){
         return bg;
+    }
+    
+    public boolean levelOver(){
+        return true;
     }
     
     public ArrayList<GameObject> makeWalls(String name, int x, int y, int pieces, boolean horizontal){//generates walls on a lesser to greater basis every 64px.

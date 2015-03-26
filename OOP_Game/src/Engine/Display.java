@@ -65,6 +65,7 @@ public class Display extends JPanel {
             if(gameData.getBackground() != null) {
                 gameData.getBackground().render(graphics, 5, 50);
             }
+            //gameData.getBackground().render(graphics, 5, 50);//CANNOT LEAVE THIS. MUST BE 0,0 FOR GENERAL PURPOSE LEVEL DESIGN
             gameData.getPlayer().render(graphics);
             objectsToRender = gameData.getObjects();
             for (GameObject object : objectsToRender) {

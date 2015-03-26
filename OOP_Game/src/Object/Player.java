@@ -10,6 +10,7 @@ package Object;
  * Implemented Animation
  */
 
+import Engine.Game;
 import Sprite.Sprite;
 import Sprite.SpriteCache;
 import Engine.GameData;
@@ -20,7 +21,6 @@ import java.awt.Graphics;
 
 public class Player extends GameObject {
 
-    private float velX, velY;
     private float power = 64;
     private int dir = 0; // direction up: 0, down: 1, right: 2, left: 3
     private boolean left, right, up, down;
@@ -43,7 +43,6 @@ public class Player extends GameObject {
         this.width = 64;
         this.height = 64;
         clipping = true;
-        velX = velY = playerSpeed;
         health = 10;
         velX = velY = 0;
         inventory = new Inventory(this);
@@ -82,22 +81,18 @@ public class Player extends GameObject {
         
         if(up){
             dir = 0;
-            velY = -playerSpeed;
             walkingUp.update();
         }
         if(down){
             dir = 1;
-            velY = playerSpeed;
             walkingDown.update();
         }
         if(right){
             dir = 2;
-            velX = playerSpeed;
             walkingRight.update();
         }
         if(left){
             dir = 3;
-            velX = -playerSpeed;
             walkingLeft.update();
         }
         
@@ -105,7 +100,7 @@ public class Player extends GameObject {
             checkCollisions();
         }
         
-        System.out.println("PLAYER HEALTH: " + health);
+        //System.out.println("PLAYER HEALTH: " + health);
     }
 
     static int counter = 0;
@@ -122,6 +117,17 @@ public class Player extends GameObject {
                 h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_5.png");
                 System.out.println("Player hit "+ health);
                 counter ++;
+            }
+        }
+        
+        if(g instanceof InteractableObject){
+            InteractableObject interact = (InteractableObject) g;
+            if(interact.interact()){
+                gameData.getNextQueue();
+            }
+            else{
+
+                gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
             }
         }
     }
@@ -200,6 +206,7 @@ public class Player extends GameObject {
                         }
                     }
                 }
+                
             }
            
         }

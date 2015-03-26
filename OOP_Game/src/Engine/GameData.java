@@ -16,6 +16,7 @@ import Object.GameObject;
 import Object.TextBox;
 import Mission.Mission;
 import Mission.Mission1;
+import Mission.Mission2;
 import Music.SoundEffects;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -85,10 +86,18 @@ public class GameData {
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
+                bg = active.getBackground();
                 loaded = true;
                 mission++;
                 gameStates.pop();
                 gameStates.push(GameState.MENU_STATE);
+                return;
+            case 2:
+                gameStates.pop();
+                gameStates.push(GameState.MISSION_01_STATE);
+                mission++;
+                return;
+            default:
                 return;
         }
     }
@@ -113,13 +122,38 @@ public class GameData {
         } if(gameStates.peek() == GameState.INVENTORY_STATE) {
             inventory.update();
         } if(gameStates.peek() == GameState.MISSION_01_STATE){
-            bg = active.getBackground();
             textBox.update();
             background.update();
             game.getCamera().update(player);
             hud.update();
             for(GameObject object : objects) {
                 object.update();
+            }
+            if(active.levelOver()){
+                loaded = false;
+                gameStates.pop();
+                gameStates.push(GameState.MISSION_02_STATE);
+            }
+        }
+        else if(gameStates.peek() == GameState.MISSION_02_STATE){
+            if(!loaded){
+                active = new Mission2(player);
+                objects = active.getObjects();
+                textBoxQueue = active.getTextBoxQueue();
+                player = active.getPlayer();
+                bg = active.getBackground();
+                loaded = true;
+            }
+            textBox.update();
+            background.update();
+            game.getCamera().update(player);
+            for(GameObject object : objects) {
+                object.update();
+            }
+            if(active.levelOver()){
+                loaded = false;
+                gameStates.pop();
+                gameStates.push(GameState.MISSION_02_STATE);
             }
         }
     }
@@ -130,6 +164,19 @@ public class GameData {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+    
+    public void getNextQueue(){
+        textBoxQueue = active.getTextBoxQueue();
+    }
+    
+    public void addToQueue(TextBox toAdd){
+        for(TextBox t: textBoxQueue){
+            TextBox toCheck = (TextBox) t;
+            if(t.getText().equals(toAdd.getText()))
+                return;
+        }
+        textBoxQueue.offer(toAdd);
     }
     
     public ArrayList<GameObject> getObjects() {

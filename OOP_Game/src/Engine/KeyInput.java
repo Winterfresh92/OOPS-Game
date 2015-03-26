@@ -33,7 +33,7 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item
                 if(gameData.getMenu().getSelected() == MenuScreen.START_GAME_SELECTED) {
                     gameData.getGameStates().pop();
-                    gameData.getGameStates().push(GameState.MISSION_01_STATE);
+                    gameData.getGameStates().push(GameState.LOADING_STATE);
                     //gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
                     music.Menu = false;
                     music.Pause();

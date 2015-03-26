@@ -1,6 +1,6 @@
 package Object;
 
-/* Kevin Stubblefield
+/* Kevin Stubblefield, Chris Graff
  * Last Updated: February 22, 2015
  * Known Bugs: None
  */
@@ -15,6 +15,7 @@ public class CollidableObject extends GameObject {
         this.width = 64;
         this.height = 64;
         this.solid = true;
+        this.mobile = false;
     }
     
     public CollidableObject(String ref, float x, float y, boolean solid, boolean mobile) {
