@@ -148,11 +148,11 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/rock2.png", 512, 1536, true, true));
         objects.add(new CollidableObject("res\\sprites/rock2.png", 832, 1280, true, true));
         objects.add(new CollidableObject("res\\sprites/rock2.png", 1856, 960, true, true));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 256, 704, false, false));//openable doors
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1024, 192, false, false));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1152, 704, false, false));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1216, 1216, false, false));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 192, false, false));
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 256, 704, true, false));//openable doors
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1024, 192, true, false));
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1152, 704, true, false));
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1216, 1216, true, false));
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 192, true, false));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2048, 512, true, false));//decorative doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1664, 1664, true, false));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1344, 1470, true, false, "Hurry along now."));

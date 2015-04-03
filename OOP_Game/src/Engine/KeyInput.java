@@ -3,14 +3,24 @@ package Engine;
 /* Kevin Stubblefield
  * Last Updated: February 25, 2015
  * Known Bugs: None
+ * 
+ * Carlos Pena
+ * Last Updated: March 25, 2015
+ * Known Bugs: None
+ * Press J to use Force Power selected
 */
 import Menu.MenuScreen;
 import Menu.PauseScreen;
-import Music.Music;
+import Music.*;
 import Engine.GameState;
 import Engine.GameData;
+import Object.GameObject;
+import Sprite.Sprite;
+import Sprite.SpriteCache;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class KeyInput implements KeyListener {
     
@@ -41,7 +51,6 @@ public class KeyInput implements KeyListener {
                 } else if(gameData.getMenu().getSelected() == MenuScreen.CONTINUE_SELECTED) {
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.OPTIONS_SELECTED) {
-                    music.Mute();
                     
                 } else if(gameData.getMenu().getSelected() == MenuScreen.EXIT_SELECTED) {
                     System.exit(0);
@@ -75,7 +84,7 @@ public class KeyInput implements KeyListener {
                     music.play();
                 }
                 else if (gameData.getPause().getSelect() == PauseScreen.OptionsSelected) {
-                    music.Mute();
+                    
                 }                
                 else if(gameData.getPause().getSelect() == PauseScreen.ExitSelected) {
                     System.exit(0);
@@ -128,37 +137,66 @@ public class KeyInput implements KeyListener {
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setRight(true);
                     gameData.getPlayer().setVelX(gameData.getPlayer().getPlayerSpeed());
+                    gameData.getPlayer().setFacing("right");
                 }
             } 
             if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setLeft(true);
                     gameData.getPlayer().setVelX(-gameData.getPlayer().getPlayerSpeed());
+                    gameData.getPlayer().setFacing("left");
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setUp(true);
                     gameData.getPlayer().setVelY(-gameData.getPlayer().getPlayerSpeed());
+                    gameData.getPlayer().setFacing("up");
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
                 if(gameData.getTextBoxQueue().isEmpty() || !gameData.getTextBoxQueue().peek().isPriority()) {
                     gameData.getPlayer().setDown(true);
                     gameData.getPlayer().setVelY(gameData.getPlayer().getPlayerSpeed());
+                    gameData.getPlayer().setFacing("down");
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if(!gameData.getTextBoxQueue().isEmpty()) {
                     gameData.getTextBoxQueue().poll();
                 }
+                Rectangle rect = gameData.getPlayer().lookAround();
+                ArrayList<GameObject> allObjects = gameData.getObjects();
+                for(GameObject go : allObjects)
+                {
+                    if(go.getId() == "door")
+                    {
+                        if(rect.contains(go.getX() + 32,go.getY() + 32))
+                        {
+                            if(go.getSolid() == true)
+                            {    
+                             Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-open-h.png"); 
+                             go.setSprite(s);
+                             go.setSolid(false);
+                            }
+                            else if(go.getSolid() == false)
+                            {    
+                             Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-close-h.png"); 
+                             go.setSprite(s);
+                             go.setSolid(true);
+                            } 
+                        }
+                    }
+                }
             }
             if(e.getKeyCode() == KeyEvent.VK_M) {
                 if(Music.volume != Music.Volume.Mute) {
+//                    SoundEffects.volume = SoundEffects.Volume.Mute;
                     music.Mute();
                 }
                 else {
                     Music.volume = Music.Volume.Medium;
+                    SoundEffects.volume = SoundEffects.Volume.High;
                     music.play();
                 }
             }
@@ -174,16 +212,13 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_K) {
                 gameData.getPlayer().toggleClipping();
             }
-            if(e.getKeyCode() == KeyEvent.VK_J) {
-                gameData.getPlayer().ForcePush();
-            }
-            if(e.getKeyCode() == KeyEvent.VK_L) {
-                gameData.getPlayer().ForcePull();
-            }
             if(e.getKeyCode() == KeyEvent.VK_Z) {
                 gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() - 1);
             } else if(e.getKeyCode() == KeyEvent.VK_X) {
                 gameData.getHud().getSelector().setSelected(gameData.getHud().getSelector().getSelected() + 1);
+            }
+            if(e.getKeyCode() == KeyEvent.VK_J) {
+                gameData.getPlayer().powerSelected(gameData.getHud().getSelector().getSelected());
             }
         }
     }
@@ -195,23 +230,19 @@ public class KeyInput implements KeyListener {
         {
             gameData.getPlayer().setRight(false);
             gameData.getPlayer().setVelX(0);
-            gameData.getPlayer().setFacing("right");
         }
         if(e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT)
         {
             gameData.getPlayer().setLeft(false);
             gameData.getPlayer().setVelX(0);
-            gameData.getPlayer().setFacing("left");
         }
         if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP){
           gameData.getPlayer().setUp(false);
           gameData.getPlayer().setVelY(0);
-          gameData.getPlayer().setFacing("up");
        }
        if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN){
           gameData.getPlayer().setDown(false);
           gameData.getPlayer().setVelY(0);
-          gameData.getPlayer().setFacing("down");
        }
     }
     

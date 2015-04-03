@@ -1,18 +1,15 @@
 package Object;
 
 
-import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 /**
  *
- * @author Faaez
+ * @author Zain
  */
 public class Enemy extends CollidableObject{
     
@@ -39,6 +36,15 @@ public class Enemy extends CollidableObject{
         }
         else
             return false;
-    }    
+    }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public void render(Graphics g) {
+        sprite.render(g, x, y);
+    }
      
 }
