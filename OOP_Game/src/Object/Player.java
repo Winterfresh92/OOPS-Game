@@ -14,7 +14,7 @@ package Object;
  *
  * Carlos Pena
  * Added 2 classes, PowerSelected() to determine which power to use
- * Force() to use the choosen power
+ * F orce() to use the choosen power
  */
 
 import Engine.Game;
@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class Player extends GameObject {
@@ -38,12 +39,16 @@ public class Player extends GameObject {
     private int health;
     private boolean clipping;
     private boolean push, pull;
+    private boolean swing;
     private Sprite h;
     private Animation walkingUp;
     private Animation walkingDown;
     private Animation walkingRight;
     private Animation walkingLeft;
-    
+    private Animation fightingRight;
+    private Animation fightingLeft;
+    private Animation fightingDown;
+    private Animation fightingUp;
     private float lastX;
     private float lastY;
     
@@ -65,6 +70,7 @@ public class Player extends GameObject {
         lastCollison = false;
         playerHit = false;
         clipping = true;
+        swing  = false;
         health = 10;
         velX = velY = 0;
         inventory = new Inventory(this);
@@ -73,6 +79,10 @@ public class Player extends GameObject {
         walkingDown = new Animation(150);
         walkingRight = new Animation(300);
         walkingLeft = new Animation(300);
+        fightingRight = new Animation(150);
+        fightingLeft = new Animation(150);
+        fightingDown = new Animation(300);
+        fightingUp  = new Animation(300);
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_0.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_1.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_2.png"));
@@ -85,6 +95,16 @@ public class Player extends GameObject {
         walkingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_right_1.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
+        fightingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_fighting_right_0.png"));
+        fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_0.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_0.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_1.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_2.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_3.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_0.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_1.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_2.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_3.png"));
         inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
         inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
         inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
@@ -128,6 +148,15 @@ public class Player extends GameObject {
             direction = "left";
         }
         
+        if(swing && (direction == "right"))
+                fightingRight.update();
+        if(swing && (direction == "left"))
+                fightingLeft.update();
+        if(swing && (direction == "down"))
+                fightingDown.update();
+        if(swing && (direction == "up"))
+                fightingUp.update();
+        
         if(gameData.isLoaded() && clipping) {
             checkCollisions();
        //     System.out.println(isColliding + "  " + lastCollison);
@@ -141,7 +170,7 @@ public class Player extends GameObject {
         //System.out.println("PLAYER HEALTH: " + health);
     }
 
-    static int counter = 1;
+    public static int counter = 1;
     
     public void hit(GameObject g)
     {
@@ -158,7 +187,6 @@ public class Player extends GameObject {
                     counter ++;
                 }
             }
-            
             
          /*   if (playerHit == true)
             {
@@ -201,6 +229,15 @@ public class Player extends GameObject {
             walkingLeft.render(g, x, y);
         }
         
+        if(swing && (direction == "right"))
+            fightingRight.render(g, x, y);
+        if(swing && (direction == "left"))    
+            fightingLeft.render(g, x, y);
+        if(swing && (direction == "down"))    
+            fightingDown.render(g, x, y);
+        if(swing && (direction == "up"))    
+            fightingUp.render(g, x, y);
+        
         g.setColor(Color.green);
        // g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
         h.render(g, (int)this.x-300,(int)this.y-220);
@@ -210,28 +247,95 @@ public class Player extends GameObject {
         clipping = !clipping;
     }
     
-    public Rectangle lookAround()
+    public Rectangle lookAround(int x) throws InterruptedException 
     {
         Rectangle rect;
         if(direction == "up")
         {
-            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
-            return rect;
+            if(x == 0)
+            {
+                rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+                return rect;
+            }
+            else if (x == 1)
+            {
+                rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+                swing = true;
+                
+                TimeUnit.MILLISECONDS.sleep(500);
+                
+                swing = false;
+                
+                return rect;
+            }
+            else 
+                return new Rectangle(0,0,0,0) ;
+            
         }
         else if (direction == "right")
         {
-            rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
-            return rect;
+            if(x == 0)
+            {
+                rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+                return rect;
+            }
+            else if (x == 1)
+            {
+                rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+                swing = true;
+                
+                TimeUnit.MILLISECONDS.sleep(150);
+                
+                swing = false;
+                
+                return rect;
+            }
+            else 
+                return new Rectangle(0,0,0,0) ;
         }
         else if (direction == "down")
         {
-            rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
-            return rect;
+            if(x == 0)
+            {
+                rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+                return rect;
+            }
+            else if (x == 1)
+            {
+                rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+                swing = true;
+                
+                TimeUnit.MILLISECONDS.sleep(500);
+                
+                swing = false;
+                
+                return rect;
+            }
+            else 
+                return new Rectangle(0,0,0,0) ;
+            
         }
         else if (direction == "left")
         {
-            rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
-            return rect;
+            if(x == 0)
+            {
+                rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+                return rect;
+            }
+            else if (x == 1)
+            {
+                rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+                swing = true;
+                
+                TimeUnit.MILLISECONDS.sleep(150);
+                
+                swing = false;
+                
+                return rect;
+            }
+            else 
+                return new Rectangle(0,0,0,0) ;
+            
         }
         else // else returns the default rect for "up" direction 
         {
@@ -567,6 +671,15 @@ public class Player extends GameObject {
 
     public void setFacing(String facing) {
         this.facing = facing;
+    }
+    
+    public boolean getSwing()
+    {
+        return swing;
+    }
+    public void setSwing(boolean swing)
+    {
+        this.swing = swing;
     }
     
 }
