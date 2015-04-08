@@ -37,6 +37,7 @@ public class ResourceLoader {
         SpriteCache.getSpriteCache().getSprite("res\\sprites/check64x64.png");
         SpriteCache.getSpriteCache().getSprite("res\\sprites/rock2.png");
         SpriteCache.getSpriteCache().getSprite("res\\sprites/sith_soldier_left_0.png");
+        SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/loading.png");
         
         // hud folder
         SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");

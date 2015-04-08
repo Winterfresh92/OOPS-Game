@@ -3,6 +3,11 @@ package Mission;
 /* Chris Graff
  * Last Updated: March 10, 2015
  * Known Bugs: None
+ *
+ * Kevin Stubblefield
+ * Last Updated: April 4, 2015
+ * Known Bugs: None
+ * Added field for gameData
  */
 
 import Sprite.SpriteCache;
@@ -22,8 +27,8 @@ public class Mission1 extends Mission{
     
     
 
-    public Mission1(Player player) {
-        super(player);
+    public Mission1(Player player, GameData gameData) {
+        super(player, gameData);
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);

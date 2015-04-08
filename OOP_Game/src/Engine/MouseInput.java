@@ -1,7 +1,7 @@
 /* Kevin Stubblefield
- * Last Updated: March 12, 2015
+ * Last Updated: April 4, 2015
  * Known Bugs: None
- * Added the music starting.
+ * Made it so it loads first.
  */
 package Engine;
 
@@ -25,7 +25,7 @@ class MouseInput implements MouseListener, MouseMotionListener {
         if(e.getX() >= 223 && e.getX() <= 577
                 && e.getY() >= 233 && e.getY() <= 290) {
             gameData.getMenu().setSelected(MenuScreen.START_GAME_SELECTED);
-            gameData.getGameStates().push(GameState.MISSION_01_STATE);
+            gameData.getGameStates().push(GameState.LOADING_STATE);
             music.Menu = false;
             music.Pause();
             music.play();

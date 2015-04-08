@@ -3,8 +3,14 @@ package Mission;
 /* Chris Graff
  * Last Updated: March 10, 2015
  * Known Bugs: None
+
+ * Kevin Stubblefield
+ * Last Updated: April 4, 2015
+ * Known Bugs: None
+ * Added field for gameData
  */
 
+import Engine.GameData;
 import Sprite.Sprite;
 import Object.GameObject;
 import Object.Player;
@@ -22,9 +28,11 @@ public class Mission{
     protected Player player;
     protected ArrayList<GameObject> objects;
     protected Sprite bg;
+    protected GameData gameData;
     
-    public Mission(Player player) {
+    public Mission(Player player, GameData gameData) {
         this.player = player;
+        this.gameData = gameData;
     }
     
     public Player getPlayer() {
