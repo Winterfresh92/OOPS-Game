@@ -21,6 +21,7 @@ import Mission.Mission1;
 import Mission.Mission2;
 import Mission.MissionTest;
 import Music.SoundEffects;
+import Object.Enemy;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -144,6 +145,15 @@ public class GameData {
             hud.update();
             for(GameObject object : objects) {
                 object.update();
+                if(object instanceof Player)
+                {
+                    Player p = (Player) object;
+                    
+                    if(p.getHealth() < 1)
+                    {
+                        gameStates.push(GameState.PAUSE_STATE);
+                    }
+                }
             }
             if(active.levelOver()){
                 loaded = false;

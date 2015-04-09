@@ -13,6 +13,7 @@ package Engine;
 import Menu.MenuScreen;
 import Menu.PauseScreen;
 import Music.*;
+import Object.Enemy;
 import Object.GameObject;
 import Sprite.Sprite;
 import Sprite.SpriteCache;
@@ -20,6 +21,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class KeyInput implements KeyListener {
     
@@ -177,32 +180,60 @@ public class KeyInput implements KeyListener {
                 }
             }
             if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-                if(!gameData.getTextBoxQueue().isEmpty()) {
-                    gameData.getTextBoxQueue().poll();
-                }
-                Rectangle rect = gameData.getPlayer().lookAround();
-                ArrayList<GameObject> allObjects = gameData.getObjects();
-                for(GameObject go : allObjects)
-                {
-                    if(go.getId() == "door")
+                try {
+                    if(!gameData.getTextBoxQueue().isEmpty()) {
+                        gameData.getTextBoxQueue().poll();
+                    }
+                    Rectangle rect = gameData.getPlayer().lookAround(0);
+                    ArrayList<GameObject> allObjects = gameData.getObjects();
+                    for(GameObject go : allObjects)
                     {
-                        if(rect.contains(go.getX() + 32,go.getY() + 32))
+                        if(go.getId() == "door")
                         {
-                            if(go.getSolid() == true)
-                            {    
-                             Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-open-h.png"); 
-                             go.setSprite(s);
-                             go.setSolid(false);
+                            if(rect.contains(go.getX() + 32,go.getY() + 32))
+                            {
+                                if(go.getSolid() == true)
+                                {    
+                                 Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-open-h.png"); 
+                                 go.setSprite(s);
+                                 go.setSolid(false);
+                                }
+                                else if(go.getSolid() == false)
+                                {    
+                                 Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-close-h.png"); 
+                                 go.setSprite(s);
+                                 go.setSolid(true);
+                                } 
                             }
-                            else if(go.getSolid() == false)
-                            {    
-                             Sprite s = SpriteCache.getSpriteCache().getSprite("res\\sprites/door-close-h.png"); 
-                             go.setSprite(s);
-                             go.setSolid(true);
-                            } 
                         }
                     }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(KeyInput.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            if(e.getKeyCode() == KeyEvent.VK_B)
+            {
+                try {
+                    Rectangle rect = gameData.getPlayer().lookAround(1);
+                    ArrayList<GameObject> allObjects = gameData.getObjects();
+                    for(GameObject go : allObjects)
+                    {
+                        if(go instanceof Enemy)
+                        {
+                            if(rect.contains(go.getX() + 32,go.getY() + 32))
+                            {
+                                Enemy badGuy = (Enemy) go;
+                                System.out.println("Enemy Hit");
+                                badGuy.hit();
+                                System.out.println(badGuy.getHeath());
+                            }
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(KeyInput.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              //  gameData.getPlayer().setSwing(false);
+                System.out.println("Swing Sword");
             }
             if(e.getKeyCode() == KeyEvent.VK_M) {
                 if(Music.volume != Music.Volume.Mute) {

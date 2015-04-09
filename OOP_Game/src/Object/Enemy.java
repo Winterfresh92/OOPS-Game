@@ -13,6 +13,7 @@ package Object;
 
 
 import Engine.GameData;
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Enemy extends GameObject {
@@ -35,6 +36,7 @@ public class Enemy extends GameObject {
         this.height = 64;
         this.solid = solid;
         this.mobile = mobile;
+        health = 3;
     }
 
     @Override
@@ -44,6 +46,8 @@ public class Enemy extends GameObject {
     @Override
     public void render(Graphics g) {
         sprite.render(g, x, y);
+        g.setColor(Color.green);
+        g.fillRect((int)this.x,(int)this.y-20,(health*100)/10,10);
     }
     
     public void checkCollisions() {
@@ -71,11 +75,25 @@ public class Enemy extends GameObject {
                     else 
                     {
                         isColliding = false;
-                       
                     }
                 }   
             }
         }
     }
+    
+    public void hit()
+    {
+        health = health - 1;
+        if(health < 0 )
+            health = 0;
+    }
      
+    public int getHeath()
+    {
+        return this.health;
+    }
+    public void setHealth(int h)
+    {
+        this.health = h;
+    }
 }
