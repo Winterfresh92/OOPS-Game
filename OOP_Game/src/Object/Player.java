@@ -64,6 +64,7 @@ public class Player extends GameObject {
     private boolean playerHit;
     private String direction;
     private String facing;
+    private int forcePowers;
     private GameData gameData;
     private Inventory inventory;
     
@@ -123,7 +124,8 @@ public class Player extends GameObject {
         inventory.add(new HalfHeart(0, 0, true));
         direction = "";
         facing = "";
-        this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png"); 
+        this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");
+        forcePowers = 0;
     }
     
     @Override
@@ -195,14 +197,18 @@ public class Player extends GameObject {
             }
             h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
         }
-        
+         
         if(g instanceof InteractableObject){
             InteractableObject interact = (InteractableObject) g;
             if(interact.interact()){
                 gameData.getNextQueue();
+                interact.interacted();
+                if(g instanceof InteractableSlip){
+                    forcePowers += 1;
+                    gameData.removeObject(interact);
+                }
             }
             else{
-
                 gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
             }
             
@@ -221,6 +227,9 @@ public class Player extends GameObject {
         if(!up && !down && !right && !left) {
             if(sprite != null) {
                 sprite.render(g, x, y);
+            }
+            else{
+                g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
             }
         }
         
@@ -247,7 +256,7 @@ public class Player extends GameObject {
             fightingUp.render(g, x, y);
         
         g.setColor(Color.green);
-       // g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
+       // 
         h.render(g, (int)this.x-300,(int)this.y-220);
     }
     
@@ -488,6 +497,9 @@ public class Player extends GameObject {
     public void Force() {
         boolean move = true;
         if (push) {
+            if(forcePowers < 2){
+                return;
+            }
             System.out.println("Force Push activated");
             for (GameObject object : gameData.getObjects()) {
                 if (object instanceof CollidableObject) {
@@ -587,6 +599,9 @@ public class Player extends GameObject {
             }
         }
         else if (pull) {
+            if(forcePowers < 1){
+                return;
+            }
             System.out.println("Force Pull activated");
             for (GameObject object : gameData.getObjects()) {
                 if (object instanceof CollidableObject) {

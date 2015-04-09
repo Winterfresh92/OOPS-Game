@@ -8,38 +8,28 @@ package Object;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class InteractableObject extends CollidableObject {
+public class InteractableSlip extends InteractableObject {
     
     private boolean interacted;
     private String defaultText;
 
-    public InteractableObject(String ref, float x, float y) {
+    public InteractableSlip(String ref, float x, float y) {
         super(ref, x, y);
         this.width = 64;
         this.height = 64;
         this.solid = true;
         this.mobile = false;
         interacted = true;
-        defaultText = "";
+        defaultText = "You have already collected this Permission.";
     }
     
-    public InteractableObject(String ref, float x, float y, boolean solid, boolean mobile, String defaultText) {
+    public InteractableSlip(String ref, float x, float y, boolean solid, boolean mobile, String defaultText) {
         super(ref, x, y);
         this.width = 64;
         this.height = 64;
         this.solid = solid;
         this.mobile = mobile;
         interacted = false;
-        this.defaultText = defaultText;
-    }
-    
-    public InteractableObject(String ref, float x, float y, boolean solid, boolean mobile, String defaultText, boolean interacted) {
-        super(ref, x, y);
-        this.width = 64;
-        this.height = 64;
-        this.solid = solid;
-        this.mobile = mobile;
-        this.interacted = interacted;
         this.defaultText = defaultText;
     }
 
@@ -59,6 +49,7 @@ public class InteractableObject extends CollidableObject {
     
     public void interacted(){
         this.interacted = true;
+        
     }
     
     public boolean interact(){

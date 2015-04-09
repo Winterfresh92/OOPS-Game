@@ -19,6 +19,7 @@ import Object.GameObject;
 import Object.CollidableObject;
 import Engine.*;
 import Object.*;
+import Object.InteractableSlip;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -33,7 +34,7 @@ public class Mission1 extends Mission{
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);
-        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-v3.png");
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-v4.png");
         textBoxSetup();
     }
     
@@ -156,30 +157,31 @@ public class Mission1 extends Mission{
         objects.add(new CollidableObject("res\\sprites/rock2.png", 1856, 960, true, true));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 256, 704, true, false));//openable doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1024, 192, true, false));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1152, 704, true, false));
+        //objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1152, 704, false, false));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1216, 1216, true, false));
-        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 192, true, false));
+        objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1728, 128, true, false));
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 2048, 512, true, false));//decorative doors
         objects.add(new CollidableObject("res\\sprites/door-close-h.png", 1664, 1664, true, false));
-        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1344, 1470, true, false, "Hurry along now."));
+        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1344, 1470, true, false, "Hurry along now.", true));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1728, 320, true, false, "Hurry along now."));
-        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1024, 640, true, false, ""));
-        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 640, 1088, true, false, ""));
-        objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1600, 1152, true, false, ""));
-        objects.add(new Enemy("res\\sprites\\enemies\\Sith Soldier\\left/sith_soldier_left_0.png",1600,1400,true,false,gameData ));
+        objects.add(new InteractableObject("res\\sprites/stand_1.png", 898, 448, true, false, "You already have your lightsaber."));
+        InteractableObject object = new InteractableSlip("res\\sprites/slip_0.png", 640, 1088, true, false, "You can already use this power.");
+        objects.add(object);
+        object = new InteractableSlip("res\\sprites/slip_0.png", 1600, 1152, true, false, "You can already use this power.");
+        objects.add(object);
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 0, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 576, 128, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 640, 192, 6, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1088, 192, 2, true));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 1408, 192, 5, true));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 1792, 192, 5, true));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 1408, 128, 5, true));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 1792, 128, 5, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1152, 512, 5, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 192, 576, 4, true));
         objects.add(new CollidableObject("res\\sprites/wall.png", 384, 768, true, false));
         objects.add(new CollidableObject("res\\sprites/wall.png", 512, 576, true, false));
         objects.add(new CollidableObject("res\\sprites/wall.png", 640, 576, true, false));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 832, 640, 21, true));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 320, 704, 14, true));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 768, 640, 22, true));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 320, 704, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 960, 832, 4, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 256, 896, 2, true));
         objects.add(new CollidableObject("res\\sprites/wall.png", 448, 896, true, false));
@@ -201,10 +203,10 @@ public class Mission1 extends Mission{
         objects.addAll(makeWalls("res\\sprites/wall.png", 384, 128, 2, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 320, 192, 6, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 704, 256, 7, false));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 768, 256, 7, false));
+        //objects.addAll(makeWalls("res\\sprites/wall.png", 768, 256, 7, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 1152, 256, 4, false));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 2048, 256, 4, false));
-        objects.addAll(makeWalls("res\\sprites/wall.png", 1408, 256, 4, false));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 2048, 192, 5, false));
+        objects.addAll(makeWalls("res\\sprites/wall.png", 1408, 192, 5, false));
         objects.add(new CollidableObject("res\\sprites/wall.png", 2048, 576, true, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 192, 640, 15, false));
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 768, 12, false));

@@ -47,6 +47,7 @@ public class GameData {
     private boolean loaded;
     private Sprite bg;
     private SaveFileHandler saveFileHandler;
+    private ArrayList<GameObject> toBeRemoved;
     
     public GameData(Game game) {
         this.game = game;
@@ -74,6 +75,7 @@ public class GameData {
         hud = new HUD(player);
         inventory = new InventoryScreen(player);
         saveFileHandler = new SaveFileHandler(this);
+        toBeRemoved = new ArrayList<>();
     }
     
     // Give mission number as parameter, initial load is 0
@@ -138,7 +140,10 @@ public class GameData {
             SoundEffects.volume = SoundEffects.Volume.Mute;
         } if(gameStates.peek() == GameState.INVENTORY_STATE) {
             inventory.update();
-        } if(gameStates.peek() == GameState.MISSION_01_STATE){
+        } if(gameStates.peek() == GameState.INTRO_STATE){
+            game.getCamera().setX(0);
+            game.getCamera().setY(0);
+        }if(gameStates.peek() == GameState.MISSION_01_STATE){
             textBox.update();
             background.update();
             game.getCamera().update(player);
@@ -155,7 +160,11 @@ public class GameData {
                     }
                 }
             }
-            if(active.levelOver()){
+            if(!toBeRemoved.isEmpty()){
+                objects.removeAll(toBeRemoved);
+                toBeRemoved = new ArrayList<>();
+            }
+            if(active.levelOver()&& !textBoxQueue.isEmpty()){
                 loaded = false;
                 gameStates.pop();
                 gameStates.push(GameState.MISSION_02_STATE);
@@ -211,8 +220,7 @@ public class GameData {
     
     public void addToQueue(TextBox toAdd){
         for(TextBox t: textBoxQueue){
-            TextBox toCheck = (TextBox) t;
-            if(t.getText().equals(toAdd.getText()))
+            if(t.getText().equals(toAdd.getText()) && toAdd.getText() != null)
                 return;
         }
         textBoxQueue.offer(toAdd);
@@ -220,6 +228,14 @@ public class GameData {
     
     public ArrayList<GameObject> getObjects() {
         return objects;
+    }
+    
+    public void removeObject(GameObject toRemove){
+        for(GameObject object : objects){
+            if(object == toRemove){
+                toBeRemoved.add(object);
+            }
+        }
     }
     
     public LinkedList<TextBox> getTextBoxQueue() {
