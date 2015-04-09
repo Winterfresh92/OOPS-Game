@@ -207,6 +207,13 @@ public class Player extends GameObject {
 
                 gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
             }
+            
+            
+         /*   if (playerHit == true)
+            {
+                this.health -= 2;
+                System.out.println("health : " + this.health);
+            } */
         }
     }
     
@@ -339,6 +346,36 @@ public class Player extends GameObject {
             else 
                 return new Rectangle(0,0,0,0) ;
             
+        }
+        else // else returns the default rect for "up" direction 
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            return rect;
+        }
+    }
+    
+    public Rectangle lookAround()
+    {
+        Rectangle rect;
+        if(direction == "up")
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            return rect;
+        }
+        else if (direction == "right")
+        {
+            rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+            return rect;
+        }
+        else if (direction == "down")
+        {
+            rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+            return rect;
+        }
+        else if (direction == "left")
+        {
+            rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+            return rect;
         }
         else // else returns the default rect for "up" direction 
         {
