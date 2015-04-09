@@ -1,7 +1,7 @@
 /* Kevin Stubblefield
- * Last Updated: March 11, 2015
+ * Last Updated: April 9, 2015
  * Known Bugs: None
- * Created class
+ * Added force power graphics
  */
 
 package Engine;
@@ -51,6 +51,8 @@ public class ResourceLoader {
         SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_8.png");
         SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_9.png");
         SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_10.png");
+        SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/force_push_0.png");
+        SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/force_pull_0.png");
         
         // items folder
         SpriteCache.getSpriteCache().getSprite("res\\sprites\\items/heart_item_0.png");

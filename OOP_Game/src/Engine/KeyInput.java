@@ -27,6 +27,7 @@ public class KeyInput implements KeyListener {
     private static boolean left = false;
     private static boolean up = false;
     private static boolean down = false;
+    private boolean save = true;
     
     private GameData gameData;
     private Music music = GameData.background;
@@ -43,6 +44,15 @@ public class KeyInput implements KeyListener {
             System.out.println("O pressed!");
             gameData.setLoaded(false);
             gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_Y) {
+            if(save) {
+                gameData.getSaveFileHandler().saveGame();
+                save = false;
+            } else {
+                gameData.getSaveFileHandler().loadGame();
+                save = true;
+            }
         }
         if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item

@@ -44,6 +44,7 @@ public class Player extends GameObject {
     private boolean clipping;
     private boolean push, pull;
     private boolean knockBack;
+    private int mission;
     private Sprite h;
     private Animation walkingUp;
     private Animation walkingDown;
@@ -67,6 +68,7 @@ public class Player extends GameObject {
         this.height = 64;
         lastX = x;
         lastY = y;
+        mission = 0;
         isColliding = false;
         lastCollison = false;
         knockBack = false;
@@ -92,11 +94,11 @@ public class Player extends GameObject {
         walkingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_right_1.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
-        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
-        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
-        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
-        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
-        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new HalfHeart(0, 0, true));
+        inventory.add(new HalfHeart(0, 0, true));
         direction = "";
         facing = "";
         this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png"); 
@@ -600,6 +602,14 @@ public class Player extends GameObject {
 
     public void setFacing(String facing) {
         this.facing = facing;
+    }
+
+    public int getMission() {
+        return mission;
+    }
+
+    public void setMission(int mission) {
+        this.mission = mission;
     }
     
 }

@@ -45,6 +45,7 @@ public class GameData {
     private Mission active;
     private boolean loaded;
     private Sprite bg;
+    private SaveFileHandler saveFileHandler;
     
     public GameData(Game game) {
         this.game = game;
@@ -71,6 +72,7 @@ public class GameData {
         textBox = nullBox;
         hud = new HUD(player);
         inventory = new InventoryScreen(player);
+        saveFileHandler = new SaveFileHandler(this);
     }
     
     // Give mission number as parameter, initial load is 0
@@ -84,6 +86,11 @@ public class GameData {
                 mission++;
                 return;
             case 1:
+                mission++;
+                gameStates.pop();
+                gameStates.push(GameState.MENU_STATE);
+                return;
+            case 2:
                 active = new Mission1(player, this);
                 active.generateObjects();
                 objects = active.getObjects();
@@ -91,11 +98,6 @@ public class GameData {
                 player = active.getPlayer();
                 bg = active.getBackground();
                 loaded = true;
-                mission++;
-                gameStates.pop();
-                gameStates.push(GameState.MENU_STATE);
-                return;
-            case 2:
                 gameStates.pop();
                 gameStates.push(GameState.MISSION_01_STATE);
                 mission++;
@@ -276,6 +278,14 @@ public class GameData {
 
     public void setInventory(InventoryScreen inventory) {
         this.inventory = inventory;
+    }
+
+    public SaveFileHandler getSaveFileHandler() {
+        return saveFileHandler;
+    }
+
+    public void setSaveFileHandler(SaveFileHandler saveFileHandler) {
+        this.saveFileHandler = saveFileHandler;
     }
     
 }

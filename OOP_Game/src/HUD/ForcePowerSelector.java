@@ -1,33 +1,38 @@
 /* Kevin Stubblefield
- * Last Updated: March 17, 2015
+ * Last Updated: April 9, 2015
  * Known Bugs: None
- * Created class
+ * Added support for images
  */
 
 package HUD;
 
+import Sprite.Sprite;
+import Sprite.SpriteCache;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class ForcePowerSelector {
     
-    private ArrayList<Rectangle> forcePowers;
+    private ArrayList<Sprite> forcePowers;
     private int selected;
+    private float x, y;
     
     public ForcePowerSelector() {
         forcePowers = new ArrayList<>();
-        forcePowers.add(new Rectangle(32, 500, 32, 32));
-        forcePowers.add(new Rectangle(32 + 40, 500, 32, 32));
-        forcePowers.add(new Rectangle(32 + 80, 500, 32, 32));
+        forcePowers.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/force_push_0.png"));//new Rectangle(32, 500, 32, 32));
+        forcePowers.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/force_pull_0.png"));//new Rectangle(32 + 40, 500, 32, 32));
+        //forcePowers.add(new Rectangle(32 + 80, 500, 32, 32));
+        
+        x = 32;
+        y = 500;
     }
     
     public void update() {
         if(selected < 0) {
-            selected = 2;
+            selected = 1;
         }
-        if(selected > 2) {
+        if(selected > 1) {
             selected = 0;
         }
     }
@@ -39,7 +44,8 @@ public class ForcePowerSelector {
             } else {
                 g.setColor(Color.red);
             }
-            g.fillRect(forcePowers.get(i).x, forcePowers.get(i).y, forcePowers.get(i).width, forcePowers.get(i).height);
+            g.fillRect((int)(x + 40 * i), (int)y, 36, 36);
+            forcePowers.get(i).render(g, (x + 40 * i), y);
         }
     }
 

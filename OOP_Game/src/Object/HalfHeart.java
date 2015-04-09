@@ -1,15 +1,16 @@
 /* Kevin Stubblefield
- * Last Updated: March 17, 2015
+ * Last Updated: April 8, 2015
  * Known Bugs: None
- * Created class and implemented
+ * Created class and implemented.
+ * Took out string ref since all half hearts will look the same.
  */
 
 package Object;
 
 public class HalfHeart extends Item {
 
-    public HalfHeart(String ref, float x, float y, boolean collected) {
-        super(ref, x, y, collected);
+    public HalfHeart(float x, float y, boolean collected) {
+        super("res\\sprites\\items/heart_item_1.png", x, y, collected);
         this.name = "Half-Heart";
     }
     

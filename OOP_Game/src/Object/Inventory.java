@@ -1,13 +1,15 @@
 package Object;
 
 /* Kevin Stubblefield
- * Last Updated: March 19, 2015
+ * Last Updated: April 8, 2015
  * Known Bugs: None
  * Updated add and remove functions to check for existing items and increment/decrement
  * Updated remove function and use item function
+ * Added a toString method
  */
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Inventory {
     
@@ -17,6 +19,15 @@ public class Inventory {
     public Inventory(Player player) {
         items = new HashMap<>();
         this.player = player;
+    }
+    
+    @Override
+    public String toString() {
+        String temp = "";
+        for(Map.Entry<String, Item> item : items.entrySet()) {
+            temp = temp.concat(item.getValue().getName() + ":" + String.valueOf(item.getValue().getQuantity()) + "\n");
+        }
+        return temp;
     }
     
     public void add(Item item) {
