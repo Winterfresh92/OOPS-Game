@@ -1,8 +1,9 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: February 25, 2015
+ * Last Updated: April 4, 2015
  * Known Bugs: None
+ * Added O to go into test mission for testing new features.
  * 
  * Carlos Pena
  * Last Updated: March 25, 2015
@@ -12,8 +13,7 @@ package Engine;
 import Menu.MenuScreen;
 import Menu.PauseScreen;
 import Music.*;
-import Engine.GameState;
-import Engine.GameData;
+import Object.Enemy;
 import Object.GameObject;
 import Sprite.Sprite;
 import Sprite.SpriteCache;
@@ -41,6 +41,12 @@ public class KeyInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e)
     {
+        // DEBUGGING STUFF
+        if(e.getKeyCode() == KeyEvent.VK_O) {
+            System.out.println("O pressed!");
+            gameData.setLoaded(false);
+            gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
+        }
         if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item
                 if(gameData.getMenu().getSelected() == MenuScreen.START_GAME_SELECTED) {
@@ -199,6 +205,20 @@ public class KeyInput implements KeyListener {
             {
                 try {
                     Rectangle rect = gameData.getPlayer().lookAround(1);
+                    ArrayList<GameObject> allObjects = gameData.getObjects();
+                    for(GameObject go : allObjects)
+                    {
+                        if(go instanceof Enemy)
+                        {
+                            if(rect.contains(go.getX() + 32,go.getY() + 32))
+                            {
+                                Enemy badGuy = (Enemy) go;
+                                System.out.println("Enemy Hit");
+                                badGuy.hit();
+                                System.out.println(badGuy.getHeath());
+                            }
+                        }
+                    }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(KeyInput.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -236,6 +256,10 @@ public class KeyInput implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_J) {
                 gameData.getPlayer().powerSelected(gameData.getHud().getSelector().getSelected());
             }
+            
+            
+            
+            
         }
     }
 

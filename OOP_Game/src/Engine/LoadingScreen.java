@@ -1,49 +1,28 @@
 /* Kevin Stubblefield
- * Last Updated: March 10, 2015
+ * Last Updated: April 4, 2015
  * Known Bugs: None
- * Created class to implement loading screen
+ * Changed to the static loading screen image.
  */
 
 package Engine;
 
-import java.awt.Color;
-import java.awt.Font;
+import Sprite.Sprite;
+import Sprite.SpriteCache;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 public class LoadingScreen {
     
-    private long lastUpdate;
-    private int delay;
-    private ArrayList<String> loadingStrings;
-    private int currentString;
+    private Sprite image;
     
     public LoadingScreen() {
-        delay = 500;
-        lastUpdate = System.currentTimeMillis();
-        loadingStrings = new ArrayList<>();
-        loadingStrings.add("Loading");
-        loadingStrings.add("Loading.");
-        loadingStrings.add("Loading..");
-        loadingStrings.add("Loading...");
+        image = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/loading.png");
     }
     
     public void update() {
-        if(System.currentTimeMillis() - lastUpdate >= delay) {
-            currentString++;
-            if(currentString >= loadingStrings.size()) {
-                currentString = 0;
-            }
-            lastUpdate = System.currentTimeMillis();
-        }
     }
     
     public void render(Graphics g) {
-        g.setColor(Color.black);
-        g.drawRect(0, 0, Game.WIDTH, Game.HEIGHT);
-        g.setColor(Color.white);
-        g.setFont(new Font("Serif", Font.ITALIC, 48));
-        g.drawString(loadingStrings.get(currentString), 15, Game.HEIGHT - 60);
+        image.render(g, 0, 0);
     }
     
 }

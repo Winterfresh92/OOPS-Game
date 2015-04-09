@@ -1,8 +1,10 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: March 11, 2015
+ * Last Updated: April 4, 2015
  * Known Bugs: None
+ * Added mission test for testing purposes
+ * Moved loading into loading screen for mission 2 (load() function)
  */
 
 import HUD.HUD;
@@ -17,7 +19,9 @@ import Object.TextBox;
 import Mission.Mission;
 import Mission.Mission1;
 import Mission.Mission2;
+import Mission.MissionTest;
 import Music.SoundEffects;
+import Object.Enemy;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -81,7 +85,7 @@ public class GameData {
                 mission++;
                 return;
             case 1:
-                active = new Mission1(player);
+                active = new Mission1(player, this);
                 active.generateObjects();
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
@@ -95,6 +99,17 @@ public class GameData {
             case 2:
                 gameStates.pop();
                 gameStates.push(GameState.MISSION_01_STATE);
+                mission++;
+                return;
+            case 3:
+                active = new Mission2(player, this);
+                objects = active.getObjects();
+                textBoxQueue = active.getTextBoxQueue();
+                player = active.getPlayer();
+                bg = active.getBackground();
+                loaded = true;
+                gameStates.pop();
+                gameStates.push(GameState.MISSION_02_STATE);
                 mission++;
                 return;
             default:
@@ -128,6 +143,15 @@ public class GameData {
             hud.update();
             for(GameObject object : objects) {
                 object.update();
+                if(object instanceof Player)
+                {
+                    Player p = (Player) object;
+                    
+                    if(p.getHealth() < 1)
+                    {
+                        gameStates.push(GameState.PAUSE_STATE);
+                    }
+                }
             }
             if(active.levelOver()){
                 loaded = false;
@@ -137,7 +161,24 @@ public class GameData {
         }
         else if(gameStates.peek() == GameState.MISSION_02_STATE){
             if(!loaded){
-                active = new Mission2(player);
+                gameStates.push(GameState.LOADING_STATE);
+            }
+            textBox.update();
+            background.update();
+            game.getCamera().update(player);
+            hud.update();
+            for(GameObject object : objects) {
+                object.update();
+            }
+            if(active.levelOver()){
+                loaded = false;
+                gameStates.pop();
+                gameStates.push(GameState.MISSION_02_STATE);
+            }
+        }
+        else if(gameStates.peek() == GameState.MISSION_TEST_STATE) {
+            if(!loaded) {
+                active = new MissionTest(player, this);
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
@@ -147,13 +188,9 @@ public class GameData {
             textBox.update();
             background.update();
             game.getCamera().update(player);
+            hud.update();
             for(GameObject object : objects) {
                 object.update();
-            }
-            if(active.levelOver()){
-                loaded = false;
-                gameStates.pop();
-                gameStates.push(GameState.MISSION_02_STATE);
             }
         }
     }

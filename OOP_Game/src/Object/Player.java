@@ -6,6 +6,9 @@ package Object;
  *             renders briefly. If two directional buttons are pressed at the
  *             same time, both animations play (will likely require adjusting
  *             animation class to account for direction rather than player class.
+ * Implemented knockback a la A Link to the Past for visual feedback upon hit (besides heart decrease) 
+ * Made Player class work with new Enemy implementation
+ *
 /* Zain Chishti
  * Last Updated: March 19, 2015
  * Known Bugs: None
@@ -40,6 +43,7 @@ public class Player extends GameObject {
     private boolean clipping;
     private boolean push, pull;
     private boolean swing;
+    private boolean knockBack;
     private Sprite h;
     private Animation walkingUp;
     private Animation walkingDown;
@@ -68,6 +72,7 @@ public class Player extends GameObject {
         lastY = y;
         isColliding = false;
         lastCollison = false;
+        knockBack = false;
         playerHit = false;
         clipping = true;
         swing  = false;
@@ -178,14 +183,9 @@ public class Player extends GameObject {
         
         if(g instanceof Enemy)
         {
-            if(x != lastX)
-            {
-                this.health -= 2;
-                if(counter <= 9)
-                {
-                    h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ counter +".png");
-                    counter ++;
-                }
+            health -= 1;
+            if(health < 0) {
+                health = 0;
             }
             
          /*   if (playerHit == true)
@@ -193,6 +193,9 @@ public class Player extends GameObject {
                 this.health -= 2;
                 System.out.println("health : " + this.health);
             } */
+
+            h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
+            System.out.println("Player Health " + health);
         }
         
         if(g instanceof InteractableObject){
@@ -358,37 +361,74 @@ public class Player extends GameObject {
             if(object instanceof CollidableObject) {
                 CollidableObject temp = (CollidableObject) object;
                 if(temp.isSolid()) {
-                    if(getBoundsTop().intersects(object.getBounds())) {
+                    if(getBoundsTop().intersects(temp.getBounds())) {
                         isColliding  = true;
-                        y = object.getY() + object.getHeight(); 
-                        this.hit(object);
-                        
+                        y = temp.getY() + temp.getHeight(); 
+                        this.hit(temp);
                     }
-                    else if(getBoundsBottom().intersects(object.getBounds())) {
+                    else if(getBoundsBottom().intersects(temp.getBounds())) {
                         isColliding  = true;
-                        y = object.getY() - height;
-                        this.hit(object);
-                        
+                        y = temp.getY() - height;
+                        this.hit(temp);
                     }
-                    else if(getBoundsRight().intersects(object.getBounds())) {
+                    else if(getBoundsRight().intersects(temp.getBounds())) {
                         isColliding  = true;
-                        System.out.println(isColliding);
-                        x = object.getX() - width;
-                        this.hit(object);
-                         
+                        x = temp.getX() - width;
+                        this.hit(temp);
                     }
-                    else if(getBoundsLeft().intersects(object.getBounds())) {
+                    else if(getBoundsLeft().intersects(temp.getBounds())) {
                         isColliding  = true;
-                        x = object.getX() + object.getWidth();
-                        this.hit(object);
+                        x = temp.getX() + temp.getWidth();
+                        this.hit(temp);
                     }
                     else 
                     {
                         isColliding = false;
                        
                     }
+                }   
+            }
+            
+            if(object instanceof Enemy) {
+                Enemy enemy = (Enemy) object;
+                if(!knockBack) {
+                    if(getBoundsTop().intersects(enemy.getBounds())) {
+                        velY = playerSpeed * 2;
+                        this.hit(enemy);
+                        knockBack = true;
+                        while(knockBack && y < enemy.getY() + enemy.getHeight() + 32) {
+                            y += velY;
+                        }
+                        knockBack = false;
+                    }
+                    else if(getBoundsBottom().intersects(enemy.getBounds())) {
+                        velY = -playerSpeed * 2;
+                        this.hit(enemy);
+                        knockBack = true;
+                        while(knockBack && y + height >= enemy.getY() - 32) {
+                            y += velY;
+                        }
+                        knockBack = false;
+                    }
+                    else if(getBoundsRight().intersects(enemy.getBounds())) {
+                        velX = -playerSpeed * 2;
+                        this.hit(enemy);
+                        knockBack = true;
+                        while(knockBack && x + width >= enemy.getX() - 32) {
+                            x += velX;
+                        }
+                        knockBack = false;
+                    }
+                    else if(getBoundsLeft().intersects(enemy.getBounds())) {
+                        velX = playerSpeed * 2;
+                        this.hit(enemy);
+                        knockBack = true;
+                        while(knockBack && x < enemy.getX() + enemy.getWidth() + 32) {
+                            x += velX;
+                        }
+                        knockBack = false;
+                    }
                 }
-                
             }
            
         }

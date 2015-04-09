@@ -3,6 +3,11 @@ package Mission;
 /* Chris Graff
  * Last Updated: March 10, 2015
  * Known Bugs: Can't move. No input for some reason.
+ * 
+ * Kevin Stubblefield
+ * Last Updated: April 4, 2015
+ * Known Bugs: None
+ * Added field for gameData
  */
 import Sprite.SpriteCache;
 import Object.TextBox;
@@ -18,8 +23,8 @@ import java.util.LinkedList;
 // Handles data for Missions, child classes are actual missions. Constructs mission.
 public class Mission2 extends Mission {
 
-    public Mission2(Player player) {
-        super(player);
+    public Mission2(Player player, GameData gameData) {
+        super(player, gameData);
         this.player = player;
         this.player.setX(640);
         this.player.setY(1408);

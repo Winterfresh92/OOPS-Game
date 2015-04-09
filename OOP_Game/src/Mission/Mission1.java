@@ -3,6 +3,11 @@ package Mission;
 /* Chris Graff
  * Last Updated: March 10, 2015
  * Known Bugs: None
+ *
+ * Kevin Stubblefield
+ * Last Updated: April 4, 2015
+ * Known Bugs: None
+ * Added field for gameData
  */
 
 import Sprite.SpriteCache;
@@ -13,6 +18,7 @@ import Object.InteractableObject;
 import Object.GameObject;
 import Object.CollidableObject;
 import Engine.*;
+import Object.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -22,8 +28,8 @@ public class Mission1 extends Mission{
     
     
 
-    public Mission1(Player player) {
-        super(player);
+    public Mission1(Player player, GameData gameData) {
+        super(player, gameData);
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);
@@ -160,6 +166,7 @@ public class Mission1 extends Mission{
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1024, 640, true, false, ""));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 640, 1088, true, false, ""));
         objects.add(new InteractableObject("res\\sprites/dorak_down_0.png", 1600, 1152, true, false, ""));
+        objects.add(new Enemy("res\\sprites\\enemies\\Sith Soldier\\left/sith_soldier_left_0.png",1600,1400,true,false,gameData ));
         objects.addAll(makeWalls("res\\sprites/wall.png", 512, 0, 9, true));//horizontal walls
         objects.addAll(makeWalls("res\\sprites/wall.png", 576, 128, 7, true));
         objects.addAll(makeWalls("res\\sprites/wall.png", 640, 192, 6, true));
