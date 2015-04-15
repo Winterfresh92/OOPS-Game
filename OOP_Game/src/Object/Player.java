@@ -9,7 +9,7 @@ package Object;
  * Implemented knockback a la A Link to the Past for visual feedback upon hit (besides heart decrease) 
  * Made Player class work with new Enemy implementation
  *
-/* Zain Chishti
+ /* Zain Chishti
  * Last Updated: March 19, 2015
  * Known Bugs: None
  * Added clipping boolean, press K to toggle!
@@ -21,7 +21,6 @@ package Object;
  * 
  *
  */
-
 import Engine.Game;
 import Sprite.Sprite;
 import Sprite.SpriteCache;
@@ -33,7 +32,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 
 public class Player extends GameObject {
 
@@ -58,7 +56,7 @@ public class Player extends GameObject {
     private Animation fightingUp;
     private float lastX;
     private float lastY;
-    
+    private boolean hasSaber;
     private boolean isColliding;
     private boolean lastCollison;
     private boolean playerHit;
@@ -67,7 +65,7 @@ public class Player extends GameObject {
     private int forcePowers;
     private GameData gameData;
     private Inventory inventory;
-    
+
     public Player(String ref, float x, float y) {
         super(ref, x, y);
         this.width = 64;
@@ -80,7 +78,7 @@ public class Player extends GameObject {
         knockBack = false;
         playerHit = false;
         clipping = true;
-        swing  = false;
+        swing = false;
         health = 10;
         velX = velY = 0;
         inventory = new Inventory(this);
@@ -92,7 +90,7 @@ public class Player extends GameObject {
         fightingRight = new Animation(300);
         fightingLeft = new Animation(300);
         fightingDown = new Animation(150);
-        fightingUp  = new Animation(150);
+        fightingUp = new Animation(150);
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_0.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_1.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_2.png"));
@@ -124,363 +122,360 @@ public class Player extends GameObject {
         inventory.add(new HalfHeart(0, 0, true));
         direction = "";
         facing = "";
+        hasSaber = false;
         this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");
         forcePowers = 0;
     }
-    
+
     @Override
     public void update() {
-        
+
         lastX = x;
         lastY = y;
-        
+
         x += velX;
         y += velY;
-        
-        if(!up && !down && !right && !left) {
+
+        if (!up && !down && !right && !left) {
             checkDirection();
         }
-        if(up){
+        if (up) {
             dir = 0;
             walkingUp.update();
             direction = "up";
         }
-        if(down){
+        if (down) {
             dir = 1;
             walkingDown.update();
             direction = "down";
         }
-        if(right){
+        if (right) {
             dir = 2;
             walkingRight.update();
             direction = "right";
         }
-        if(left){
+        if (left) {
             dir = 3;
             walkingLeft.update();
             direction = "left";
         }
-        
-        if(swing && (direction == "right"))
-                fightingRight.update();
-        if(swing && (direction == "left"))
-                fightingLeft.update();
-        if(swing && (direction == "down"))
-                fightingDown.update();
-        if(swing && (direction == "up"))
-                fightingUp.update();
-        
-        if(gameData.isLoaded() && clipping) {
+
+        if (swing && (direction == "right")) {
+            fightingRight.update();
+        }
+        if (swing && (direction == "left")) {
+            fightingLeft.update();
+        }
+        if (swing && (direction == "down")) {
+            fightingDown.update();
+        }
+        if (swing && (direction == "up")) {
+            fightingUp.update();
+        }
+
+        if (gameData.isLoaded() && clipping) {
             checkCollisions();
-       //     System.out.println(isColliding + "  " + lastCollison);
-            if(lastCollison == false && isColliding == true)
-            {
+            //     System.out.println(isColliding + "  " + lastCollison);
+            if (lastCollison == false && isColliding == true) {
                 playerHit = true;
             }
-           lastCollison = isColliding;
+            lastCollison = isColliding;
         }
-        
+
         //System.out.println("PLAYER HEALTH: " + health);
     }
 
     public static int counter = 1;
-    
-    public void hit(GameObject g)
-    {
+
+    public void hit(GameObject g) {
         // This is implemented only for demo purposes. It will be implemented fully later when the enemy will be implemented
-        
-        if(g instanceof Enemy)
-        {
-            health -= 1;
-            if(health < 0) {
+
+        if (g instanceof Enemy && g.isSolid()) {
+            Enemy badGuy = (Enemy) g;
+            health -= badGuy.getDamage();
+            if (health < 0) {
                 health = 0;
             }
-            h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
+            h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_" + (10 - health) + ".png");
         }
-         
-        if(g instanceof InteractableObject){
+
+        if (g instanceof InteractableObject) {
             InteractableObject interact = (InteractableObject) g;
-            if(interact.interact()){
+            if (interact.interact()) {
                 gameData.getNextQueue();
                 interact.interacted();
-                if(g instanceof InteractableSlip){
-                    forcePowers += 1;
-                    gameData.removeObject(interact);
+                if (g instanceof InteractableSlip) {
+                    InteractableSlip slip = (InteractableSlip) g;
+                    if ("You already have your lightsaber.".equals(slip.getDefaultText())) {
+                        hasSaber = true;
+                        g.setSprite(SpriteCache.getSpriteCache().getSprite("res\\sprites/stand_0.png"));
+                    } else {
+                        forcePowers += 1;
+                        gameData.removeObject(interact);
+                    }
                 }
-            }
-            else{
+            } else {
                 gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
             }
-            
-            
-         /*   if (playerHit == true)
-            {
-                this.health -= 2;
-                System.out.println("health : " + this.health);
-            } */
+
+            /*   if (playerHit == true)
+             {
+             this.health -= 2;
+             System.out.println("health : " + this.health);
+             } */
         }
     }
-    
-    
+
     @Override
     public void render(Graphics g) {
-        if(!up && !down && !right && !left) {
-            if(sprite != null) {
+        if (!up && !down && !right && !left) {
+            if (sprite != null) {
                 sprite.render(g, x, y);
-            }
-            else{
-                g.fillRect((int)this.x-230,(int)this.y-200,(health*100)/10,10);
+            } else {
+                g.fillRect((int) this.x - 230, (int) this.y - 200, (health * 100) / 10, 10);
             }
         }
-        
-        if(up) {
+
+        if (up) {
             walkingUp.render(g, x, y);
         }
-        if(down) {
+        if (down) {
             walkingDown.render(g, x, y);
         }
-        if(right) {
+        if (right) {
             walkingRight.render(g, x, y);
         }
-        if(left) {
+        if (left) {
             walkingLeft.render(g, x, y);
         }
-        
-        if(swing && (direction == "right"))
+
+        if (swing && (direction == "right")) {
             fightingRight.render(g, x, y);
-        if(swing && (direction == "left"))    
+        }
+        if (swing && (direction == "left")) {
             fightingLeft.render(g, x, y);
-        if(swing && (direction == "down"))    
+        }
+        if (swing && (direction == "down")) {
             fightingDown.render(g, x, y);
-        if(swing && (direction == "up"))    
+        }
+        if (swing && (direction == "up")) {
             fightingUp.render(g, x, y);
-        
+        }
+
         g.setColor(Color.green);
-       // 
-        h.render(g, (int)this.x-300,(int)this.y-220);
+        // 
+        h.render(g, (int) this.x - 300, (int) this.y - 220);
     }
-    
+
     public void toggleClipping() {
         clipping = !clipping;
     }
-    
-    public Rectangle lookAround(int x) throws InterruptedException 
-    {
+
+    public Rectangle lookAround(int x) throws InterruptedException {
         Rectangle rect;
-        if(direction == "up")
-        {
-            if(x == 0)
-            {
-                rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+        if (direction == "up") {
+            if (x == 0) {
+                rect = new Rectangle((int) this.getX(), (int) this.getY() - 64, 64, 64);
                 return rect;
-            }
-            else if (x == 1)
-            {
-                rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            } else if (x == 1) {
+                rect = new Rectangle((int) this.getX(), (int) this.getY() - 64, 64, 64);
                 swing = true;
-                
+
                 TimeUnit.MILLISECONDS.sleep(500);
-                
+
                 swing = false;
-                
+
                 return rect;
+            } else {
+                return new Rectangle(0, 0, 0, 0);
             }
-            else 
-                return new Rectangle(0,0,0,0) ;
-            
-        }
-        else if (direction == "right")
-        {
-            if(x == 0)
-            {
-                rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+
+        } else if (direction == "right") {
+            if (x == 0) {
+                rect = new Rectangle((int) this.getX() + (int) this.getWidth(), (int) this.getY(), 64, 64);
                 return rect;
-            }
-            else if (x == 1)
-            {
-                rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+            } else if (x == 1) {
+                rect = new Rectangle((int) this.getX() + (int) this.getWidth(), (int) this.getY(), 64, 64);
                 swing = true;
-                
+
                 TimeUnit.MILLISECONDS.sleep(150);
-                
+
                 swing = false;
-                
+
                 return rect;
+            } else {
+                return new Rectangle(0, 0, 0, 0);
             }
-            else 
-                return new Rectangle(0,0,0,0) ;
-        }
-        else if (direction == "down")
-        {
-            if(x == 0)
-            {
-                rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+        } else if (direction == "down") {
+            if (x == 0) {
+                rect = new Rectangle((int) this.getX(), (int) this.getY() + (int) this.getHeight(), 64, 64);
                 return rect;
-            }
-            else if (x == 1)
-            {
-                rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+            } else if (x == 1) {
+                rect = new Rectangle((int) this.getX(), (int) this.getY() + (int) this.getHeight(), 64, 64);
                 swing = true;
-                
+
                 TimeUnit.MILLISECONDS.sleep(500);
-                
+
                 swing = false;
-                
+
                 return rect;
+            } else {
+                return new Rectangle(0, 0, 0, 0);
             }
-            else 
-                return new Rectangle(0,0,0,0) ;
-            
-        }
-        else if (direction == "left")
-        {
-            if(x == 0)
-            {
-                rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+
+        } else if (direction == "left") {
+            if (x == 0) {
+                rect = new Rectangle((int) this.getX() - 64, (int) this.getY(), 64, 64);
                 return rect;
-            }
-            else if (x == 1)
-            {
-                rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+            } else if (x == 1) {
+                rect = new Rectangle((int) this.getX() - 64, (int) this.getY(), 64, 64);
                 swing = true;
-                
+
                 TimeUnit.MILLISECONDS.sleep(150);
-                
+
                 swing = false;
-                
+
                 return rect;
+            } else {
+                return new Rectangle(0, 0, 0, 0);
             }
-            else 
-                return new Rectangle(0,0,0,0) ;
-            
-        }
-        else // else returns the default rect for "up" direction 
+
+        } else // else returns the default rect for "up" direction 
         {
-            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            rect = new Rectangle((int) this.getX(), (int) this.getY() - 64, 64, 64);
             return rect;
         }
     }
-    
-    public Rectangle lookAround()
-    {
+
+    public Rectangle lookAround() {
         Rectangle rect;
-        if(direction == "up")
-        {
-            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+        if (direction == "up") {
+            rect = new Rectangle((int) this.getX(), (int) this.getY() - 64, 64, 64);
             return rect;
-        }
-        else if (direction == "right")
-        {
-            rect = new Rectangle((int)this.getX()+(int)this.getWidth(),(int)this.getY(),64,64);
+        } else if (direction == "right") {
+            rect = new Rectangle((int) this.getX() + (int) this.getWidth(), (int) this.getY(), 64, 64);
             return rect;
-        }
-        else if (direction == "down")
-        {
-            rect = new Rectangle((int)this.getX(),(int)this.getY() +(int)this.getHeight(),64,64);
+        } else if (direction == "down") {
+            rect = new Rectangle((int) this.getX(), (int) this.getY() + (int) this.getHeight(), 64, 64);
             return rect;
-        }
-        else if (direction == "left")
-        {
-            rect = new Rectangle((int)this.getX()-64,(int)this.getY(),64,64);
+        } else if (direction == "left") {
+            rect = new Rectangle((int) this.getX() - 64, (int) this.getY(), 64, 64);
             return rect;
-        }
-        else // else returns the default rect for "up" direction 
+        } else // else returns the default rect for "up" direction 
         {
-            rect = new Rectangle((int)this.getX(),(int)this.getY()-64,64,64);
+            rect = new Rectangle((int) this.getX(), (int) this.getY() - 64, 64, 64);
             return rect;
         }
     }
-    
+
     public void checkCollisions() {
         int counter = 0;
-        for(GameObject object : gameData.getObjects()) {
-            if(object instanceof Item) {
-                if(this.getCollision(object)) {
+        for (GameObject object : gameData.getObjects()) {
+            if (object instanceof Item) {
+                if (this.getCollision(object)) {
                     Item item = (Item) object;
                     inventory.add(item);
                     item.setCollected(true);
                 }
             }
-            
-            if(object instanceof CollidableObject) {
+
+            if (object instanceof CollidableObject) {
                 CollidableObject temp = (CollidableObject) object;
-                if(temp.isSolid()) {
-                    if(getBoundsTop().intersects(temp.getBounds())) {
-                        isColliding  = true;
-                        y = temp.getY() + temp.getHeight(); 
+                if (temp.isSolid()) {
+                    if (getBoundsTop().intersects(temp.getBounds())) {
+                        isColliding = true;
+                        y = temp.getY() + temp.getHeight();
                         this.hit(temp);
-                    }
-                    else if(getBoundsBottom().intersects(temp.getBounds())) {
-                        isColliding  = true;
+                    } else if (getBoundsBottom().intersects(temp.getBounds())) {
+                        isColliding = true;
                         y = temp.getY() - height;
                         this.hit(temp);
-                    }
-                    else if(getBoundsRight().intersects(temp.getBounds())) {
-                        isColliding  = true;
+                    } else if (getBoundsRight().intersects(temp.getBounds())) {
+                        isColliding = true;
                         x = temp.getX() - width;
                         this.hit(temp);
-                    }
-                    else if(getBoundsLeft().intersects(temp.getBounds())) {
-                        isColliding  = true;
+                    } else if (getBoundsLeft().intersects(temp.getBounds())) {
+                        isColliding = true;
                         x = temp.getX() + temp.getWidth();
                         this.hit(temp);
-                    }
-                    else 
-                    {
+                    } else {
                         isColliding = false;
-                       
-                    }
-                }   
-            }
-            
-            if(object instanceof Enemy) {
-                Enemy enemy = (Enemy) object;
-                if(!knockBack) {
-                    if(getBoundsTop().intersects(enemy.getBounds())) {
-                        velY = playerSpeed * 2;
-                        this.hit(enemy);
-                        knockBack = true;
-                        while(knockBack && y < enemy.getY() + enemy.getHeight() + 32) {
-                            y += velY;
-                        }
-                        knockBack = false;
-                    }
-                    else if(getBoundsBottom().intersects(enemy.getBounds())) {
-                        velY = -playerSpeed * 2;
-                        this.hit(enemy);
-                        knockBack = true;
-                        while(knockBack && y + height >= enemy.getY() - 32) {
-                            y += velY;
-                        }
-                        knockBack = false;
-                    }
-                    else if(getBoundsRight().intersects(enemy.getBounds())) {
-                        velX = -playerSpeed * 2;
-                        this.hit(enemy);
-                        knockBack = true;
-                        while(knockBack && x + width >= enemy.getX() - 32) {
-                            x += velX;
-                        }
-                        knockBack = false;
-                    }
-                    else if(getBoundsLeft().intersects(enemy.getBounds())) {
-                        velX = playerSpeed * 2;
-                        this.hit(enemy);
-                        knockBack = true;
-                        while(knockBack && x < enemy.getX() + enemy.getWidth() + 32) {
-                            x += velX;
-                        }
-                        knockBack = false;
+
                     }
                 }
             }
-           
+
+            if (object instanceof Enemy) {
+                Enemy enemy = (Enemy) object;
+                if (enemy.getAggressor()) {
+                    if (!knockBack) {
+                        if (getBoundsTop().intersects(enemy.getBounds())) {
+                            velY = playerSpeed * 2;
+                            this.hit(enemy);
+                            knockBack = true;
+                            while (knockBack && y < enemy.getY() + enemy.getHeight() + 32) {
+                                y += velY;
+                            }
+                            knockBack = false;
+                        } else if (getBoundsBottom().intersects(enemy.getBounds())) {
+                            velY = -playerSpeed * 2;
+                            this.hit(enemy);
+                            knockBack = true;
+                            while (knockBack && y + height >= enemy.getY() - 32) {
+                                y += velY;
+                            }
+                            knockBack = false;
+                        } else if (getBoundsRight().intersects(enemy.getBounds())) {
+                            velX = -playerSpeed * 2;
+                            this.hit(enemy);
+                            knockBack = true;
+                            while (knockBack && x + width >= enemy.getX() - 32) {
+                                x += velX;
+                            }
+                            knockBack = false;
+                        } else if (getBoundsLeft().intersects(enemy.getBounds())) {
+                            velX = playerSpeed * 2;
+                            this.hit(enemy);
+                            knockBack = true;
+                            while (knockBack && x < enemy.getX() + enemy.getWidth() + 32) {
+                                x += velX;
+                            }
+                            knockBack = false;
+                        }
+                    }
+                }else{
+                    Enemy temp = (Enemy) object;
+                if (temp.isSolid()) {
+                    if (getBoundsTop().intersects(temp.getBounds())) {
+                        isColliding = true;
+                        y = temp.getY() + temp.getHeight();
+                        this.hit(temp);
+                    } else if (getBoundsBottom().intersects(temp.getBounds())) {
+                        isColliding = true;
+                        y = temp.getY() - height;
+                        this.hit(temp);
+                    } else if (getBoundsRight().intersects(temp.getBounds())) {
+                        isColliding = true;
+                        x = temp.getX() - width;
+                        this.hit(temp);
+                    } else if (getBoundsLeft().intersects(temp.getBounds())) {
+                        isColliding = true;
+                        x = temp.getX() + temp.getWidth();
+                        this.hit(temp);
+                    } else {
+                        isColliding = false;
+
+                    }
+                }
+                }
+            }
+
         }
-         
+
     }
-    
+
     public void powerSelected(int selected) {
-        switch(selected) {
+        switch (selected) {
             case 0:
                 push = true;
                 pull = false;
@@ -493,11 +488,11 @@ public class Player extends GameObject {
                 break;
         }
     }
-    
+
     public void Force() {
         boolean move = true;
         if (push) {
-            if(forcePowers < 2){
+            if (forcePowers < 2) {
                 return;
             }
             System.out.println("Force Push activated");
@@ -512,10 +507,10 @@ public class Player extends GameObject {
                                         CollidableObject next = (CollidableObject) object2;
                                         if (next.isSolid()) {
                                             if (temp.y + 64 == next.getY()) {
-                                               if (next.getX() <= temp.x + 10 && next.getX() >= temp.x - 10) {
+                                                if (next.getX() <= temp.x + 10 && next.getX() >= temp.x - 10) {
                                                     move = false;
                                                     break;
-                                                } 
+                                                }
                                             } else {
                                                 move = true;
                                             }
@@ -534,10 +529,10 @@ public class Player extends GameObject {
                                         CollidableObject next = (CollidableObject) object2;
                                         if (next.isSolid()) {
                                             if (temp.y - 64 == next.getY()) {
-                                               if (next.getX() <= temp.x + 10 && next.getX() >= temp.x - 10) {
+                                                if (next.getX() <= temp.x + 10 && next.getX() >= temp.x - 10) {
                                                     move = false;
                                                     break;
-                                                } 
+                                                }
                                             } else {
                                                 move = true;
                                             }
@@ -555,11 +550,11 @@ public class Player extends GameObject {
                                     if (object3 instanceof CollidableObject) {
                                         CollidableObject next = (CollidableObject) object3;
                                         if (next.isSolid() && !next.isMobile()) {
-                                            if(next.getX() <= temp.x + 70 && next.getX() >= temp.x - 70) {
+                                            if (next.getX() <= temp.x + 70 && next.getX() >= temp.x - 70) {
                                                 if (next.getY() <= temp.y + 10 && next.getY() >= temp.y - 10) {
                                                     move = false;
                                                     break;
-                                                } 
+                                                }
                                             } else {
                                                 move = true;
                                             }
@@ -578,10 +573,10 @@ public class Player extends GameObject {
                                         CollidableObject next = (CollidableObject) object4;
                                         if (next.isSolid() && !next.isMobile()) {
                                             if (next.getX() <= temp.x + 70 && next.getX() >= temp.x - 70) {
-                                              if (next.getY() <= temp.y + 10 && next.getY() >= temp.y - 10) {
+                                                if (next.getY() <= temp.y + 10 && next.getY() >= temp.y - 10) {
                                                     move = false;
                                                     break;
-                                                } 
+                                                }
                                             } else {
                                                 move = true;
                                             }
@@ -597,9 +592,8 @@ public class Player extends GameObject {
                     }
                 }
             }
-        }
-        else if (pull) {
-            if(forcePowers < 1){
+        } else if (pull) {
+            if (forcePowers < 1) {
                 return;
             }
             System.out.println("Force Pull activated");
@@ -612,16 +606,16 @@ public class Player extends GameObject {
                                 SoundEffects.ForcePull.play();
                                 temp.y -= power;
                             }
-                        } else if (y - 128 <= temp.getY()&& y + 128 >= temp.getY() && facing.equals("up")) { //up
+                        } else if (y - 128 <= temp.getY() && y + 128 >= temp.getY() && facing.equals("up")) { //up
                             if (temp.getX() <= x + 63 && temp.getX() >= x - 63) {
                                 SoundEffects.ForcePull.play();
                                 temp.y += power;
                             }
                         } else if (x + 128 >= temp.getX() && temp.getX() >= x - 128 && facing.equals("right")) { //right
-                                if (temp.getY() <= y + 63 && temp.getY() >= y - 63) {
-                                    SoundEffects.ForcePull.play();
-                                    temp.x -= power;
-                                }
+                            if (temp.getY() <= y + 63 && temp.getY() >= y - 63) {
+                                SoundEffects.ForcePull.play();
+                                temp.x -= power;
+                            }
                         } else if (x - 128 <= temp.getX() && x + 128 >= temp.getX() && facing.equals("left")) { //left
                             if (temp.getY() <= y + 63 && temp.getY() >= y - 63) {
                                 SoundEffects.ForcePull.play();
@@ -635,7 +629,7 @@ public class Player extends GameObject {
     }
 
     private void checkDirection() {
-        switch(dir) {
+        switch (dir) {
             case 0: // up
                 sprite = SpriteCache.getSpriteCache().getSprite(
                         "res\\sprites\\player\\back/player_back_0.png"
@@ -658,7 +652,7 @@ public class Player extends GameObject {
                 break;
         }
     }
-    
+
     public boolean isLeft() {
         return left;
     }
@@ -689,6 +683,10 @@ public class Player extends GameObject {
 
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+    public boolean hasSaber() {
+        return this.hasSaber;
     }
 
     public int getPlayerSpeed() {
@@ -770,14 +768,13 @@ public class Player extends GameObject {
     public void setMission(int mission) {
         this.mission = mission;
     }
-    
-    public boolean getSwing()
-    {
+
+    public boolean getSwing() {
         return swing;
     }
-    public void setSwing(boolean swing)
-    {
+
+    public void setSwing(boolean swing) {
         this.swing = swing;
     }
-    
+
 }

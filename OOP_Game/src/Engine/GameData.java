@@ -94,6 +94,11 @@ public class GameData {
                 gameStates.push(GameState.MENU_STATE);
                 return;
             case 2:
+                mission ++;
+                gameStates.pop();
+                gameStates.push(GameState.INTRO_STATE);
+                return;
+            case 3:
                 active = new Mission1(player, this);
                 active.generateObjects();
                 objects = active.getObjects();
@@ -105,7 +110,7 @@ public class GameData {
                 gameStates.push(GameState.MISSION_01_STATE);
                 mission++;
                 return;
-            case 3:
+            case 4:
                 active = new Mission2(player, this);
                 objects = active.getObjects();
                 textBoxQueue = active.getTextBoxQueue();
@@ -141,8 +146,13 @@ public class GameData {
         } if(gameStates.peek() == GameState.INVENTORY_STATE) {
             inventory.update();
         } if(gameStates.peek() == GameState.INTRO_STATE){
-            game.getCamera().setX(0);
-            game.getCamera().setY(0);
+            game.getIntroScreen().update();
+            if(game.getIntroScreen().finished()){
+                gameStates.pop();
+                load();
+            }
+            //game.getCamera().setX(0);
+            //game.getCamera().setY(0);
         }if(gameStates.peek() == GameState.MISSION_01_STATE){
             textBox.update();
             background.update();
@@ -172,7 +182,8 @@ public class GameData {
         }
         else if(gameStates.peek() == GameState.MISSION_02_STATE){
             if(!loaded){
-                gameStates.push(GameState.LOADING_STATE);
+                //gameStates.push(GameState.LOADING_STATE);
+                load();
             }
             textBox.update();
             background.update();

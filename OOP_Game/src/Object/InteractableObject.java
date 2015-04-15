@@ -4,12 +4,11 @@ package Object;
  * Last Updated: March 10, 2015
  * Known Bugs: None
  */
-
 import java.awt.Color;
 import java.awt.Graphics;
 
 public class InteractableObject extends CollidableObject {
-    
+
     private boolean interacted;
     private String defaultText;
 
@@ -22,7 +21,7 @@ public class InteractableObject extends CollidableObject {
         interacted = true;
         defaultText = "";
     }
-    
+
     public InteractableObject(String ref, float x, float y, boolean solid, boolean mobile, String defaultText) {
         super(ref, x, y);
         this.width = 64;
@@ -32,7 +31,7 @@ public class InteractableObject extends CollidableObject {
         interacted = false;
         this.defaultText = defaultText;
     }
-    
+
     public InteractableObject(String ref, float x, float y, boolean solid, boolean mobile, String defaultText, boolean interacted) {
         super(ref, x, y);
         this.width = 64;
@@ -56,16 +55,16 @@ public class InteractableObject extends CollidableObject {
             g.fillRect((int) x, (int) y, (int) width, (int) height);
         }
     }
-    
-    public void interacted(){
+
+    public void interacted() {
         this.interacted = true;
     }
-    
-    public boolean interact(){
+
+    public boolean interact() {
         return !interacted;
     }
-    
-    public String getDefaultText(){
+
+    public String getDefaultText() {
         return this.defaultText;
     }
 
