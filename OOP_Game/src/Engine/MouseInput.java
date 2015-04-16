@@ -1,12 +1,14 @@
 /* Kevin Stubblefield
- * Last Updated: April 4, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Made it so it loads first.
+ * Added call to loadFromFile
  */
 package Engine;
 
 import Menu.MenuScreen;
 import Music.Music;
+import Music.SoundEffects;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -33,11 +35,20 @@ class MouseInput implements MouseListener, MouseMotionListener {
         if(e.getX() >= 263 && e.getX() <= 541
                 && e.getY() >= 317 && e.getY() <= 380) {
             gameData.getMenu().setSelected(MenuScreen.CONTINUE_SELECTED);
+            gameData.getGameStates().pop();
+            gameData.loadGameFromFile();
         }
         if(e.getX() >= 280 && e.getX() <= 521
                 && e.getY() >= 410 && e.getY() <= 462) {
             gameData.getMenu().setSelected(MenuScreen.OPTIONS_SELECTED);
-            music.Mute();
+            if(Music.volume != Music.Volume.Mute) {
+                music.Mute();
+            }
+            else {
+                Music.volume = Music.Volume.Medium;
+                SoundEffects.volume = SoundEffects.Volume.High;
+                music.play();
+            }
         }
         if(e.getX() >= 332 && e.getX() <= 470
                 && e.getY() >= 495 && e.getY() <= 550) {

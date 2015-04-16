@@ -1,7 +1,8 @@
 /* Kevin Stubblefield
- * Last Updated: April 8, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Created classs
+ * Added mission loading
  */
 
 package Engine;
@@ -40,6 +41,7 @@ public class SaveFileHandler {
     }
     
     public void loadGame() {
+        gameData.setLoadingFromFile(true);
         BufferedReader br = null;
         try {
             int lineNum = 0;
@@ -56,7 +58,7 @@ public class SaveFileHandler {
                     gameData.getPlayer().setHealth(Integer.parseInt(currentLine));
                 }
                 if(lineNum == 3) { // Start inventory
-                    while(lineNum < 3 + gameData.getPlayer().getInventory().getItems().size()) {
+                    while(lineNum <= 3 + gameData.getPlayer().getInventory().getItems().size()) {
                         String[] itemString = currentLine.split(":");
                         Item item;
                         if(itemString[0].equals("Half-Heart")) {
@@ -75,6 +77,9 @@ public class SaveFileHandler {
                         currentLine = br.readLine();
                         lineNum++;
                     }
+                }
+                if(lineNum == 4 + gameData.getPlayer().getInventory().getItems().size()) {
+                    gameData.setMission(Integer.parseInt(currentLine) + 1);
                 }
                 System.out.println(currentLine);
                 lineNum++;

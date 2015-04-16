@@ -1,9 +1,10 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: April 4, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Added O to go into test mission for testing new features.
+ * Added call to loadGameFromFile
  * 
  * Carlos Pena
  * Last Updated: March 25, 2015
@@ -49,13 +50,7 @@ public class KeyInput implements KeyListener {
             gameData.getGameStates().push(GameState.MISSION_TEST_STATE);
         }
         if(e.getKeyCode() == KeyEvent.VK_Y) {
-            if(save) {
-                gameData.getSaveFileHandler().saveGame();
-                save = false;
-            } else {
-                gameData.getSaveFileHandler().loadGame();
-                save = true;
-            }
+            gameData.getSaveFileHandler().saveGame();
         }
         if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item
@@ -67,9 +62,18 @@ public class KeyInput implements KeyListener {
                     music.Pause();
                     music.play();
                 } else if(gameData.getMenu().getSelected() == MenuScreen.CONTINUE_SELECTED) {
-                    
+                    gameData.getGameStates().pop();
+                    gameData.loadGameFromFile();
                 } else if(gameData.getMenu().getSelected() == MenuScreen.OPTIONS_SELECTED) {
-                    
+                    if(Music.volume != Music.Volume.Mute) {
+//                    SoundEffects.volume = SoundEffects.Volume.Mute;
+                    music.Mute();
+                    }
+                    else {
+                        Music.volume = Music.Volume.Medium;
+                        SoundEffects.volume = SoundEffects.Volume.High;
+                        music.play();
+                    }
                 } else if(gameData.getMenu().getSelected() == MenuScreen.EXIT_SELECTED) {
                     System.exit(0);
                 }

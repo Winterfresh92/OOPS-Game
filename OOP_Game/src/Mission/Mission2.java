@@ -5,9 +5,10 @@ package Mission;
  * Known Bugs: Can't move. No input for some reason.
  * 
  * Kevin Stubblefield
- * Last Updated: April 4, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Added field for gameData
+ * Added Constructor for when loading from file
  */
 import Sprite.SpriteCache;
 import Object.TextBox;
@@ -31,6 +32,17 @@ public class Mission2 extends Mission {
         this.player = player;
         this.player.setX(640);
         this.player.setY(1408);
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission2-bg-v2.png");
+        textBoxSetup();
+        this.xAdj = 5;
+        this.yAdj = 49;
+    }
+    
+    public Mission2(Player player, GameData gameData, float x, float y) {
+        super(player, gameData);
+        this.player = player;
+        this.player.setX(x);
+        this.player.setY(y);
         bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission2-bg-v2.png");
         textBoxSetup();
         this.xAdj = 5;

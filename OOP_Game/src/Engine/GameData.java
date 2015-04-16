@@ -1,10 +1,11 @@
 package Engine;
 
 /* Kevin Stubblefield
- * Last Updated: April 4, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Added mission test for testing purposes
  * Moved loading into loading screen for mission 2 (load() function)
+ * Added mission getter/setter and loadGameFromFile method
  */
 
 import HUD.HUD;
@@ -48,6 +49,7 @@ public class GameData {
     private Sprite bg;
     private SaveFileHandler saveFileHandler;
     private ArrayList<GameObject> toBeRemoved;
+    private boolean loadingFromFile;
     
     public GameData(Game game) {
         this.game = game;
@@ -76,6 +78,7 @@ public class GameData {
         inventory = new InventoryScreen(player);
         saveFileHandler = new SaveFileHandler(this);
         toBeRemoved = new ArrayList<>();
+        loadingFromFile = false;
     }
     
     // Give mission number as parameter, initial load is 0
@@ -94,24 +97,40 @@ public class GameData {
                 gameStates.push(GameState.MENU_STATE);
                 return;
             case 2:
-                active = new Mission1(player, this);
+                player.setMission(1);
+                if(loadingFromFile) {
+                    active = new Mission1(player, this, player.getX(), player.getY());
+                    textBoxQueue = active.getTextBoxQueue(); //Skips the intro text so you don't have to read it again.
+                    while(!textBoxQueue.isEmpty()) {
+                        textBoxQueue.pop();
+                    }
+                } else {
+                    active = new Mission1(player, this);
+                    textBoxQueue = active.getTextBoxQueue();
+                }
                 active.generateObjects();
                 objects = active.getObjects();
-                textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
                 bg = active.getBackground();
                 loaded = true;
+                loadingFromFile = false;
                 gameStates.pop();
                 gameStates.push(GameState.MISSION_01_STATE);
                 mission++;
                 return;
             case 3:
-                active = new Mission2(player, this);
+                player.setMission(2);
+                if(loadingFromFile) {
+                    active = new Mission2(player, this, player.getX(), player.getY());
+                } else {
+                    active = new Mission2(player, this);
+                    textBoxQueue = active.getTextBoxQueue();
+                }
                 objects = active.getObjects();
-                textBoxQueue = active.getTextBoxQueue();
                 player = active.getPlayer();
                 bg = active.getBackground();
                 loaded = true;
+                loadingFromFile = false;
                 gameStates.pop();
                 gameStates.push(GameState.MISSION_02_STATE);
                 mission++;
@@ -204,6 +223,12 @@ public class GameData {
                 object.update();
             }
         }
+    }
+    
+    public void loadGameFromFile() {
+        saveFileHandler.loadGame();
+        System.out.println("MISSION " + mission);
+        load();
     }
     
     public Player getPlayer() {
@@ -312,6 +337,22 @@ public class GameData {
 
     public void setSaveFileHandler(SaveFileHandler saveFileHandler) {
         this.saveFileHandler = saveFileHandler;
+    }
+
+    public int getMission() {
+        return mission;
+    }
+
+    public void setMission(int mission) {
+        this.mission = mission;
+    }
+
+    public boolean isLoadingFromFile() {
+        return loadingFromFile;
+    }
+
+    public void setLoadingFromFile(boolean loadingFromFile) {
+        this.loadingFromFile = loadingFromFile;
     }
     
 }

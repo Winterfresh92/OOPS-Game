@@ -5,9 +5,10 @@ package Mission;
  * Known Bugs: None
  *
  * Kevin Stubblefield
- * Last Updated: April 4, 2015
+ * Last Updated: April 13, 2015
  * Known Bugs: None
  * Added field for gameData
+ * Added constructor for when loading from file
  */
 
 import Sprite.SpriteCache;
@@ -34,6 +35,15 @@ public class Mission1 extends Mission{
         this.player = player;
         this.player.setX(1344);
         this.player.setY(1536);
+        bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-v4.png");
+        textBoxSetup();
+    }
+    
+    public Mission1(Player player, GameData gameData, float x, float y) {
+        super(player, gameData);
+        this.player = player;
+        this.player.setX(x);
+        this.player.setY(y);
         bg = SpriteCache.getSpriteCache().getSprite("res\\sprites\\background/Mission1-bg-v4.png");
         textBoxSetup();
     }
