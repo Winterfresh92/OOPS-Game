@@ -6,6 +6,11 @@ package Engine;
  * Added mission test for testing purposes
  * Moved loading into loading screen for mission 2 (load() function)
  * Added mission getter/setter and loadGameFromFile method
+ *
+ * Carlos Pena
+ * Last Updated: April 16, 2015
+ * Know Bugs: None
+ * Added missionSkip(), press L to skip to next mission, adjust the number as more missions are added
  */
 
 import HUD.HUD;
@@ -222,6 +227,15 @@ public class GameData {
             for(GameObject object : objects) {
                 object.update();
             }
+        }
+    }
+    
+    public void missionSkip() {
+        if(mission > 3) { 
+            return;
+        }
+        else { 
+            load();
         }
     }
     

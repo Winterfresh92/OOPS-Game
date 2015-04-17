@@ -52,6 +52,10 @@ public class KeyInput implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_Y) {
             gameData.getSaveFileHandler().saveGame();
         }
+        if(e.getKeyCode() == KeyEvent.VK_L) {
+            System.out.println("mission skip activated");
+            gameData.missionSkip();
+        }
         if(gameData.getGameStates().peek() == GameState.MENU_STATE) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER) { // Select menu item
                 if(gameData.getMenu().getSelected() == MenuScreen.START_GAME_SELECTED) {
