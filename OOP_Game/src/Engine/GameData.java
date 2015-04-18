@@ -234,10 +234,25 @@ public class GameData {
             background.update();
             game.getCamera().update(player);
             hud.update();
-            for(GameObject object : objects) {
+         /*   for(GameObject object : objects) {
                 object.update();
-            }
+            } */
+             Iterator<GameObject> theObject = objects.iterator();
+           while(theObject.hasNext())
+           {
+               GameObject go = theObject.next();
+               go.update();
+               if(go instanceof Enemy)
+               {
+                   Enemy e = (Enemy) go;
+                   if(e.getHeath() < 1)
+                   {
+                       theObject.remove();
+                   }
+               }
+           }
         }
+            
     }
     
     public void loadGameFromFile() {

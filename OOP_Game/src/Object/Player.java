@@ -17,7 +17,13 @@ package Object;
  *
  * Carlos Pena
  * Added 2 classes, PowerSelected() to determine which power to use
+<<<<<<< HEAD
+ * Force() to use the choosen power
+ * 
+ *
+=======
  * F orce() to use the choosen power
+>>>>>>> branch 'Zain' of https://github.com/Winterfresh92/OOPS-Game.git
  */
 
 import Engine.Game;
@@ -42,8 +48,11 @@ public class Player extends GameObject {
     private int health;
     private boolean clipping;
     private boolean push, pull;
-    private boolean swing;
+
     private boolean knockBack;
+    private int mission;
+    private boolean swing;
+
     private Sprite h;
     private Animation walkingUp;
     private Animation walkingDown;
@@ -86,10 +95,16 @@ public class Player extends GameObject {
         walkingDown = new Animation(150);
         walkingRight = new Animation(300);
         walkingLeft = new Animation(300);
+
         fightingRight = new Animation(300);
         fightingLeft = new Animation(300);
         fightingDown = new Animation(150);
         fightingUp  = new Animation(150);
+
+        fightingRight = new Animation(150);
+        fightingLeft = new Animation(150);
+        fightingDown = new Animation(300);
+        fightingUp  = new Animation(300);
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_0.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_1.png"));
         walkingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_back_2.png"));
@@ -103,6 +118,24 @@ public class Player extends GameObject {
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
         fightingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_fighting_right_0.png"));
+
+        fightingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_fighting_right_1.png"));
+        fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_0.png"));
+        fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_1.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_0.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_1.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_2.png"));
+        fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_3.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_0.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_1.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_2.png"));
+        fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_3.png"));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new Heart(0, 0, true));
+        inventory.add(new HalfHeart(0, 0, true));
+        inventory.add(new HalfHeart(0, 0, true));
+
         fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_0.png"));
         fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_0.png"));
         fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_1.png"));
@@ -189,6 +222,7 @@ public class Player extends GameObject {
             health -= 1;
             if(health < 0) {
                 health = 0;
+
             }
             h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
         }
@@ -215,6 +249,25 @@ public class Player extends GameObject {
 
             h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
             System.out.println("Player Health " + health);
+        }
+
+        
+        if(g instanceof InteractableObject){
+            InteractableObject interact = (InteractableObject) g;
+            if(interact.interact()){
+                gameData.getNextQueue();
+            }
+            else{
+
+                gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
+            }
+            
+            
+         /*   if (playerHit == true)
+            {
+                this.health -= 2;
+                System.out.println("health : " + this.health);
+            } */
         }
     }
     

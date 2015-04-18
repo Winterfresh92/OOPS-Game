@@ -13,6 +13,11 @@ public class Heart extends Item {
         super("res\\sprites\\items/heart_item_0.png", x, y, collected);
         this.name = "Heart";
     }
+
+    Heart(String resspritesitemsheart_item_0png, int i, int i0, boolean b) {
+        super(resspritesitemsheart_item_0png, i, i0, b);
+        this.name = "Heart";
+    }
     
     @Override
     public void use(Player player) {
