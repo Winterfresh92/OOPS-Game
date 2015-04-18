@@ -17,9 +17,7 @@ package Object;
  *
  * Carlos Pena
  * Added 2 classes, PowerSelected() to determine which power to use
- * Force() to use the choosen power
- * 
- *
+ * F orce() to use the choosen power
  */
 
 import Engine.Game;
@@ -44,9 +42,8 @@ public class Player extends GameObject {
     private int health;
     private boolean clipping;
     private boolean push, pull;
-    private boolean knockBack;
-    private int mission;
     private boolean swing;
+    private boolean knockBack;
     private Sprite h;
     private Animation walkingUp;
     private Animation walkingDown;
@@ -106,9 +103,7 @@ public class Player extends GameObject {
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_0.png"));
         walkingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_left_1.png"));
         fightingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_fighting_right_0.png"));
-        fightingRight.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\right/player_fighting_right_1.png"));
         fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_0.png"));
-        fightingLeft.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\left/player_fighting_left_1.png"));
         fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_0.png"));
         fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_1.png"));
         fightingDown.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\front/player_fighting_down_2.png"));
@@ -117,11 +112,11 @@ public class Player extends GameObject {
         fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_1.png"));
         fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_2.png"));
         fightingUp.add(SpriteCache.getSpriteCache().getSprite("res\\sprites\\player\\back/player_fighting_up_3.png"));
-        inventory.add(new Heart(0, 0, true));
-        inventory.add(new Heart(0, 0, true));
-        inventory.add(new Heart(0, 0, true));
-        inventory.add(new HalfHeart(0, 0, true));
-        inventory.add(new HalfHeart(0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new Heart("res\\sprites\\items/heart_item_0.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
+        inventory.add(new HalfHeart("res\\sprites\\items/heart_item_1.png", 0, 0, true));
         direction = "";
         facing = "";
         this.h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_0.png");
@@ -212,12 +207,14 @@ public class Player extends GameObject {
                 gameData.addToQueue(new TextBox("res\\sprites/text_box_0.png", Game.WIDTH / 10, (Game.HEIGHT - Game.HEIGHT / 3) - 40, interact.getDefaultText(), true));
             }
             
-            
          /*   if (playerHit == true)
             {
                 this.health -= 2;
                 System.out.println("health : " + this.health);
             } */
+
+            h = SpriteCache.getSpriteCache().getSprite("res\\sprites\\hud/player_health_"+ (10 - health) +".png");
+            System.out.println("Player Health " + health);
         }
     }
     
