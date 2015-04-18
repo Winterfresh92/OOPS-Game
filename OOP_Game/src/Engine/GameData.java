@@ -24,6 +24,7 @@ import Mission.MissionTest;
 import Music.SoundEffects;
 import Object.Enemy;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -197,9 +198,23 @@ public class GameData {
             background.update();
             game.getCamera().update(player);
             hud.update();
-            for(GameObject object : objects) {
+           /* for(GameObject object : objects) {
                 object.update();
-            }
+            }*/
+            Iterator<GameObject> theObject = objects.iterator();
+           while(theObject.hasNext())
+           {
+               GameObject go = theObject.next();
+               go.update();
+               if(go instanceof Enemy)
+               {
+                   Enemy e = (Enemy) go;
+                   if(e.getHeath() < 1)
+                   {
+                       theObject.remove();
+                   }
+               }
+           }
             if(active.levelOver()){
                 loaded = false;
                 gameStates.pop();
