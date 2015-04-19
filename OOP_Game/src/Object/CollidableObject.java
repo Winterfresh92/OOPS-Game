@@ -4,7 +4,6 @@ package Object;
  * Last Updated: February 22, 2015
  * Known Bugs: None
  */
-
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -17,7 +16,7 @@ public class CollidableObject extends GameObject {
         this.solid = true;
         this.mobile = false;
     }
-    
+
     public CollidableObject(String ref, float x, float y, boolean solid, boolean mobile) {
         super(ref, x, y);
         this.width = 64;

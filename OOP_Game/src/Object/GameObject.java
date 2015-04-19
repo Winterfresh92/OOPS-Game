@@ -4,14 +4,13 @@ package Object;
  * Last Updated: February 22, 2015
  * Known Issues: None
  */
-
 import Sprite.SpriteCache;
 import Sprite.Sprite;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public abstract class GameObject {
-    
+
     protected float velX, velY;
     protected float x, y;
     protected float width, height;
@@ -19,47 +18,52 @@ public abstract class GameObject {
     protected Sprite sprite;
     protected boolean mobile;
     protected String id;
-    
+
     public GameObject(String ref, float x, float y) {
-        if(ref != null) {
-            this.sprite = SpriteCache.getSpriteCache().getSprite(ref);
-            if(ref == "res\\sprites/door-close-h.png")
-             id = "door";
-            else
+        if (ref != null) {
+            try {
+                this.sprite = SpriteCache.getSpriteCache().getSprite(ref);
+            } catch (Exception ex) {
+                ref = null;
+            }
+            if (ref == "res\\sprites/door-close-h.png") {
+                id = "door";
+            } else {
                 id = null;
+            }
         }
         this.x = x;
         this.y = y;
-        if(sprite != null) {
+        if (sprite != null) {
             this.width = sprite.getWidth();
             this.height = sprite.getHeight();
         }
     }
-    
+
     public abstract void update();
-    
+
     public abstract void render(Graphics g);
-    
+
     public Rectangle getBounds() {
-        return new Rectangle((int)x, (int)y, (int)width, (int)height);
+        return new Rectangle((int) x, (int) y, (int) width, (int) height);
     }
-    
+
     public Rectangle getBoundsBottom() {
-        return new Rectangle((int)(x + width / 4), (int)(y + height / 2), (int)(width / 2), (int)(height / 2));
+        return new Rectangle((int) (x + width / 4), (int) (y + height / 2), (int) (width / 2), (int) (height / 2));
     }
-    
+
     public Rectangle getBoundsTop() {
-        return new Rectangle((int)(x + width / 4), (int)y, (int)(width / 2), (int)(height / 2));
+        return new Rectangle((int) (x + width / 4), (int) y, (int) (width / 2), (int) (height / 2));
     }
-    
+
     public Rectangle getBoundsRight() {
-        return new Rectangle((int)(x + width), (int)y + 5, 5, (int)(height - 10));
+        return new Rectangle((int) (x + width), (int) y + 5, 5, (int) (height - 10));
     }
-    
+
     public Rectangle getBoundsLeft() {
-        return new Rectangle((int)x, (int)y + 5, 5, (int)(height - 10));
+        return new Rectangle((int) x, (int) y + 5, 5, (int) (height - 10));
     }
-    
+
     public boolean getCollision(GameObject object) {
         return this.getBounds().intersects(object.getBounds());
     }
@@ -71,7 +75,7 @@ public abstract class GameObject {
     public void setSolid(boolean solid) {
         this.solid = solid;
     }
-    
+
     public boolean isMobile() {
         return mobile;
     }
@@ -99,8 +103,7 @@ public abstract class GameObject {
     public String getId() {
         return id;
     }
-    
-    
+
     public float getWidth() {
         return width;
     }
@@ -140,8 +143,9 @@ public abstract class GameObject {
     public void setVelY(float velY) {
         this.velY = velY;
     }
+
     public boolean getSolid() {
         return solid;
     }
-    
+
 }

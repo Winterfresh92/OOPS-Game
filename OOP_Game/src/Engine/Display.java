@@ -60,7 +60,9 @@ public class Display extends JPanel {
             game.getMenuScreen().render(graphics);
         } else if(gameData.getGameStates().peek() == GameState.LOADING_STATE) {
             game.getLoadingScreen().render(graphics);
-        } else {
+        } else if(gameData.getGameStates().peek() == GameState.INTRO_STATE){
+            game.getIntroScreen().render(graphics);
+        } else{
             g2d.translate(this.game.getCamera().getX(), this.game.getCamera().getY());//After this, objects don't move with the character.
             if(gameData.getBackground() != null) {
                 gameData.getBackground().render(graphics, 5, 50);

@@ -4,12 +4,11 @@ package Object;
  * Last Updated: March 10, 2015
  * Known Bugs: None
  */
-
 import java.awt.Color;
 import java.awt.Graphics;
 
 public class InteractableSlip extends InteractableObject {
-    
+
     private boolean interacted;
     private String defaultText;
 
@@ -22,7 +21,7 @@ public class InteractableSlip extends InteractableObject {
         interacted = true;
         defaultText = "You have already collected this Permission.";
     }
-    
+
     public InteractableSlip(String ref, float x, float y, boolean solid, boolean mobile, String defaultText) {
         super(ref, x, y);
         this.width = 64;
@@ -46,17 +45,20 @@ public class InteractableSlip extends InteractableObject {
             g.fillRect((int) x, (int) y, (int) width, (int) height);
         }
     }
-    
-    public void interacted(){
+
+    @Override
+    public void interacted() {
         this.interacted = true;
-        
+
     }
-    
-    public boolean interact(){
+
+    @Override
+    public boolean interact() {
         return !interacted;
     }
-    
-    public String getDefaultText(){
+
+    @Override
+    public String getDefaultText() {
         return this.defaultText;
     }
 

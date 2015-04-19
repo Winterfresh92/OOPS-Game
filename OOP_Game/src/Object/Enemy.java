@@ -13,9 +13,7 @@
  * Known Bugs: Some Mechanics may not work completely right
  * Added Attack(), and Fire(), modified update() for enemy movement. Added Fight(), direction()
  */
-
 package Object;
-
 
 import Engine.GameData;
 import Sprite.Sprite;
@@ -25,7 +23,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Enemy extends GameObject {
-    
+
     protected GameData gameData;
     protected boolean isColliding;
     protected boolean lastCollision;
@@ -43,13 +41,17 @@ public class Enemy extends GameObject {
     protected boolean swing;
     protected String direction;
     protected Sprite bullet;
+    private boolean aggressor;
+    private String dead;
+    private int damage;
     Rectangle bolt;
-    
-    Enemy(String ref, float x, float y, GameData gameData)
-    {
-        super(ref,x,y);
+
+    Enemy(String ref, float x, float y, GameData gameData) {
+        super(ref, x, y);
         this.gameData = gameData;
         this.solid = true;
+        this.aggressor = true;
+        damage = 1;
     }
     
      public Enemy(String ref, float x, float y, boolean solid, boolean mobile, GameData gameData, boolean ranged) {
@@ -64,6 +66,27 @@ public class Enemy extends GameObject {
         player = gameData.getPlayer();
         health = 3;
         this.ranged = ranged;
+        damage = 1;
+        this.aggressor = true;
+    }
+
+    public Enemy(String ref, String dead, float x, float y, boolean solid, boolean mobile, GameData gameData, int health, int damage, boolean aggressor) {
+        super(ref, x, y);
+        this.gameData = gameData;
+        this.width = 64;
+        this.height = 64;
+        this.solid = solid;
+        this.mobile = mobile;
+        if (aggressor) {
+            velX = velY = enemyspeed;
+        } else {
+            velX = velY = 0;
+        }
+        start = x;
+        player = gameData.getPlayer();
+        this.health = health;
+        this.aggressor = aggressor;
+        this.dead = dead;
     }
 
     @Override
@@ -126,27 +149,24 @@ public class Enemy extends GameObject {
             lastCollision = false;
         }
     }
-    
+
     public boolean Attack() {
-        if(player.x >= x && player.x <= x+128) { //right side of enemy
-            if(player.y <= y && player.y >= y-128) { //top of enemy
+        if (player.x >= x && player.x <= x + 128 && aggressor) { //right side of enemy
+            if (player.y <= y && player.y >= y - 128) { //top of enemy
+                return true;
+            } else if (player.y >= y && player.y <= y + 128) { //bottom of enemy
                 return true;
             }
-            else if(player.y >= y && player.y <= y+128) { //bottom of enemy
+        } else if (player.x <= x && player.x >= x - 128 && aggressor) { //left of enemy
+            if (player.y <= y && player.y >= y - 128) {
                 return true;
-            }
-        }
-        else if(player.x <= x && player.x >= x-128) { //left of enemy
-            if(player.y <= y && player.y >= y-128) {
-                return true;
-            }
-            else if(player.y >= y && player.y <= y+128) {
+            } else if (player.y >= y && player.y <= y + 128) {
                 return true;
             }
         }
-            return false;
+        return false;
     }
-    
+
     public void Fire() {
         if(!fired) {
             fired = true;
@@ -377,13 +397,13 @@ public class Enemy extends GameObject {
             bullet.render(g, boltx, bolty);
         }
         g.setColor(Color.green);
-        g.fillRect((int)this.x,(int)this.y-20,(health*100)/10,10);
+        g.fillRect((int) this.x, (int) this.y - 20, (health * 100) / 10, 10);
     }
-    
+
     public void checkCollisions() {
         int counter = 0;
-        for(GameObject object : gameData.getObjects()) {
-            if(object instanceof CollidableObject) {
+        for (GameObject object : gameData.getObjects()) {
+            if (object instanceof CollidableObject) {
                 CollidableObject temp = (CollidableObject) object;
                 if(temp.isSolid()) {
                     if(getBoundsTop().intersects(temp.getBounds())) {
@@ -405,9 +425,7 @@ public class Enemy extends GameObject {
                         isColliding  = true;
                         lastCollision = true;
                         x = temp.getX() + temp.getWidth();
-                    }
-                    else 
-                    {
+                    } else {
                         isColliding = false;
                     }
                     if(isColliding == true) {
@@ -417,20 +435,47 @@ public class Enemy extends GameObject {
             }
         }
     }
-    
-    public void hit()
-    {
-        health = health - 1;
-        if(health < 0 )
-            health = 0;
+
+    public void hit() {
+        this.health -= 1;
+        if (health < 0) {
+            this.health = 0;
+            this.aggressor = false;
+            this.solid = false;
+            this.mobile = false;
+            this.sprite = SpriteCache.getSpriteCache().getSprite(this.dead);
+        }
     }
-     
-    public int getHeath()
-    {
+
+    public int getHeath() {
         return this.health;
     }
-    public void setHealth(int h)
-    {
+
+    public void setHealth(int h) {
         this.health = h;
+    }
+
+    public String getDead() {
+        return this.dead;
+    }
+
+    public void setDead(String dead) {
+        this.dead = dead;
+    }
+
+    public int getDamage() {
+        return this.damage;
+    }
+
+    public void setDamate(int damage) {
+        this.damage = damage;
+    }
+
+    public void switchAggressor() {
+        this.aggressor = !this.aggressor;
+    }
+
+    public boolean getAggressor() {
+        return aggressor;
     }
 }

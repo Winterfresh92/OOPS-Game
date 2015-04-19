@@ -24,6 +24,7 @@ public class Game extends JFrame {
     private Camera camera;
     private MenuScreen menuScreen;
     private LoadingScreen loadingScreen;
+    private IntroScreen introScreen;
     private PauseScreen pauseScreen;
     private MouseInput mouseInput;
     
@@ -36,6 +37,7 @@ public class Game extends JFrame {
         Container c = getContentPane();
         menuScreen = new MenuScreen(this);
         loadingScreen = new LoadingScreen();
+        introScreen = new IntroScreen();
         pauseScreen = new PauseScreen(this);
         gameLoop = new GameLoop();
         gameData = new GameData(this);
@@ -91,6 +93,10 @@ public class Game extends JFrame {
 
     public LoadingScreen getLoadingScreen() {
         return loadingScreen;
+    }
+    
+    public IntroScreen getIntroScreen(){
+        return introScreen;
     }
 
     public void setLoadingScreen(LoadingScreen loadingScreen) {

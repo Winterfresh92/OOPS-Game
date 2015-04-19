@@ -165,8 +165,13 @@ public class GameData {
         } if(gameStates.peek() == GameState.INVENTORY_STATE) {
             inventory.update();
         } if(gameStates.peek() == GameState.INTRO_STATE){
-            game.getCamera().setX(0);
-            game.getCamera().setY(0);
+            game.getIntroScreen().update();
+            if(game.getIntroScreen().finished()){
+                gameStates.pop();
+                load();
+            }
+            //game.getCamera().setX(0);
+            //game.getCamera().setY(0);
         }if(gameStates.peek() == GameState.MISSION_01_STATE){
             textBox.update();
             background.update();
@@ -196,7 +201,8 @@ public class GameData {
         }
         else if(gameStates.peek() == GameState.MISSION_02_STATE){
             if(!loaded){
-                gameStates.push(GameState.LOADING_STATE);
+                //gameStates.push(GameState.LOADING_STATE);
+                load();
             }
             textBox.update();
             background.update();
