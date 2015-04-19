@@ -58,7 +58,7 @@ public class MissionTest extends Mission{
         objects = new ArrayList<>();
         objects.add(player);
         tree = new CollidableObject(null, player.getX() + 500, player.getY() + 500);
-        Enemy enemy = new Enemy("res\\sprites\\enemies\\sith soldier\\down/sith_soldier_down_0.png", player.getX() + 250, player.getY() + 250, true, true, gameData);
+        Enemy enemy = new Enemy("res\\sprites\\enemies\\sith soldier\\down/sith_soldier_down_0.png", player.getX() + 250, player.getY() + 250, true, true, gameData, true);
         objects.add(tree);
         objects.add(enemy);
         return objects;
